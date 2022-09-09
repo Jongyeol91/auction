@@ -1,0 +1,20 @@
+import React from 'react';
+import styled from 'styled-components';
+import { colors } from '../lib/colors';
+
+export type Props = React.HtmlHTMLAttributes<HTMLInputElement>;
+
+function Input(props: Props) {
+  return <StyledInput {...props} />;
+}
+
+const StyledInput = styled.input`
+  height: 48px;
+  border-radius: 4px;
+  border: 1px solid ${colors.gray3};
+  color: ${colors.gray5};
+  padding-left: 16px;
+  padding-right: 16px;
+`;
+
+export default Input;

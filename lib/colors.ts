@@ -8,4 +8,5 @@ export const colors = {
   gray7: '#446879',
   gray8: '#365563',
   gray9: '#253f4b',
+  primary: 'gold',
 };
