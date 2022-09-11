@@ -1,18 +1,15 @@
-import styled from 'styled-components';
-import Header from '../components/Header';
-import HeaderBackButton from '../components/HeaderBackButton';
+import Header from '@/components/Header';
+import HeaderBackButton from '@/components/HeaderBackButton';
+import { useGoBack } from '@/hooks/useGoBack';
+import AuthForm from '@/components/AuthForm';
+import FullHeightPage from '@/components/FullHeightPage';
 
-export default function register() {
+export default function Register() {
+  const goBack = useGoBack();
   return (
-    <Page>
-      <Header
-        title="회원가입"
-        headerLeft={<HeaderBackButton onClick={() => alert('뒤로가기 클릭')} />}
-      />
-    </Page>
+    <FullHeightPage>
+      <Header title="회원가입" headerLeft={<HeaderBackButton onClick={goBack} />} />
+      <AuthForm mode="register" />
+    </FullHeightPage>
   );
 }
-
-const Page = styled.div`
-  height: 100%;
-`;
