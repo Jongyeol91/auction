@@ -1,13 +1,13 @@
 import Input, { type Props as InputProps } from './Input';
 import styled, { css } from 'styled-components';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { colors } from '@/lib/colors';
 
 interface Props extends InputProps {
   label: string;
 }
 
-function LabelInput({ label, ...rest }: Props) {
+const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, ...rest }: Props, ref) => {
   const [focused, setFocused] = useState(false);
 
   const onFocus = () => {
@@ -21,10 +21,12 @@ function LabelInput({ label, ...rest }: Props) {
   return (
     <Wrapper>
       <Label focused={focused}>{label}</Label>
-      <Input onFocus={onFocus} onBlur={onBlur} {...rest} />
+      <Input onFocus={onFocus} onBlur={onBlur} {...rest} ref={ref} />
     </Wrapper>
   );
-}
+});
+
+LabelInput.displayName = 'LabelInput';
 
 const Wrapper = styled.div`
   display: flex;

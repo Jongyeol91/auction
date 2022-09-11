@@ -6,13 +6,15 @@ interface ButtonProps {
   layoutMode?: 'inline' | 'fullWidth';
   buttonTheme?: unknown; // Todo: 개선 필요
   styleType?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 interface Props extends HTMLAttributes<HTMLButtonElement>, ButtonProps {}
 
-function Button({ layoutMode = 'inline', styleType, ...rest }: Props) {
+function Button({ layoutMode = 'inline', type, styleType, ...rest }: Props) {
   return (
     <StyledButton
+      type={type}
       buttonTheme={buttonTheme}
       styleType={styleType}
       layoutMode={layoutMode}

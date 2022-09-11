@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { colors } from '@/lib/colors';
 
 export type Props = React.HtmlHTMLAttributes<HTMLInputElement>;
 
-function Input(props: Props) {
-  return <StyledInput {...props} />;
-}
+const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
+  return <StyledInput {...props} ref={ref} />;
+});
+
+Input.displayName = 'Input';
 
 const StyledInput = styled.input`
   height: 48px;
