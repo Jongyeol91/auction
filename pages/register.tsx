@@ -1,8 +1,8 @@
-import Header from '../components/Header';
-import HeaderBackButton from '../components/HeaderBackButton';
-import { useGoBack } from '../hooks/useGoBack';
-import AuthForm from '../components/AuthForm';
-import FullHeightPage from '../components/FullHeightPage';
+import Header from '@/components/Header';
+import HeaderBackButton from '@/components/HeaderBackButton';
+import { useGoBack } from '@/hooks/useGoBack';
+import AuthForm from '@/components/AuthForm';
+import FullHeightPage from '@/components/FullHeightPage';
 
 export default function Register() {
   const goBack = useGoBack();

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import LabelInput from './LabelInput';
-import Button from './Button';
-import QuestionLink from './QuestionLink';
-import { AUTH_DESCRIPTIONS } from '../lib/constants';
+import LabelInput from '@/components/LabelInput';
+import Button from '@/components/Button';
+import QuestionLink from '@/components/QuestionLink';
+import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 
 interface Props {
   mode: 'login' | 'register';

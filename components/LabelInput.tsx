@@ -1,7 +1,7 @@
 import Input, { type Props as InputProps } from './Input';
 import styled, { css } from 'styled-components';
 import { useState } from 'react';
-import { colors } from '../lib/colors';
+import { colors } from '@/lib/colors';
 
 interface Props extends InputProps {
   label: string;

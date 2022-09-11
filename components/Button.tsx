@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
-import buttonTheme from '../lib/buttonTheme';
+import buttonTheme from '@/lib/buttonTheme';
 
 interface ButtonProps {
   layoutMode?: 'inline' | 'fullWidth';

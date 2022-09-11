@@ -1,4 +1,4 @@
-import ArrowLeft from './vectors/ArrowLeft';
+import ArrowLeft from '@/components/vectors/ArrowLeft';
 import styled from 'styled-components';
 
 interface Props {
