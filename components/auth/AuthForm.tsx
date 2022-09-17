@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import LabelInput from '@/components/LabelInput';
-import Button from '@/components/Button';
-import QuestionLink from '@/components/QuestionLink';
+import LabelInput from '@/components/common/LabelInput';
+import Button from '@/components/common/Button';
+import QuestionLink from '@/components/auth/QuestionLink';
 import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 import { useForm, SubmitHandler } from 'react-hook-form';
 

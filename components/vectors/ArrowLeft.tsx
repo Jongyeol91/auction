@@ -6,7 +6,7 @@ interface props {
   color?: string;
 }
 
-const ArrowLeft = ({ width = 30, height = 30, color = 'white' }: props) => {
+const ArrowLeft = ({ width = 32, height = 32, color = 'white' }: props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
