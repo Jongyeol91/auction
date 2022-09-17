@@ -15,13 +15,14 @@ const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, ...rest }: Prop
   };
 
   const onBlur = () => {
+    console.log(2);
     setFocused(false);
   };
 
   return (
     <Wrapper>
       <Label focused={focused}>{label}</Label>
-      <Input onFocus={onFocus} onBlur={onBlur} {...rest} ref={ref} />
+      <Input {...rest} onFocus={onFocus} onBlur={onBlur} ref={ref} />
     </Wrapper>
   );
 });
