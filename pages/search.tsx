@@ -1,20 +1,7 @@
-import Footer from '@/components/base/Footer';
-import Header from '@/components/base/Header';
-import FullHeightPage from '@/components/common/FullHeightPage';
-import styled from 'styled-components';
+import TabTamplete from '@/components/templates/TabTemplate';
 
 function Search() {
-  return (
-    <FullHeightPage>
-      <Header />
-      <Content />
-      <Footer />
-    </FullHeightPage>
-  );
+  return <TabTamplete>검색</TabTamplete>;
 }
-
-const Content = styled.div`
-  flex: 1;
-`;
 
 export default Search;
