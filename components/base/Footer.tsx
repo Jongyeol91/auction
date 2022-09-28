@@ -4,8 +4,9 @@ import FooterTabItem from './FooterTabItem';
 function Footer() {
   return (
     <StyledFooter>
-      <FooterTabItem icon="home" />
-      <FooterTabItem icon="search" isActive />
+      <FooterTabItem icon="home" exact href="/" />
+      <FooterTabItem icon="search" href="/search" />
+      <FooterTabItem icon="add" href="/add" />
     </StyledFooter>
   );
 }

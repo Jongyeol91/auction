@@ -15,7 +15,6 @@ const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, ...rest }: Prop
   };
 
   const onBlur = () => {
-    console.log(2);
     setFocused(false);
   };
 
@@ -32,9 +31,6 @@ LabelInput.displayName = 'LabelInput';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  & + & {
-    margin-top: 16px;
-  }
 `;
 
 const Label = styled.label<{ focused: boolean }>`
