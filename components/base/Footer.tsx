@@ -6,6 +6,7 @@ function Footer() {
     <StyledFooter>
       <FooterTabItem icon="home" exact href="/" />
       <FooterTabItem icon="search" href="/search" />
+      <FooterTabItem icon="add" href="/add" />
     </StyledFooter>
   );
 }

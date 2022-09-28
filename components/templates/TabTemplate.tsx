@@ -17,7 +17,9 @@ function TabTamplete({ children }: Props) {
   );
 }
 
-const Content = styled.main`
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
 `;
 

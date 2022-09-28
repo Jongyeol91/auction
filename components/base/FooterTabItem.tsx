@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import BulletList from '@/components/vectors/BulletList.svg';
 import Search from '@/components/vectors/Search.svg';
+import Add from '@/components/vectors/Add.svg';
 import React, { useMemo } from 'react';
 import { colors } from '@/lib/colors';
 import { useRouter } from 'next/router';
@@ -9,6 +10,7 @@ import Link from 'next/link';
 const IconMap = {
   home: <BulletList />,
   search: <Search />,
+  add: <Add />,
 };
 
 interface Props {
