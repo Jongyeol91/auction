@@ -1,3 +1,4 @@
+import { UseFormHandleSubmit, FieldValues } from 'react-hook-form';
 import styled from 'styled-components';
 import Button from '../common/Button';
 
@@ -5,11 +6,13 @@ interface Props {
   title: string;
   children: React.ReactNode;
   buttonText: string;
+  handleSubmit: UseFormHandleSubmit<FieldValues>;
+  onSubmit: (data: FieldValues) => void;
 }
 
-function AddTemplate({ children, title, buttonText }: Props) {
+function AddTemplate({ children, title, buttonText, handleSubmit, onSubmit }: Props) {
   return (
-    <StyledForm>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Title>{title}</Title>
       <Content>{children}</Content>
       <Button styleType="primary">{buttonText}</Button>
