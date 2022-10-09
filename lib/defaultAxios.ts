@@ -7,3 +7,7 @@ defaultAxios.defaults.withCredentials = true;
 export function setDefaultAxiosCookie(cookie: string) {
   defaultAxios.defaults.headers.common['Cookie'] = cookie;
 }
+
+export function clearDefaultAxiosCookie() {
+  delete defaultAxios.defaults.headers.common['Cookie'];
+}
