@@ -27,9 +27,9 @@ class ErrorBoundary extends Component<Props, State> {
       // You can render any custom fallback UI
       return (
         <div>
-          <h2>Oops, there is an error!</h2>
+          <h2>화면 에러!</h2>
           <button type="button" onClick={() => this.setState({ hasError: false })}>
-            Try again?
+            다시 시도 하시겠습니까?
           </button>
         </div>
       );
