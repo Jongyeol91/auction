@@ -4,6 +4,9 @@ import Button from '@/components/common/Button';
 import QuestionLink from '@/components/auth/QuestionLink';
 import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { login, register } from '@/lib/api/auth';
+import { defaultAxios } from '@/lib/defaultAxios';
+import { useRouter } from 'next/router';
 
 interface Props {
   mode: 'login' | 'register';
@@ -16,7 +19,7 @@ type Inputs = {
 
 function AuthForm({ mode }: Props) {
   const {
-    register,
+    register: registerHookForm,
     handleSubmit,
     watch,
     formState: { errors },
@@ -24,7 +27,20 @@ function AuthForm({ mode }: Props) {
   const { userIdPlaceholder, passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[mode];
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const router = useRouter;
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (mode === 'register') {
+      await register(data);
+    } else {
+      const { result, status } = await login(data);
+      status === 200 && router.replace('/');
+    }
+  };
+
+  const handleUser = () => {
+    defaultAxios.get('/api/me');
+  };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -32,11 +48,11 @@ function AuthForm({ mode }: Props) {
         <LabelInput
           label="아이디"
           placeholder={userIdPlaceholder}
-          {...register('userId', { required: true })}
+          {...registerHookForm('userId', { required: true })}
         />
         {errors.userId?.type === 'required' && 'id를 입력해주세요'}
         <LabelInput
-          {...register('password', { required: true })}
+          {...registerHookForm('password', { required: true })}
           label="비밀번호"
           placeholder={passwordPlaceholder}
         />
@@ -49,11 +65,16 @@ function AuthForm({ mode }: Props) {
         </Button>
         <QuestionLink question={question} name={actionText} href={actionLink} />
       </ActionsBox>
+      <button onClick={handleUser}>user</button>
     </StyledForm>
   );
 }
 
-const StyledForm = styled.form``;
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
 
 const Wrapper = styled.div`
   padding: 16px;
