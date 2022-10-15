@@ -1,8 +1,7 @@
 import AddTemplate from '@/components/add/AddTemplate';
 import LabelInput from '@/components/common/LabelInput';
-import LabelTextArea from '@/components/common/LableTextArea';
 import TabTamplete from '@/components/templates/TabTemplate';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
 import LabelDatePicker from '@/components/common/LabelDatePicker';
@@ -17,31 +16,41 @@ function Add() {
     formState: { errors },
   } = useForm();
 
-  const [auctions, set] = useAtom(auctionsAtom);
+  const [auctions, setAuctions] = useAtom(auctionsAtom);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    set(data);
+    setAuctions((prev) => ({ ...prev, ...data }));
   };
 
   return (
-    <>
-      <TabTamplete>
-        <AddTemplate title="경매" buttonText="다음" handleSubmit={handleSubmit} onSubmit={onSubmit}>
-          <Group>
-            <LabelInput label="물량" {...register('amount', { required: true })} />
-
-            <LabelInput label="단가" {...register('unit', { required: true })} />
-            <LabelDatePicker
-              label="마감일"
-              id="sefsefesg"
-              control={control}
-              {...register('date', { required: true })}
-            />
-          </Group>
-        </AddTemplate>
-      </TabTamplete>
-      {auctions.category}
-    </>
+    <TabTamplete>
+      <AddTemplate title="경매" buttonText="다음" handleSubmit={handleSubmit} onSubmit={onSubmit}>
+        <Group>
+          <LabelInput
+            label="물량"
+            errorMessage={errors.amount?.message?.toString()}
+            {...register('amount', { required: '필수 입력' })}
+          />
+          <LabelInput
+            label="단가"
+            errorMessage={errors.unit?.message?.toString()}
+            {...register('unit', { required: '필수 입력' })}
+          />
+          <Controller
+            name="lastDate"
+            control={control}
+            rules={{ required: '필수 입력' }}
+            render={({ field }) => (
+              <LabelDatePicker
+                label="마감일"
+                {...field}
+                errorMessage={errors.lastDate?.message?.toString()}
+              />
+            )}
+          />
+        </Group>
+      </AddTemplate>
+    </TabTamplete>
   );
 }
 
@@ -51,14 +60,6 @@ const Group = styled.div`
   flex: 1;
   gap: 16px;
   padding-bottom: 16px;
-`;
-
-const StyledLabelTextArea = styled(LabelTextArea)`
-  display: flex;
-  flex: 1;
-  textarea {
-    flex: 1;
-  }
 `;
 
 export default Add;

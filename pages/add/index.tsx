@@ -35,9 +35,10 @@ function Add() {
           />
           <LabelInput
             label="서브 카테고리"
+            defaultValue={auctions.subCategory}
+            errorMessage={errors.subCategory?.message?.toString()}
             {...register('subCategory', { required: '서브 카테고리를 입력하세요' })}
           />
-          <>{errors.subCategory?.message}</>
           <StyledLabelTextArea label="서브 카테고리" />
         </Group>
       </AddTemplate>
