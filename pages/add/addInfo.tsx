@@ -5,6 +5,7 @@ import TabTamplete from '@/components/templates/TabTemplate';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
+import LabelDatePicker from '@/components/common/LabelDatePicker';
 
 const auctionsAtom = atom<FieldValues>({ category: '', subCategory: '' });
 
@@ -12,6 +13,7 @@ function Add() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -29,6 +31,12 @@ function Add() {
             <LabelInput label="물량" {...register('amount', { required: true })} />
 
             <LabelInput label="단가" {...register('unit', { required: true })} />
+            <LabelDatePicker
+              label="마감일"
+              id="sefsefesg"
+              control={control}
+              {...register('date', { required: true })}
+            />
           </Group>
         </AddTemplate>
       </TabTamplete>
