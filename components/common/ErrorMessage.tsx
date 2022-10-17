@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface Props {
-  errorMessage?: string;
+  errorMessage?: string | false;
 }
 
 function ErrorMessage({ errorMessage }: Props) {

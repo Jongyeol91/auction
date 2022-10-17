@@ -6,7 +6,7 @@ import ErrorMessage from './ErrorMessage';
 
 interface Props extends InputProps {
   label: string;
-  errorMessage?: string;
+  errorMessage?: string | false;
 }
 
 const LabelInput = forwardRef<HTMLInputElement, Props>(

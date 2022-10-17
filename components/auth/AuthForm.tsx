@@ -48,15 +48,15 @@ function AuthForm({ mode }: Props) {
         <LabelInput
           label="아이디"
           placeholder={userIdPlaceholder}
+          errorMessage={errors.userId?.type === 'required' && '아이디를 입력해주세요'}
           {...registerHookForm('userId', { required: true })}
         />
-        {errors.userId?.type === 'required' && 'id를 입력해주세요'}
         <LabelInput
           {...registerHookForm('password', { required: true })}
           label="비밀번호"
+          errorMessage={errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
           placeholder={passwordPlaceholder}
         />
-        {errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
       </Wrapper>
 
       <ActionsBox>
@@ -80,6 +80,7 @@ const Wrapper = styled.div`
   padding: 16px;
   display: flex;
   flex: 1;
+  gap: 16px;
   flex-direction: column;
 `;
 
