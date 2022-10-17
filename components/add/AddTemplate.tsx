@@ -26,7 +26,7 @@ const StyledForm = styled.form`
   padding: 16px;
 `;
 
-const Title = styled.h2``;
+const Title = styled.h1``;
 
 const Content = styled.main`
   flex: 1;

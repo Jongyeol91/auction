@@ -10,5 +10,5 @@ export const colors = {
   gray9: '#253f4b',
   black: 'black',
   white: 'white',
-  primary: 'gold',
+  primary: 'black',
 };

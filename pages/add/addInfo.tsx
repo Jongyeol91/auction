@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
 import LabelDatePicker from '@/components/common/LabelDatePicker';
 
-const auctionsAtom = atom<FieldValues>({ category: '', subCategory: '' });
+const auctionsAtom = atom<FieldValues>({ metal: '', metalOptions: '' });
 
 function Add() {
   const {
@@ -61,5 +61,9 @@ const Group = styled.div`
   gap: 16px;
   padding-bottom: 16px;
 `;
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
 
 export default Add;

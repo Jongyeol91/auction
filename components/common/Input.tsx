@@ -23,7 +23,7 @@ const StyledInput = styled.input`
   padding-right: 16px;
   outline: none;
   &:focus {
-    border: 1px solid gold;
+    border: 1px solid ${colors.primary};
   }
   &::placeholder {
     color: ${colors.gray2};

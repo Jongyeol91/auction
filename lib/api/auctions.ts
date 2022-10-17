@@ -6,7 +6,14 @@ export async function createAuction(params: createAuction) {
   return res.data;
 }
 
+export async function getMetals() {
+  const res = await defaultAxios.get('/api/auction/metals');
+  console.log(res.data);
+
+  return res.data;
+}
+
 interface createAuction {
-  category: string;
-  subCategory: string;
+  metal: string;
+  metalOption: string;
 }
