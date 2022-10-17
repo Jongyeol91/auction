@@ -1,6 +1,4 @@
 import AddTemplate from '@/components/add/AddTemplate';
-import LabelInput from '@/components/common/LabelInput';
-import LabelTextArea from '@/components/common/LableTextArea';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
@@ -21,7 +19,7 @@ function Add() {
     formState: { errors },
   } = useForm();
 
-  const { data: metals, isLoading } = useMetals();
+  const { data: metalData, isLoading } = useMetals();
   if (isLoading) return;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -35,17 +33,33 @@ function Add() {
         <Group>
           <Controller
             name="metal"
+            defaultValue={auctions.metal}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
               <LabelSelect
                 label="금속"
-                options={metals}
+                options={metalData?.metals}
                 {...field}
                 errorMessage={errors.metal?.message?.toString()}
               />
             )}
           />
+          <Controller
+            name="metalOption"
+            defaultValue={auctions.metalOption}
+            control={control}
+            rules={{ required: '필수 입력' }}
+            render={({ field }) => (
+              <LabelSelect
+                label="금속 옵션"
+                options={metalData?.metalOptions}
+                {...field}
+                errorMessage={errors.metalOption?.message?.toString()}
+              />
+            )}
+          />
+
           {/* <LabelInput
             label="금속"
             defaultValue={auctions.metal}
@@ -58,7 +72,6 @@ function Add() {
             errorMessage={errors.metalOption?.message?.toString()}
             {...register('metalOption', { required: '금속 옵션을 입력하세요' })}
           /> */}
-          <StyledLabelTextArea label="서브 카테고리" />
         </Group>
       </AddTemplate>
     </BasicTemplete>
@@ -70,13 +83,6 @@ const Group = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 16px;
-  padding-bottom: 16px;
-`;
-
-const StyledLabelTextArea = styled(LabelTextArea)`
-  display: flex;
-  flex: 1;
-  textarea {
     flex: 1;
   }
 `;

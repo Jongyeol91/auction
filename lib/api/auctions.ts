@@ -8,8 +8,6 @@ export async function createAuction(params: createAuction) {
 
 export async function getMetals() {
   const res = await defaultAxios.get('/api/auction/metals');
-  console.log(res.data);
-
   return res.data;
 }
 

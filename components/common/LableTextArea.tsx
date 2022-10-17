@@ -57,7 +57,7 @@ const StyledTextArea = styled.textarea`
   outline: none;
   font-family: inherit;
   &:focus {
-    border: 1px solid gold;
+    border: 1px solid ${colors.primary};
   }
   &::placeholder {
     color: ${colors.gray2};

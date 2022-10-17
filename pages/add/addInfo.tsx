@@ -5,6 +5,7 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
 import LabelDatePicker from '@/components/common/LabelDatePicker';
+import LabelTextArea from '@/components/common/LableTextArea';
 
 const auctionsAtom = atom<FieldValues>({ metal: '', metalOptions: '' });
 
@@ -28,16 +29,19 @@ function Add() {
         <Group>
           <LabelInput
             label="물량"
+            defaultValue={auctions.amount}
             errorMessage={errors.amount?.message?.toString()}
             {...register('amount', { required: '필수 입력' })}
           />
           <LabelInput
             label="단가"
+            defaultValue={auctions.unit}
             errorMessage={errors.unit?.message?.toString()}
             {...register('unit', { required: '필수 입력' })}
           />
           <Controller
             name="lastDate"
+            defaultValue={auctions.lastDate}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -48,6 +52,7 @@ function Add() {
               />
             )}
           />
+          <StyledLabelTextArea label="설명" />
         </Group>
       </AddTemplate>
     </TabTamplete>
@@ -60,6 +65,14 @@ const Group = styled.div`
   flex: 1;
   gap: 16px;
   padding-bottom: 16px;
+`;
+
+const StyledLabelTextArea = styled(LabelTextArea)`
+  display: flex;
+  flex: 1;
+  textarea {
+    flex: 1;
+  }
 `;
 
 export async function getServerSideProps() {

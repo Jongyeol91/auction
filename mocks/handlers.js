@@ -19,7 +19,10 @@ export const handlers = [
   }),
 
   rest.get('/api/auction/metals', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(['옵션1', '옵션2']));
+    return res(
+      ctx.status(200),
+      ctx.json({ metals: ['금', '은'], metalOptions: ['옵션1', '옵션2'] }),
+    );
   }),
 
   rest.post('/login', (req, res, ctx) => {
