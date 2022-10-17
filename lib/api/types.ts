@@ -1,6 +1,6 @@
 export interface CreateAuctionResponse {
-  category: string;
-  subCategory: string;
+  metal: string;
+  metalOption: string;
   createdAt: string;
   updatedAt: string;
 }

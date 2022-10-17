@@ -1,29 +1,67 @@
 import AddTemplate from '@/components/add/AddTemplate';
 import LabelInput from '@/components/common/LabelInput';
 import LabelTextArea from '@/components/common/LableTextArea';
-import TabTamplete from '@/components/templates/TabTemplate';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { atom, useAtom } from 'jotai';
+import { useRouter } from 'next/router';
+import BasicTemplete from '@/components/templates/BasicTemplate';
+import LabelSelect from '@/components/common/LabelSelect';
+import { useMetals } from '@/hooks/auctions';
+
+const auctionsAtom = atom<FieldValues>({ metals: '', metalOptions: '' });
 
 function Add() {
+  const router = useRouter();
+  const [auctions, set] = useAtom(auctionsAtom);
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data);
+  const { data: metals, isLoading } = useMetals();
+  if (isLoading) return;
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    set(data);
+    router.push('/add/addInfo');
+  };
 
   return (
-    <TabTamplete>
+    <BasicTemplete>
       <AddTemplate title="경매" buttonText="다음" handleSubmit={handleSubmit} onSubmit={onSubmit}>
         <Group>
-          <LabelInput label="카테고리" {...register('category', { required: true })} />
-          <LabelInput label="서브 카테고리" {...register('subCategory', { required: true })} />
+          <Controller
+            name="metal"
+            control={control}
+            rules={{ required: '필수 입력' }}
+            render={({ field }) => (
+              <LabelSelect
+                label="금속"
+                options={metals}
+                {...field}
+                errorMessage={errors.metal?.message?.toString()}
+              />
+            )}
+          />
+          {/* <LabelInput
+            label="금속"
+            defaultValue={auctions.metal}
+            errorMessage={errors.metal?.message?.toString()}
+            {...register('metal', { required: '금속 종류를 입력하세요' })}
+          />
+          <LabelInput
+            label="금속 옵션"
+            defaultValue={auctions.metalOption}
+            errorMessage={errors.metalOption?.message?.toString()}
+            {...register('metalOption', { required: '금속 옵션을 입력하세요' })}
+          /> */}
           <StyledLabelTextArea label="서브 카테고리" />
         </Group>
       </AddTemplate>
-    </TabTamplete>
+    </BasicTemplete>
   );
 }
 

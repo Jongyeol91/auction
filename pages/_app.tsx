@@ -3,18 +3,26 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { colors } from '@/lib/colors';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import 'antd/dist/antd.css';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
 
 if (process.env.NODE_ENV === 'development') {
   require('mocks');
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
-    <ThemeProvider theme={colors}>
-      <ErrorBoundary>
-        <Component {...pageProps} />
-      </ErrorBoundary>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={colors}>
+        <ErrorBoundary>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Component {...pageProps} />
+          </Hydrate>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

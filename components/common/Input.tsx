@@ -4,8 +4,12 @@ import { colors } from '@/lib/colors';
 
 export type Props = React.HtmlHTMLAttributes<HTMLInputElement>;
 
-const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
-  return <StyledInput {...props} ref={ref} />;
+const Input = forwardRef<HTMLInputElement, Props>(({ ...rest }: Props, ref) => {
+  return (
+    <>
+      <StyledInput {...rest} ref={ref} />
+    </>
+  );
 });
 
 Input.displayName = 'Input';
@@ -19,7 +23,7 @@ const StyledInput = styled.input`
   padding-right: 16px;
   outline: none;
   &:focus {
-    border: 1px solid gold;
+    border: 1px solid ${colors.primary};
   }
   &::placeholder {
     color: ${colors.gray2};
