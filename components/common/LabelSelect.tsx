@@ -29,7 +29,7 @@ const LabelSelect = forwardRef(({ label, errorMessage, options, ...field }: Prop
         <Label focused={focused}>{label}</Label>
         <ErrorMessage errorMessage={errorMessage} />
       </Block>
-      <StyledSelect size="large" defaultValue="lucy" onFocus={onFocus} onBlur={onBlur} {...field}>
+      <StyledSelect size="large" onFocus={onFocus} onBlur={onBlur} {...field}>
         {options?.map((option) => {
           return (
             <Option key={option} value={option}>
