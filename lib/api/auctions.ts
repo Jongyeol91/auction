@@ -11,6 +11,11 @@ export async function getMetals() {
   return res.data;
 }
 
+export async function getAuctions() {
+  const res = await defaultAxios.get('/auctions');
+  return res.data.auctions;
+}
+
 interface createAuction {
   metal: string;
   metalOption: string;

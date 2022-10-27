@@ -35,9 +35,9 @@ function Add() {
           />
           <LabelInput
             label="단가"
-            defaultValue={auctions.unit}
-            errorMessage={errors.unit?.message?.toString()}
-            {...register('unit', { required: '필수 입력' })}
+            defaultValue={auctions.price}
+            errorMessage={errors.price?.message?.toString()}
+            {...register('price', { required: '필수 입력' })}
           />
           <Controller
             name="lastDate"
