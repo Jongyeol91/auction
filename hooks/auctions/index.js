@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMetals } from '@/lib/api/auctions';
+import { getAuctions, getMetals } from '@/lib/api/auctions';
 
 const useMetals = () => useQuery(['metals'], () => getMetals());
-export { useMetals };
+const useGetAuctions = () => useQuery(['auctions'], () => getAuctions());
+export { useMetals, useGetAuctions };

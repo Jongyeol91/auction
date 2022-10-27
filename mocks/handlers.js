@@ -35,6 +35,89 @@ export const handlers = [
     );
   }),
 
+  rest.get('/auctions', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        auctions: {
+          content: [
+            {
+              id: 'b122620e-f61e-4160-896d-9e1d1d785637',
+              auctionType: 'NORMAL',
+              endTime: '2022-12-25 17:50:30',
+              auctionStatusType: 'ACTIVE',
+              description: '상세설명',
+              auctionImageUrl:
+                'https://phinf.pstatic.net/contact/20200203_76/1580720636812bTBqz_JPEG/puzzle-693870_1920.jpg?type=f130_130',
+              isDisplayed: 'Y',
+              hostUser: {
+                createdAt: '2022-10-23 16:12:07',
+                updatedAt: '2022-10-23 16:12:07',
+                id: 1,
+                business: {
+                  businessType: 'PERSONAL',
+                  businessName: '수원상사',
+                  representative: '홍길동',
+                  registrationNumber: '1234512345',
+                  licenceImageUrl: 'www.image-url.com',
+                },
+                personal: {
+                  name: '김직원',
+                  email: 'apple@gmail.com',
+                  password: '$2a$10$6Qa0A2hWlh7Mu4nDyHNVze/j5kCj9o6kwQ52BijL3Kqr2WKJzk05C',
+                },
+                account: {
+                  bank: '신한은행',
+                  accountNumber: '110123123123',
+                  accountHolder: '홍길동',
+                },
+                isEnabled: 'Y',
+                isDeleted: 'Y',
+              },
+              bids: [],
+              winningBid: null,
+              createdAt: '2022-10-27 16:53:10',
+              updatedAt: '2022-10-27 16:53:10',
+              auctionItem: {
+                metalId: 1,
+                metalName: '구리',
+                metalOptionId: 1,
+                metalOptionName: '구리 금속 옵션 1',
+                amount: 10.0,
+                price: 9500,
+              },
+            },
+          ],
+          pageable: {
+            sort: {
+              empty: true,
+              sorted: false,
+              unsorted: true,
+            },
+            offset: 0,
+            pageNumber: 0,
+            pageSize: 1,
+            paged: true,
+            unpaged: false,
+          },
+          last: true,
+          totalElements: 1,
+          totalPages: 1,
+          sort: {
+            empty: true,
+            sorted: false,
+            unsorted: true,
+          },
+          first: true,
+          size: 1,
+          number: 0,
+          numberOfElements: 1,
+          empty: false,
+        },
+      }),
+    );
+  }),
+
   rest.get('/user', (req, res, ctx) => {
     // Check if the user is authenticated in this session
     const isAuthenticated = sessionStorage.getItem('is-authenticated');
