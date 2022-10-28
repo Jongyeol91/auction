@@ -12,11 +12,7 @@ function AuctionCardList({ auctions }: Props) {
   return (
     <List>
       {auctions?.content?.map((auctionContent) => (
-        <AuctionCard
-          key={auctionContent.id}
-          auctionImageUrl={auctionContent.auctionImageUrl}
-          auctionItem={auctionContent.auctionItem}
-        />
+        <AuctionCard key={auctionContent.id} auctionContent={auctionContent} />
       ))}
     </List>
   );

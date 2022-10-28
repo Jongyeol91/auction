@@ -34,13 +34,14 @@ export interface Sort {
 
 export interface AuctionContent {
   id: string;
-  auctionType: string;
+  auctionType: 'NORMAL' | 'REVERSE';
   endTime: string;
   auctionStatusType: string;
   description: string;
   auctionImageUrl: string;
   isDisplayed: string;
   auctionItem: AuctionItem;
+  hostUser: HostUser;
   bids: number;
   winningBid: number;
   createdAt: string;
