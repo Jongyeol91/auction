@@ -24,7 +24,6 @@ const Home: NextPage = () => {
 //}
 
 const StyledTabTamplete = styled(TabTamplete)`
-  border: 1px solid red;
   padding: 16px 16px;
 `;
 

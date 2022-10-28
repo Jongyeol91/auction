@@ -1,22 +1,98 @@
-import { type AuctionItem } from '@/lib/api/types';
+import { type AuctionContent } from '@/lib/api/types';
+import { colors } from '@/lib/colors';
 import styled from 'styled-components';
+import User from '@/components/vectors/User.svg';
+import { Tag } from 'antd';
+import dayjs from 'dayjs';
 
 interface Props {
-  auctionImageUrl: string;
-  auctionItem: AuctionItem;
+  auctionContent: AuctionContent;
 }
 
-function AuctionCard({ auctionItem, auctionImageUrl }: Props) {
-  const { metalName } = auctionItem;
+const typeMap = {
+  NORMAL: '경매',
+  REVERSE: '역경매',
+};
+
+const colorMap = {
+  NORMAL: 'green',
+  REVERSE: 'blue',
+};
+
+const timer = (endtime: string): React.ReactNode => {
+  const _endtime = dayjs(endtime);
+  const now = dayjs();
+
+  let remainHours = now.diff(_endtime, 'hours');
+  let remainDays = Math.floor(remainHours / 24);
+  remainHours = remainHours - remainDays * 24;
+  remainDays *= -1;
+
+  const imminent = remainDays < 7;
+  return (
+    <Tag color={imminent ? 'error' : ''}>{remainDays + '일 ' + remainHours + '시간 남음'}</Tag>
+  );
+};
+
+function AuctionCard({ auctionContent }: Props) {
+  const { auctionItem, auctionImageUrl, hostUser, auctionType, endTime } = auctionContent;
+  const { metalName, metalOptionName, amount, price } = auctionItem;
 
   return (
-    <Block>{auctionImageUrl ? <Thumbnail src={auctionImageUrl} alt={metalName} /> : null}</Block>
+    <Block>
+      {auctionImageUrl ? <Thumbnail src={auctionImageUrl} alt={metalName} /> : null}
+      <FirstLine>
+        <TitleWrapper>
+          <Tag color={colorMap[auctionType]}>{typeMap[auctionType]}</Tag>
+          <Tag>{metalName}</Tag>
+          <Tag>{metalOptionName}</Tag>
+        </TitleWrapper>
+        <UserWrapper>
+          <User />
+          {hostUser.personal.name}
+        </UserWrapper>
+      </FirstLine>
+      <TitleWrapper>
+        <Tag>{amount + '톤'}</Tag>
+        <Tag>{'톤 당 ' + price + '원'}</Tag>
+        {timer(endTime)}
+        {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
+      </TitleWrapper>
+    </Block>
   );
 }
 
 const Block = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 16px;
+`;
+
+const FirstLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 4px;
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: ${colors.gray6};
+    margin: 0;
+  }
+`;
+
+const UserWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  color: ${colors.gray7};
+  align-items: center;
+  gap: 4px;
 `;
 
 const Thumbnail = styled.img`
