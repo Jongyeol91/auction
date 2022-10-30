@@ -6,6 +6,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import 'antd/dist/antd.css';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
+import GlobalStyle from '@/styles/GlobalStyle';
 
 if (process.env.NODE_ENV === 'development') {
   require('mocks');
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={colors}>
+        <GlobalStyle />
         <ErrorBoundary>
           <Hydrate state={pageProps.dehydratedState}>
             <Component {...pageProps} />

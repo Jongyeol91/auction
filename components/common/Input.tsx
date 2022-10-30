@@ -2,7 +2,23 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { colors } from '@/lib/colors';
 
-export type Props = React.HtmlHTMLAttributes<HTMLInputElement>;
+export interface Props extends React.HtmlHTMLAttributes<HTMLInputElement> {
+  type?:
+    | 'number'
+    | 'button'
+    | 'time'
+    | 'image'
+    | 'text'
+    | 'search'
+    | 'hidden'
+    | 'color'
+    | 'checkbox'
+    | 'radio'
+    | 'tel'
+    | 'url'
+    | 'email'
+    | 'submit';
+}
 
 const Input = forwardRef<HTMLInputElement, Props>(({ ...rest }: Props, ref) => {
   return (

@@ -6,18 +6,26 @@ import { useRouter } from 'next/router';
 import BasicTemplete from '@/components/templates/BasicTemplate';
 import LabelSelect from '@/components/common/LabelSelect';
 import { useMetals } from '@/hooks/auctions';
+import { useEffect } from 'react';
 
-const auctionsAtom = atom<FieldValues>({ metals: '', metalOptions: '' });
+export const auctionsAtom = atom<FieldValues>({ metals: '', metalOptions: '' });
 
 function Add() {
   const router = useRouter();
   const [auctions, set] = useAtom(auctionsAtom);
   const {
-    register,
+    watch,
+    resetField,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const selectedMetal = watch('metal');
+
+  useEffect(() => {
+    resetField('metalOption');
+  }, [resetField, selectedMetal]);
 
   const { data: metalData, isLoading } = useMetals();
   if (isLoading) return;
@@ -27,10 +35,53 @@ function Add() {
     router.push('/add/addInfo');
   };
 
+  const filteredMetals = () => {
+    const metals = metalData?.map((data: { name: string; id: number }) => ({
+      label: data.name,
+      value: data.id,
+    }));
+    return metals;
+  };
+
+  const filteredMetalOptions = () => {
+    const options = metalData
+      ?.filter((data) => data.id === selectedMetal)
+      .map((data) =>
+        data.metalOptions.map((metalOption) => ({
+          label: metalOption.name,
+          value: metalOption.id,
+        })),
+      )[0];
+
+    return options;
+  };
+
   return (
     <BasicTemplete>
-      <AddTemplate title="경매" buttonText="다음" handleSubmit={handleSubmit} onSubmit={onSubmit}>
+      <AddTemplate
+        title="경매ㅎㅎ"
+        buttonText="다음"
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+      >
         <Group>
+          <Controller
+            name="auctionType"
+            defaultValue={'NORMAL'}
+            control={control}
+            rules={{ required: '필수 입력' }}
+            render={({ field }) => (
+              <LabelSelect
+                label="타입"
+                options={[
+                  { label: '경매', value: 'NORMAL' },
+                  { label: '역경매', value: 'REVERSE' },
+                ]}
+                {...field}
+                errorMessage={errors.metal?.message?.toString()}
+              />
+            )}
+          />
           <Controller
             name="metal"
             defaultValue={auctions.metal}
@@ -39,7 +90,7 @@ function Add() {
             render={({ field }) => (
               <LabelSelect
                 label="금속"
-                options={metalData?.metals}
+                options={filteredMetals()}
                 {...field}
                 errorMessage={errors.metal?.message?.toString()}
               />
@@ -53,25 +104,12 @@ function Add() {
             render={({ field }) => (
               <LabelSelect
                 label="금속 옵션"
-                options={metalData?.metalOptions}
+                options={filteredMetalOptions()}
                 {...field}
                 errorMessage={errors.metalOption?.message?.toString()}
               />
             )}
           />
-
-          {/* <LabelInput
-            label="금속"
-            defaultValue={auctions.metal}
-            errorMessage={errors.metal?.message?.toString()}
-            {...register('metal', { required: '금속 종류를 입력하세요' })}
-          />
-          <LabelInput
-            label="금속 옵션"
-            defaultValue={auctions.metalOption}
-            errorMessage={errors.metalOption?.message?.toString()}
-            {...register('metalOption', { required: '금속 옵션을 입력하세요' })}
-          /> */}
         </Group>
       </AddTemplate>
     </BasicTemplete>

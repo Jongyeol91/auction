@@ -21,7 +21,54 @@ export const handlers = [
   rest.get('/api/auction/metals', (req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json({ metals: ['금', '은'], metalOptions: ['옵션1', '옵션2'] }),
+      ctx.json([
+        {
+          createdAt: '2022-12-25 17:50:30',
+          updatedAt: '2022-12-25 17:50:30',
+          id: 1,
+          name: '구리',
+          isDeleted: 'N',
+          metalOptions: [
+            {
+              createdAt: '2022-12-25 17:50:30',
+              updatedAt: '2022-12-25 17:50:30',
+              id: 0,
+              name: 'Class A',
+              isDeleted: 'N',
+            },
+            {
+              createdAt: '2022-12-25 17:50:30',
+              updatedAt: '2022-12-25 17:50:30',
+              id: 1,
+              name: 'Class B',
+              isDeleted: 'N',
+            },
+          ],
+        },
+        {
+          createdAt: '2022-12-25 17:50:30',
+          updatedAt: '2022-12-25 17:50:30',
+          id: 2,
+          name: '금',
+          isDeleted: 'N',
+          metalOptions: [
+            {
+              createdAt: '2022-12-25 17:50:30',
+              updatedAt: '2022-12-25 17:50:30',
+              id: 3,
+              name: 'Class C',
+              isDeleted: 'N',
+            },
+            {
+              createdAt: '2022-12-25 17:50:30',
+              updatedAt: '2022-12-25 17:50:30',
+              id: 4,
+              name: 'Class D',
+              isDeleted: 'N',
+            },
+          ],
+        },
+      ]),
     );
   }),
 
@@ -157,6 +204,57 @@ export const handlers = [
           number: 0,
           numberOfElements: 1,
           empty: false,
+        },
+      }),
+    );
+  }),
+
+  rest.post('/auction', (req, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        auctionType: 'NORMAL',
+        endTime: '2022-12-25 17:50:30',
+        auctionStatusType: 'ACTIVE',
+        description: '상세설명',
+        auctionImageUrl: 'www.image-url.com',
+        isDisplayed: 'Y',
+        hostUser: {
+          createdAt: '2022-12-25 17:50:30',
+          updatedAt: '2022-12-25 17:50:30',
+          id: 1,
+          business: {
+            businessType: 'PERSONAL',
+            businessName: '수원상사',
+            representative: '홍길동',
+            registrationNumber: '1234512345',
+            licenceImageUrl: 'www.image-url.com',
+          },
+          personal: {
+            name: '김직원',
+            email: 'apple@gmail.com',
+            password: 'AsDf123!!',
+          },
+          account: {
+            bank: '신한은행',
+            accountNumber: '110123123123',
+            accountHolder: '홍길동',
+          },
+          isEnabled: 'Y',
+          isDeleted: 'Y',
+        },
+        bids: 1,
+        winningBid: 1,
+        createdAt: '2022-12-25 17:50:30',
+        updatedAt: '2022-12-25 17:50:30',
+        auctionItem: {
+          metalId: 0,
+          metalName: '구리',
+          metalOptionId: 0,
+          metalOptionName: '구리',
+          amount: 10,
+          price: 9500,
         },
       }),
     );

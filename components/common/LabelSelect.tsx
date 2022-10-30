@@ -6,10 +6,15 @@ import ErrorMessage from './ErrorMessage';
 
 const { Option } = Select;
 
+interface Option {
+  label: string;
+  value: number | string;
+}
+
 interface Props {
   label: string;
   errorMessage?: string;
-  options: [];
+  options: Array<Option>;
 }
 
 const LabelSelect = forwardRef(({ label, errorMessage, options, ...field }: Props, ref) => {
@@ -32,8 +37,8 @@ const LabelSelect = forwardRef(({ label, errorMessage, options, ...field }: Prop
       <StyledSelect size="large" onFocus={onFocus} onBlur={onBlur} {...field}>
         {options?.map((option) => {
           return (
-            <Option key={option} value={option}>
-              {option}
+            <Option key={option.label} value={option.value}>
+              {option.label}
             </Option>
           );
         })}

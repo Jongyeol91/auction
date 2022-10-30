@@ -86,3 +86,15 @@ export interface Account {
   accountNumber: string;
   accountHolder: string;
 }
+
+export interface AuctionParam {
+  auctionItem: {
+    amount: number;
+    metalOptionId: number;
+    price: number;
+  };
+  auctionType: 'NORMAL' | 'REVERSE';
+  endTime: string;
+  description?: string;
+  auctionImageUrl?: string;
+}
