@@ -31,7 +31,13 @@ const LabelDatePicker = forwardRef(
         </Block>
         <ConfigProvider locale={locale}>
           <StyledDatePicker {...field} onFocus={onFocus} onBlur={onBlur} picker="date" ref={ref} />
-          <StyledTimePicker {...field} onFocus={onFocus} onBlur={onBlur} format={'HH:mm'} />
+          <StyledTimePicker
+            {...field}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            picker="time"
+            format={'HH:mm'}
+          />
         </ConfigProvider>
       </Wrapper>
     );
