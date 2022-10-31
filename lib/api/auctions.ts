@@ -7,12 +7,12 @@ import { AuctionParam } from './types';
 // }
 
 export async function getMetals() {
-  const res = await defaultAxios.get('/api/auction/metals');
+  const res = await defaultAxios.get('/metals');
   return res.data;
 }
 
 export async function getAuctions() {
-  const res = await defaultAxios.get('/auctions');
+  const res = await defaultAxios.get('/auctions?page=1&size=9&auctionType=NORMAL');
   return res.data.auctions;
 }
 

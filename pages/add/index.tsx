@@ -7,6 +7,7 @@ import BasicTemplete from '@/components/templates/BasicTemplate';
 import LabelSelect from '@/components/common/LabelSelect';
 import { useMetals } from '@/hooks/auctions';
 import { useEffect } from 'react';
+import LabelInput from '@/components/common/LabelInput';
 
 export const auctionsAtom = atom<FieldValues>({ metals: '', metalOptions: '' });
 
@@ -14,6 +15,7 @@ function Add() {
   const router = useRouter();
   const [auctions, set] = useAtom(auctionsAtom);
   const {
+    register,
     watch,
     resetField,
     control,
@@ -110,6 +112,12 @@ function Add() {
               />
             )}
           />
+
+          <LabelInput
+            label="이미지"
+            errorMessage={errors.metalOption?.message?.toString()}
+            {...register('auctionImageUrl', { required: '필수 입력' })}
+          />
         </Group>
       </AddTemplate>
     </BasicTemplete>
@@ -121,8 +129,7 @@ const Group = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 16px;
-    flex: 1;
-  }
+  flex: 1;
 `;
 
 export default Add;

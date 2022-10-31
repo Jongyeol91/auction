@@ -7,8 +7,6 @@ interface Props {
 }
 
 function AuctionCardList({ auctions }: Props) {
-  console.log(auctions.content);
-
   return (
     <List>
       {auctions?.content?.map((auctionContent) => (
