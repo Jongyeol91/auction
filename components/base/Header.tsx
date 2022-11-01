@@ -3,6 +3,7 @@ import { media } from '@/lib/media';
 import styled from 'styled-components';
 import Button from '../common/Button';
 import Link from 'next/link';
+import SearchArea from './SearchArea';
 
 function Header() {
   return (
@@ -10,6 +11,7 @@ function Header() {
       <Content>
         <Addon></Addon>
         <Addon>
+          <SearchArea />
           <Buttons>
             <Button styleType="primary" size="small">
               로그인
