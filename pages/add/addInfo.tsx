@@ -38,8 +38,9 @@ function Add() {
       metalOptionId: auctions.metalOption,
     };
     const reqBody = {
+      auctionImageUrl: auctions.auctionImageUrl,
       auctionType: auctions.auctionType,
-      endTime: dayjs(data.endTime).format('YYYY-MM-DD hh:mm'),
+      endTime: dayjs(data.endTime).format('YYYY-MM-DD hh:mm:ss'),
       auctionItem,
     };
 

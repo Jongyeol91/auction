@@ -1,25 +1,39 @@
 import { css } from 'styled-components';
+import { colors } from './colors';
 
 // 공통 버튼 테마
 
 const disabled = css`
   background: ${({ theme }) => theme.gray3};
-  color: ${({ theme }) => theme.gray9};
+  color: ${({ theme }) => theme.gray1};
   border: 1px solid ${({ theme }) => theme.gray5};
 `;
 
 const primary = css`
-  background: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.white};
+  background: ${colors.primary};
+  color: ${colors.gray1};
   border: none;
-  height: 40px;
+  border-radius: 4px;
   &:hover {
-    background: ${({ theme }) => theme.gray1};
+    background: ${colors.secondary};
   }
   &:disabled {
     ${disabled}
   }
 `;
+
+export const sizeStyles = {
+  small: css`
+    height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
+  `,
+  medium: css`
+    font-size: 12px;
+    height: 40px;
+    padding: 0 10px;
+  `,
+};
 
 const buttonTheme = {
   primary,

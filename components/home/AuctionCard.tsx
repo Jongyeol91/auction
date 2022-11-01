@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import User from '@/components/vectors/User.svg';
 import { Tag } from 'antd';
 import dayjs from 'dayjs';
+import { media } from '@/lib/media';
 
 interface Props {
   auctionContent: AuctionContent;
@@ -103,6 +104,9 @@ const Thumbnail = styled.img`
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.125);
   display: block; // lineheight 때문에 불필요한 여백 방지
   margin-bottom: 8px;
+  ${media.tablet} {
+    aspect-ratio: 288/192;
+  }
 `;
 
 export default AuctionCard;

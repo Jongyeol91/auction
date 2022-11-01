@@ -8,9 +8,9 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import { useState } from 'react';
 import GlobalStyle from '@/styles/GlobalStyle';
 
-if (process.env.NODE_ENV === 'development') {
-  require('mocks');
-}
+// if (process.env.NODE_ENV === 'development') {
+//   require('mocks');
+// }
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());

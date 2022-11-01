@@ -1,4 +1,4 @@
-import Header from '@/components/base/Header';
+import MobileHeader from '@/components/base/MobileHeader';
 import HeaderBackButton from '@/components/base/HeaderBackButton';
 import { useGoBack } from '@/hooks/useGoBack';
 import AuthForm from '@/components/auth/AuthForm';
@@ -8,7 +8,7 @@ export default function Register() {
   const goBack = useGoBack();
   return (
     <FullHeightPage>
-      <Header title="회원가입" headerLeft={<HeaderBackButton onClick={goBack} />} />
+      <MobileHeader title="회원가입" headerLeft={<HeaderBackButton onClick={goBack} />} />
       <AuthForm mode="register" />
     </FullHeightPage>
   );

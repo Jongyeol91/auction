@@ -2,7 +2,7 @@
 import { rest } from 'msw';
 
 export const handlers = [
-  rest.post('api/auth/register', (req, res, ctx) => {
+  rest.post('/auth/register', (req, res, ctx) => {
     return res(
       ctx.cookie('set-cookie', 'abc-123'),
       ctx.json({
@@ -18,7 +18,7 @@ export const handlers = [
     );
   }),
 
-  rest.get('/api/auction/metals', (req, res, ctx) => {
+  rest.get('/auction/metals', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json([
