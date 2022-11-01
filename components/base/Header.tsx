@@ -1,47 +1,66 @@
-import React from 'react';
-import styled from 'styled-components';
 import { colors } from '@/lib/colors';
+import { media } from '@/lib/media';
+import styled from 'styled-components';
+import Button from '../common/Button';
+import Link from 'next/link';
 
-// Todo: svg 컴포넌트 로고로 바꿀 경우 React.ReactNode 로 타입 바꾸기
-interface Props {
-  title?: string;
-  headerLeft?: React.ReactNode;
-  headerRight?: string;
-}
-
-function Header({ title = 'emetal', headerLeft, headerRight }: Props) {
+function Header() {
   return (
     <Block>
-      {headerLeft && <HeaderSide position="left">{headerLeft}</HeaderSide>}
-      <Title>{title}</Title>
-      {headerRight && <HeaderSide position="right">right</HeaderSide>}
+      <Content>
+        <Addon></Addon>
+        <Addon>
+          <Buttons>
+            <Button styleType="primary" size="small">
+              로그인
+            </Button>
+            <Button styleType="primary" size="small">
+              회원가입
+            </Button>
+          </Buttons>
+        </Addon>
+      </Content>
     </Block>
   );
 }
 
-const HeaderSide = styled.div<{ position: 'left' | 'right' }>`
-  position: absolute;
-  ${(props) => props.position} : 16px;
-  display: flex;
-  align-items: center;
-  right: 16px;
-  top: 0;
-  height: 100%;
-`;
-
-const Block = styled.header`
+const Block = styled.div`
   position: relative;
   height: 56px;
   border-bottom: 1px solid ${colors.gray3};
   padding: 0 16px;
-  display: flex;
+  display: none;
   align-items: center;
-  justify-content: center;
+  ${media.mobile} {
+    display: flex;
+  }
 `;
 
-const Title = styled.div`
-  color: ${colors.gray3};
-  font-weight: 600;
+// const StyledLogo = styled(Logo)`
+//   height: 32px;
+//   width: auto;
+// `;
+
+const Content = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Addon = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const HomeLink = styled(Link)`
+  display: block;
+  color: inherit;
 `;
 
 export default Header;

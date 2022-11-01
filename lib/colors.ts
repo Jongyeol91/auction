@@ -10,5 +10,7 @@ export const colors = {
   gray9: '#55565b',
   black: 'black',
   white: 'white',
-  primary: 'black',
+  primary: 'hotpink',
+  secondary: 'pink',
+  tertiary: 'lightpink',
 };

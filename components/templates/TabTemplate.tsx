@@ -1,17 +1,24 @@
 import styled from 'styled-components';
-import Header from '../base/Header';
+import MobileHeader from '../base/MobileHeader';
 import FullHeightPage from '../common/FullHeightPage';
 import Footer from '../base/Footer';
+import Header from '../base/Header';
 
 interface Props {
   children?: React.ReactNode;
   className?: string;
+  header?: React.ReactNode | string;
 }
 
-function TabTamplete({ children, className }: Props) {
+function TabTamplete({ header, children, className }: Props) {
   return (
     <FullHeightPage>
-      <Header />
+      {header ?? (
+        <>
+          <MobileHeader />
+          <Header />
+        </>
+      )}
       <Content className={className}>{children}</Content>
       <Footer />
     </FullHeightPage>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Header from '../base/Header';
+import MobileHeader from '../base/MobileHeader';
 import FullHeightPage from '../common/FullHeightPage';
 import HeaderBackButton from '../base/HeaderBackButton';
 import { useGoBack } from '@/hooks/useGoBack';
@@ -15,7 +15,7 @@ function BasicTemplete({ children, title, hasBackButton, headerRight }: Props) {
   const goBack = useGoBack();
   return (
     <FullHeightPage>
-      <Header
+      <MobileHeader
         title={title}
         headerLeft={hasBackButton ? <HeaderBackButton onClick={goBack} /> : undefined}
         headerRight={headerRight}

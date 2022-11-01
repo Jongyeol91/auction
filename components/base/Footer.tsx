@@ -1,3 +1,4 @@
+import { media } from '@/lib/media';
 import styled from 'styled-components';
 import FooterTabItem from './FooterTabItem';
 
@@ -17,6 +18,9 @@ const StyledFooter = styled.footer`
   justify-content: space-around;
   border-top: 1px solid #eaeaea;
   height: 48px;
+  ${media.mobile} {
+    display: none;
+  }
 `;
 
 export default Footer;
