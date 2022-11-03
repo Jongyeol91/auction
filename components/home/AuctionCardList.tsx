@@ -10,9 +10,11 @@ interface Props {
 function AuctionCardList({ auctions }: Props) {
   return (
     <List>
-      {auctions?.content?.map((auctionContent) => (
-        <AuctionCard key={auctionContent.id} auctionContent={auctionContent} />
-      ))}
+      {auctions?.pages?.map((page) =>
+        page.content?.map((auctionContent) => (
+          <AuctionCard key={auctionContent.id} auctionContent={auctionContent} />
+        )),
+      )}
     </List>
   );
 }
