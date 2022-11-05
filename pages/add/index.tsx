@@ -61,7 +61,7 @@ function Add() {
   return (
     <BasicTemplete>
       <AddTemplate
-        title="경매ㅎㅎ"
+        title="경매 / 역경매 만들기"
         buttonText="다음"
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}

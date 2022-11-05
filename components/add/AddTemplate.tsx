@@ -1,3 +1,4 @@
+import { media } from '@/lib/media';
 import { UseFormHandleSubmit, FieldValues } from 'react-hook-form';
 import styled from 'styled-components';
 import Button from '../common/Button';
@@ -20,10 +21,14 @@ function AddTemplate({ children, title, buttonText, handleSubmit, onSubmit }: Pr
 }
 
 const StyledForm = styled.form`
-  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 16px;
+  ${media.mobile} {
+    justify-content: center;
+    width: 460px;
+    align-self: center;
+  }
 `;
 
 const Title = styled.h1``;

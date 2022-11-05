@@ -16,3 +16,8 @@ export const AUTH_DESCRIPTIONS = {
     actionLink: '/login',
   },
 } as const;
+
+export const AUCTION_TYPE = {
+  NORMAL: '경매',
+  REVERSE: '역경매',
+};

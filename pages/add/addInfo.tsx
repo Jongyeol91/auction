@@ -26,7 +26,11 @@ function Add() {
   const { mutate } = useCreateAuction({
     onSuccess: () => {
       queryClient.invalidateQueries(['auctions']);
+      alert('생성 성공');
       router.replace('/');
+    },
+    onError: (e: any) => {
+      alert(e.response.data.message);
     },
   });
 
@@ -49,7 +53,12 @@ function Add() {
 
   return (
     <TabTamplete>
-      <AddTemplate title="경매" buttonText="다음" handleSubmit={handleSubmit} onSubmit={onSubmit}>
+      <AddTemplate
+        title="경매 / 역경매 만들기"
+        buttonText="다음"
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+      >
         <Group>
           <LabelInput
             label="물량"

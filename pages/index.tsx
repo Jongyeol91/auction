@@ -1,25 +1,25 @@
 import type { NextPage } from 'next';
 import styled from 'styled-components';
-import { useFetchInfinitePosts, useGetAuctions } from '@/hooks/auctions';
+import { useFetchInfiniteAuctions } from '@/hooks/auctions';
 import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
-import MainChart from '@/components/charts/MainChart';
+import { usePriceIndexCategory } from '@/hooks/price-index';
 
 const Home: NextPage = () => {
-  const { data: auctions, isLoading, fetchNextPage } = useFetchInfinitePosts();
-  console.log(auctions);
+  const { data: auctions, isLoading, fetchNextPage } = useFetchInfiniteAuctions();
+  const { data } = usePriceIndexCategory();
+  console.log(data);
 
   if (isLoading) return;
 
   return (
     <StyledTabTamplete>
       <Content>
-        <MainChart />
         <AuctionCardList auctions={auctions}></AuctionCardList>
         <ButtonWrapper>
-          <Button size="medium" onClick={fetchNextPage}>
+          <Button styleType="secondary" size="medium" onClick={fetchNextPage}>
             더보기
           </Button>
         </ButtonWrapper>

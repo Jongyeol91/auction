@@ -4,12 +4,12 @@ import Button from '@/components/common/Button';
 import QuestionLink from '@/components/auth/QuestionLink';
 import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 import { useForm, SubmitHandler, Controller, FieldValues } from 'react-hook-form';
-import { login, register } from '@/lib/api/auth';
 import { defaultAxios } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
 import LabelSelect from '../common/LabelSelect';
 import { email, password } from '@/lib/utils/pattern';
 import { media } from '@/lib/media';
+import { useRegister } from '@/hooks/auth';
 
 interface Props {
   mode: 'login' | 'register';
@@ -26,7 +26,6 @@ function SignUpForm({ mode }: Props) {
   const {
     register: registerHookForm,
     handleSubmit,
-    watch,
     getValues,
     control,
     formState: { errors },
@@ -35,6 +34,18 @@ function SignUpForm({ mode }: Props) {
     AUTH_DESCRIPTIONS[mode];
 
   const router = useRouter;
+
+  const { mutate: mutateRegister } = useRegister({
+    onSuccess: () => {
+      alert('회원가입 성공');
+      router.replace('/');
+    },
+    onError: (e: any) => {
+      console.log(e);
+
+      alert(e.response.data.message);
+    },
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const {
@@ -69,10 +80,8 @@ function SignUpForm({ mode }: Props) {
         accountHolder,
       };
 
-      await register({ business, personal, account, isEnabled: 'Y' });
-    } else {
-      const { result, status } = await login(data);
-      status === 200 && router.replace('/');
+      //await register({ business, personal, account, isEnabled: 'Y' });
+      await mutateRegister({ business, personal, account, isEnabled: 'Y' });
     }
   };
 
@@ -83,8 +92,6 @@ function SignUpForm({ mode }: Props) {
   const handleUser = () => {
     defaultAxios.get('/api/me');
   };
-
-  console.log(errors);
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -152,7 +159,6 @@ function SignUpForm({ mode }: Props) {
           {...registerHookForm('representative', { required: '필수 입력' })}
         />
         <LabelInput
-          type="number"
           label="사업자등록번호"
           errorMessage={errors.registrationNumber?.message?.toString()}
           {...registerHookForm('registrationNumber', { required: '필수 입력' })}
@@ -170,7 +176,6 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="계좌번호"
-          type="number"
           errorMessage={errors.accountNumber?.message?.toString()}
           {...registerHookForm('accountNumber', { required: '필수 입력' })}
         />

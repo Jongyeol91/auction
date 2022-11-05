@@ -13,13 +13,18 @@ function Header() {
         <Addon>
           <SearchArea />
           <Buttons>
+            <Link href="notification">
+              <Button styleType="secondary" size="small">
+                알림
+              </Button>
+            </Link>
             <Link href="hosting">
-              <Button styleType="primary" size="small">
+              <Button styleType="tertiary" size="small">
                 내경매
               </Button>
             </Link>
             <Link href="add">
-              <Button styleType="primary" size="small">
+              <Button styleType="tertiary" size="small">
                 경매생성
               </Button>
             </Link>

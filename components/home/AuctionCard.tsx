@@ -5,6 +5,12 @@ import User from '@/components/vectors/User.svg';
 import { Tag } from 'antd';
 import dayjs from 'dayjs';
 import { media } from '@/lib/media';
+import { useState } from 'react';
+import Button from '../common/Button';
+import { Statistic } from 'antd';
+
+const { Countdown } = Statistic;
+const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is also O
 
 interface Props {
   auctionContent: AuctionContent;
@@ -21,8 +27,11 @@ const colorMap = {
 };
 
 const timer = (endtime: string): React.ReactNode => {
-  const _endtime = dayjs(endtime);
   const now = dayjs();
+  const _endtime = dayjs(endtime);
+
+  const remainMilliseconds = now.diff(_endtime, 'milliseconds') * -1;
+  const deadline = Date.now() + remainMilliseconds; // Moment is also O
 
   let remainHours = now.diff(_endtime, 'hours');
   let remainDays = Math.floor(remainHours / 24);
@@ -31,7 +40,15 @@ const timer = (endtime: string): React.ReactNode => {
 
   const imminent = remainDays < 7;
   return (
-    <Tag color={imminent ? 'error' : ''}>{remainDays + '일 ' + remainHours + '시간 남음'}</Tag>
+    <>
+      <Tag color={imminent ? 'error' : ''}>
+        <Countdown
+          value={deadline}
+          valueStyle={{ fontSize: 12, color: imminent ? 'red' : 'black' }}
+          format="D일 HH시간 mm분 ss초"
+        ></Countdown>
+      </Tag>
+    </>
   );
 };
 
@@ -39,8 +56,10 @@ function AuctionCard({ auctionContent }: Props) {
   const { auctionItem, auctionImageUrl, hostUser, auctionType, endTime } = auctionContent;
   const { metalName, metalOptionName, amount, price } = auctionItem;
 
+  const [seletced, setSelected] = useState<boolean>(false);
+
   return (
-    <Block>
+    <Block onClick={() => setSelected(true)}>
       {auctionImageUrl ? <Thumbnail src={auctionImageUrl} alt={metalName} /> : null}
       <FirstLine>
         <TitleWrapper>
@@ -59,6 +78,12 @@ function AuctionCard({ auctionContent }: Props) {
         {timer(endTime)}
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
       </TitleWrapper>
+      {seletced && (
+        <Bid>
+          <input />
+          <Button styleType="secondary"></Button>
+        </Bid>
+      )}
     </Block>
   );
 }
@@ -107,6 +132,10 @@ const Thumbnail = styled.img`
   ${media.tablet} {
     aspect-ratio: 288/192;
   }
+`;
+
+const Bid = styled.div`
+  display: flex;
 `;
 
 export default AuctionCard;
