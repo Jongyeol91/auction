@@ -13,12 +13,16 @@ function Header() {
         <Addon>
           <SearchArea />
           <Buttons>
-            <Button styleType="primary" size="small">
-              로그인
-            </Button>
-            <Button styleType="primary" size="small">
-              회원가입
-            </Button>
+            <Link href="login">
+              <Button styleType="primary" size="small">
+                로그인
+              </Button>
+            </Link>
+            <Link href="register">
+              <Button styleType="primary" size="small">
+                회원가입
+              </Button>
+            </Link>
           </Buttons>
         </Addon>
       </Content>

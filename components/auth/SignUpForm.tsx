@@ -92,7 +92,6 @@ function SignUpForm({ mode }: Props) {
         <h2>계정 정보</h2>
         <LabelInput
           label="이메일"
-          placeholder={userIdPlaceholder}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             required: '필수 입력',
@@ -101,7 +100,6 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="이름"
-          placeholder={userIdPlaceholder}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />
@@ -197,6 +195,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: space-between;
   ${media.mobile} {
     justify-content: center;
     width: 460px;

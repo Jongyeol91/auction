@@ -14,7 +14,7 @@ interface Props {
 }
 
 type Inputs = {
-  userId: string;
+  email: string;
   password: string;
 };
 
@@ -47,10 +47,10 @@ function AuthForm({ mode }: Props) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <LabelInput
-          label="아이디"
+          label="이메일"
           placeholder={userIdPlaceholder}
-          errorMessage={errors.userId?.type === 'required' && '아이디를 입력해주세요'}
-          {...registerHookForm('userId', { required: true })}
+          errorMessage={errors.email?.type === 'required' && '이메일을 입력해주세요'}
+          {...registerHookForm('email', { required: true })}
         />
         <LabelInput
           {...registerHookForm('password', { required: true })}
@@ -74,6 +74,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: space-between;
   ${media.mobile} {
     justify-content: center;
     width: 460px;
@@ -84,7 +85,6 @@ const StyledForm = styled.form`
 const Wrapper = styled.div`
   padding: 16px;
   display: flex;
-  flex: 1;
   gap: 16px;
   flex-direction: column;
 `;

@@ -26,7 +26,11 @@ function BasicTemplete({ children, title, hasBackButton, headerRight }: Props) {
 }
 
 const Content = styled.main`
+  display: flex;
+  flex-direction: column;
   flex: 1;
+  overflow: scroll;
+  overflow-x: hidden;
 `;
 
 export default BasicTemplete;
