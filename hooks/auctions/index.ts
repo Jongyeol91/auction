@@ -6,9 +6,8 @@ const useMetals = () => useQuery(['metals'], () => getMetals());
 const useGetAuctions = () => useQuery(['auctions'], () => getAuctions({}));
 const useCreateAuction = (options) =>
   useMutation((data: AuctionParam) => createAuction(data), options);
-export { useMetals, useGetAuctions, useCreateAuction };
 
-export const useFetchInfinitePosts = () =>
+const useFetchInfinitePosts = () =>
   useInfiniteQuery(['getInfiniteAuctions'], ({ pageParam = 0 }) => getAuctions({ pageParam }), {
     getNextPageParam: (lastPage) => {
       if (!lastPage.last) {
@@ -16,3 +15,5 @@ export const useFetchInfinitePosts = () =>
       }
     },
   });
+
+export { useMetals, useGetAuctions, useCreateAuction, useFetchInfinitePosts };
