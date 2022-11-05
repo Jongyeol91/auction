@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { login, register } from '@/lib/api/auth';
 import { defaultAxios } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
+import { media } from '@/lib/media';
 
 interface Props {
   mode: 'login' | 'register';
@@ -65,7 +66,6 @@ function AuthForm({ mode }: Props) {
         </Button>
         <QuestionLink question={question} name={actionText} href={actionLink} />
       </ActionsBox>
-      <button onClick={handleUser}>user</button>
     </StyledForm>
   );
 }
@@ -74,6 +74,11 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   flex: 1;
+  ${media.mobile} {
+    justify-content: center;
+    width: 460px;
+    align-self: center;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -91,6 +96,9 @@ const ActionsBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  ${media.mobile} {
+    margin-top: 24px;
+  }
 `;
 
 export default AuthForm;
