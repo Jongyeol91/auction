@@ -51,20 +51,18 @@ export async function register(params: RegisterParam) {
 }
 
 export async function login(params: AuthParam) {
-  const res = await defaultAxios.post('/api/auth/login', params);
+  const res = await defaultAxios.post('/user/token', params);
   const result = res.data;
   const status = res.status;
-  console.log(res);
 
-  const cookieHeader = res.headers['set-cookie'];
-  const headers = createCookieHeaders(cookieHeader);
-  console.log(headers);
+  // const cookieHeader = res.headers['set-cookie'];
+  // const headers = createCookieHeaders(cookieHeader);
 
   return { result, status };
 }
 
 export async function getMyAccount() {
-  const res = await defaultAxios.get<AuthResult>('/api/me');
+  const res = await defaultAxios.get<AuthResult>('/me');
   return res.data;
 }
 
@@ -77,4 +75,9 @@ function createCookieHeaders(setCookieHeader: string[] | undefined) {
     headers.append('Set-Cookie', cookie);
   });
   return headers;
+}
+
+export async function getProfile() {
+  const res = await defaultAxios.get('user/profile');
+  return res.data;
 }

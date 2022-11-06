@@ -5,9 +5,10 @@ import QuestionLink from '@/components/auth/QuestionLink';
 import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { login, register } from '@/lib/api/auth';
-import { defaultAxios } from '@/lib/defaultAxios';
+import { defaultAxios, setDefaultAxiosAuth } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
 import { media } from '@/lib/media';
+import { getCookieToken, setCookieToken } from '@/lib/cookie';
 
 interface Props {
   mode: 'login' | 'register';
@@ -28,14 +29,27 @@ function AuthForm({ mode }: Props) {
   const { userIdPlaceholder, passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[mode];
 
-  const router = useRouter;
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (mode === 'register') {
       await register(data);
     } else {
-      const { result, status } = await login(data);
-      status === 200 && router.replace('/');
+      console.log('start');
+
+      const { status, result } = await login(data);
+      if (status == 200) {
+        // setCookieToken('accessToken', result.token, {
+        //   path: '/',
+        //   secure: true,
+        //   sameTite: 'none',
+        // });
+        localStorage.setItem('accessToken', result.token);
+        setDefaultAxiosAuth(result.token);
+        router.replace('/');
+        // const token = getCookieToken('accessToken');
+        // console.log(token);
+      }
     }
   };
 
