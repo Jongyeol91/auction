@@ -22,10 +22,16 @@ const typeMap = {
   REVERSE: '역경매',
 };
 
-const colorMap = {
+const auctionTypeColorMap = {
   NORMAL: 'green',
   REVERSE: 'blue',
 };
+
+const auctionStatusMap = {
+  ACTIVE: '진행중',
+  FAILED: '유찰',
+  COMPLETED: '완료',
+}
 
 const timer = (endtime: string): React.ReactNode => {
   const now = dayjs();
@@ -36,7 +42,6 @@ const timer = (endtime: string): React.ReactNode => {
 
   let remainHours = now.diff(_endtime, 'hours');
   let remainDays = Math.floor(remainHours / 24);
-  remainHours = remainHours - remainDays * 24;
   remainDays *= -1;
 
   const imminent = remainDays < 7;
@@ -54,10 +59,19 @@ const timer = (endtime: string): React.ReactNode => {
 };
 
 function AuctionCard({ auctionContent }: Props) {
-  const { auctionItem, auctionImageUrl, hostUser, auctionType, endTime } = auctionContent;
+  const { auctionItem, auctionImageUrl, hostUser, auctionType, endTime, description, auctionStatusType } = auctionContent;
   const { metalName, metalOptionName, amount, price } = auctionItem;
 
   const [seletced, setSelected] = useState<boolean>(false);
+
+  const statusTag = () => {
+    let statusText = auctionStatusMap[auctionStatusType]
+    if(auctionStatusType == 'ACTIVE') {
+      return <Tag color={colors.primary}>{statusText}</Tag>
+    }
+
+    return <Tag>{statusText}</Tag>
+  }
 
   return (
     <Block>
@@ -66,7 +80,8 @@ function AuctionCard({ auctionContent }: Props) {
       ) : null}
       <FirstLine>
         <TitleWrapper>
-          <Tag color={colorMap[auctionType]}>{typeMap[auctionType]}</Tag>
+          <Tag color={auctionTypeColorMap[auctionType]}>{typeMap[auctionType]}</Tag>
+          {statusTag()}
           <Tag>{metalName}</Tag>
           <Tag>{metalOptionName}</Tag>
         </TitleWrapper>
@@ -81,6 +96,9 @@ function AuctionCard({ auctionContent }: Props) {
         {timer(endTime)}
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
       </TitleWrapper>
+      <DescriptionArea>
+        {description}
+      </DescriptionArea>
       {seletced && (
         <Bid>
           <Input />
@@ -141,6 +159,18 @@ const Bid = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const DescriptionArea = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-wrap:break-word;
+  line-height: 1.5em;
+  height: 4.5em;
+  color: ${colors.gray7};
 `;
 
 export default AuctionCard;
