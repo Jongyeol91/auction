@@ -17,8 +17,8 @@ export async function getMemoMyAccount(request: Request) {
   return promise.finally(() => promiseMap.delete(request));
 }
 
-export const checkIsLoggedIn = async (request: Request) => {
-  const applied = applyAuth(request);
+export const checkIsLoggedIn = async () => {
+  const applied = applyAuth();
   if (!applied) return false;
   try {
     await withCookie(() => getMemoMyAccount(request), request, true);
