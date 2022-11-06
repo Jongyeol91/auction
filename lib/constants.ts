@@ -17,6 +17,9 @@ export const AUTH_DESCRIPTIONS = {
   },
 } as const;
 
+export const NORMAL = 'NORMAL';
+export const REVERSE = 'REVERSE';
+
 export const AUCTION_TYPE_OPTION = [
   { label: '경매', value: 'NORMAL' },
   { label: '역경매', value: 'REVERSE' },
