@@ -84,7 +84,7 @@ function AuctionCard({ auctionContent }: Props) {
       {seletced && (
         <Bid>
           <Input />
-          <Button styleType="secondary">입찰</Button>
+          <Button styleType="primary">입찰</Button>
         </Bid>
       )}
     </Block>

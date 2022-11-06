@@ -9,11 +9,13 @@ const NODE_ENV = process.env.NODE_ENV;
 
 defaultAxios.defaults.baseURL = baseURL;
 defaultAxios.defaults.withCredentials = true;
-defaultAxios.defaults.headers.common['Authorization'] = testToken;
+// defaultAxios.defaults.headers.common['Authorization'] = testToken;
 defaultAxios.defaults.headers.common['Service'] = serviceKey;
 
-export function setDefaultAxiosCookie(cookie: string) {
-  defaultAxios.defaults.headers.common['Cookie'] = cookie;
+export function setDefaultAxiosAuth(token: string) {
+  const tokenPrefix = 'Bearer';
+  const space = ' ';
+  defaultAxios.defaults.headers.common['Authorization'] = tokenPrefix + space + token;
 }
 
 export function clearDefaultAxiosCookie() {

@@ -10,6 +10,7 @@ import LabelSelect from '../common/LabelSelect';
 import { email, password } from '@/lib/utils/pattern';
 import { media } from '@/lib/media';
 import { useRegister } from '@/hooks/auth';
+import Swal from 'sweetalert2';
 
 interface Props {
   mode: 'login' | 'register';
@@ -30,20 +31,19 @@ function SignUpForm({ mode }: Props) {
     control,
     formState: { errors },
   } = useForm();
-  const { userIdPlaceholder, passwordPlaceholder, buttonText, question, actionLink, actionText } =
+  const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[mode];
 
-  const router = useRouter;
+  const router = useRouter();
 
   const { mutate: mutateRegister } = useRegister({
     onSuccess: () => {
-      alert('회원가입 성공');
+      Swal.fire('회원가입 성공!', '회원 가입을 환영합니다!', 'success');
       router.replace('/');
     },
     onError: (e: any) => {
       console.log(e);
-
-      alert(e.response.data.message);
+      Swal.fire('실패!', e.response.data.message, 'error');
     },
   });
 
@@ -112,6 +112,7 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="비밀번호"
+          type="password"
           errorMessage={errors?.password?.message?.toString()}
           placeholder={passwordPlaceholder}
           {...registerHookForm('password', {
@@ -121,6 +122,7 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="비밀번호 확인"
+          type="password"
           errorMessage={errors?.repassword?.message?.toString()}
           placeholder={passwordPlaceholder}
           {...registerHookForm('repassword', {

@@ -13,20 +13,6 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const options = {
-  maintainAspectRatio: false,
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: '시세',
-    },
-  },
-};
-
 const labels = [
   '1월',
   '2월',
@@ -56,7 +42,23 @@ export const data = {
 
 export function MainChart({ priceIndexData }) {
   const indexData = priceIndexData?.indexValues?.map((data) => data.value);
+
   const label = priceIndexData?.priceIndexCategory.name;
+
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false, // 라벨제거
+      },
+      title: {
+        display: true,
+        text: label,
+      },
+    },
+  };
+
   const data = {
     labels: labels,
     datasets: [

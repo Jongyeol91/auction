@@ -4,14 +4,24 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 import Link from 'next/link';
 import SearchArea from './SearchArea';
+import { userAtom } from '@/store';
+import { useAtom } from 'jotai';
 
 function Header() {
+  const [user, setUser] = useAtom(userAtom);
+  console.log('header', user);
+
+  const removeToken = () => {
+    localStorage.removeItem('accessToken');
+    setUser('');
+  };
+
   return (
     <Block>
       <Content>
         <Addon></Addon>
         <Addon>
-          <SearchArea />
+          {/* <SearchArea /> */}
           <Buttons>
             <Link href="notification">
               <Button styleType="secondary" size="small">
@@ -28,16 +38,36 @@ function Header() {
                 경매생성
               </Button>
             </Link>
-            <Link href="login">
-              <Button styleType="primary" size="small">
-                로그인
+            <Link href="chart">
+              <Button styleType="tertiary" size="small">
+                시세
               </Button>
             </Link>
-            <Link href="register">
-              <Button styleType="primary" size="small">
-                회원가입
-              </Button>
-            </Link>
+            {!user ? (
+              <>
+                <Link href="login">
+                  <Button styleType="primary" size="small">
+                    로그인
+                  </Button>
+                </Link>
+                <Link href="register">
+                  <Button styleType="primary" size="small">
+                    회원가입
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="register">
+                  <Button styleType="primary" size="small">
+                    내정보
+                  </Button>
+                </Link>
+                <Button styleType="primary" size="small" onClick={removeToken}>
+                  로그아웃
+                </Button>
+              </>
+            )}
           </Buttons>
         </Addon>
       </Content>
@@ -46,6 +76,7 @@ function Header() {
 }
 
 const Block = styled.div`
+  background: ${colors.gray1};
   position: relative;
   height: 56px;
   border-bottom: 1px solid ${colors.gray3};
