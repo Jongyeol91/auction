@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 import { useCreateAuction } from '@/hooks/auctions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import { AUCTION_TYPE } from '@/lib/constants';
 
 function Add() {
   const {
@@ -26,7 +28,11 @@ function Add() {
   const { mutate } = useCreateAuction({
     onSuccess: () => {
       queryClient.invalidateQueries(['auctions']);
-      alert('생성 성공');
+      Swal.fire(
+        '생성 성공!',
+        `${AUCTION_TYPE[auctions.auctionType]}매가 생성되었습니다.`,
+        'success',
+      );
       router.replace('/');
     },
     onError: (e: any) => {

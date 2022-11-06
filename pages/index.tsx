@@ -6,7 +6,7 @@ import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
 import { MainChart } from '@/components/charts/MainChart';
-import { getPriceIndexCategory } from '@/lib/api/price-index';
+import { getPriceIndexCategory, getPriceIndexCategoryAll } from '@/lib/api/price-index';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -20,6 +20,11 @@ const Home: NextPage = () => {
     queryFn: ({ queryKey }) => getPriceIndexCategory(queryKey[1]),
   });
 
+  const { data: priceIndexCategoryAllData } = useQuery({
+    queryKey: ['categoryAll'],
+    queryFn: () => getPriceIndexCategoryAll(),
+  });
+
   if (isLoading) return;
 
   return (
@@ -30,17 +35,16 @@ const Home: NextPage = () => {
             <MainChart priceIndexData={priceIndexData} />
           </ChartInnerWrapper>
           <ChartButtonWrapper>
-            <Button onClick={() => setCategoryId(1)} layoutMode="fullWidth">
-              금속종류1
-            </Button>
-            <Button onClick={() => setCategoryId(2)} layoutMode="fullWidth">
-              금속종류2
-            </Button>
+            {priceIndexCategoryAllData.map((cv) => (
+              <Button key={cv.id} onClick={() => setCategoryId(cv.id)} layoutMode="fullWidth">
+                {cv.name}
+              </Button>
+            ))}
           </ChartButtonWrapper>
         </ChartWrapper>
         <AuctionCardList auctions={auctions}></AuctionCardList>
         <ButtonWrapper>
-          <Button styleType="secondary" size="medium" onClick={fetchNextPage}>
+          <Button styleType="primary" size="medium" onClick={fetchNextPage}>
             더보기
           </Button>
         </ButtonWrapper>

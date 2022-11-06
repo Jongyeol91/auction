@@ -33,14 +33,14 @@ function Notification() {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              title={<a href="https://ant.design">{item?.content}</a>}
-              description={
-                AUCTION_TYPE[item?.auction?.auctionType] +
-                ' ' +
-                item?.auction?.auctionItem?.amount +
-                '개 ' +
-                item?.auction?.hostUser?.account.accountHolder
-              }
+              title={<a>{item?.content}</a>}
+              // description={
+              //   AUCTION_TYPE[item?.auction?.auctionType] +
+              //   ' ' +
+              //   item?.auction?.auctionItem?.amount +
+              //   '개 ' +
+              //   item?.auction?.hostUser?.account.accountHolder
+              // }
             />
           </List.Item>
         )}

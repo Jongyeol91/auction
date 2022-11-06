@@ -16,6 +16,8 @@ const primary = css`
   border-radius: 4px;
   &:hover {
     background: ${colors.hover};
+    border: ${colors.hoverBorder};
+    color: ${colors.hoverFont};
   }
   &:disabled {
     ${disabled}
@@ -29,6 +31,8 @@ const secondary = css`
   border-radius: 4px;
   &:hover {
     background: ${colors.hover};
+    border: ${colors.hoverBorder};
+    color: ${colors.hoverFont};
   }
   &:disabled {
     ${disabled}
@@ -42,6 +46,8 @@ const tertiary = css`
   border-radius: 4px;
   &:hover {
     background: ${colors.hover};
+    border: ${colors.hoverBorder};
+    color: ${colors.hoverFont};
   }
   &:disabled {
     ${disabled}
