@@ -8,6 +8,7 @@ import { media } from '@/lib/media';
 import { useState } from 'react';
 import Button from '../common/Button';
 import { Statistic } from 'antd';
+import Input from '../common/Input';
 
 const { Countdown } = Statistic;
 const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is also O
@@ -59,8 +60,10 @@ function AuctionCard({ auctionContent }: Props) {
   const [seletced, setSelected] = useState<boolean>(false);
 
   return (
-    <Block onClick={() => setSelected(true)}>
-      {auctionImageUrl ? <Thumbnail src={auctionImageUrl} alt={metalName} /> : null}
+    <Block>
+      {auctionImageUrl ? (
+        <Thumbnail src={auctionImageUrl} alt={metalName} onClick={() => setSelected(!seletced)} />
+      ) : null}
       <FirstLine>
         <TitleWrapper>
           <Tag color={colorMap[auctionType]}>{typeMap[auctionType]}</Tag>
@@ -80,8 +83,8 @@ function AuctionCard({ auctionContent }: Props) {
       </TitleWrapper>
       {seletced && (
         <Bid>
-          <input />
-          <Button styleType="secondary"></Button>
+          <Input />
+          <Button styleType="secondary">입찰</Button>
         </Bid>
       )}
     </Block>
@@ -136,6 +139,8 @@ const Thumbnail = styled.img`
 
 const Bid = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export default AuctionCard;

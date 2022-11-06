@@ -3,17 +3,18 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import faker from 'faker';
+import { Line } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export const options = {
+  maintainAspectRatio: false,
   responsive: true,
   plugins: {
     legend: {
@@ -21,29 +22,51 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Bar Chart',
+      text: '시세',
     },
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = [
+  '1월',
+  '2월',
+  '3월',
+  '4월',
+  '5월',
+  '6월',
+  '7월',
+  '8월',
+  '9월',
+  '10월',
+  '11월',
+  '12월',
+];
 
 export const data = {
   labels,
   datasets: [
     {
       label: 'Dataset 1',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      data: [100, 100, 100, 100],
+      borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
 };
 
-export function MainChart() {
-  return <Bar options={options} data={data} />;
+export function MainChart({ priceIndexData }) {
+  const indexData = priceIndexData?.indexValues?.map((data) => data.value);
+  const label = priceIndexData?.priceIndexCategory.name;
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: label,
+        data: indexData,
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  };
+  return <Line options={options} data={data} />;
 }

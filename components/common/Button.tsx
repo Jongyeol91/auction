@@ -45,6 +45,7 @@ const StyledButton = styled.button<ButtonProps>`
     props.layoutMode === 'fullWidth' &&
     css`
       width: 100%;
+      display: inline-block;
     `}
 
   @media (max-width: 640px) {

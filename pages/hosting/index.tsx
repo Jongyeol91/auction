@@ -5,7 +5,7 @@ import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
-import { usePriceIndexCategory, usePriceIndexCategoryAll } from '@/hooks/price-index';
+import { usePriceIndexCategory } from '@/hooks/price-index';
 
 const Home: NextPage = () => {
   const { data: auctions, isLoading, fetchNextPage } = useFetchInfiniteHostingAuctions();

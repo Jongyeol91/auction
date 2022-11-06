@@ -55,6 +55,7 @@ export const sizeStyles = {
     padding: 0 12px;
   `,
   medium: css`
+    min-width: 100px;
     font-size: 12px;
     height: 40px;
     padding: 0 10px;

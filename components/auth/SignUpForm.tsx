@@ -180,7 +180,7 @@ function SignUpForm({ mode }: Props) {
           {...registerHookForm('accountNumber', { required: '필수 입력' })}
         />
         <LabelInput
-          label="계좌명"
+          label="예금주"
           errorMessage={errors.accountHolder?.message?.toString()}
           {...registerHookForm('accountHolder', { required: '필수 입력' })}
         />
