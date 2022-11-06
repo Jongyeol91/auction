@@ -13,12 +13,31 @@ function Header() {
         <Addon>
           <SearchArea />
           <Buttons>
-            <Button styleType="primary" size="small">
-              로그인
-            </Button>
-            <Button styleType="primary" size="small">
-              회원가입
-            </Button>
+            <Link href="notification">
+              <Button styleType="secondary" size="small">
+                알림
+              </Button>
+            </Link>
+            <Link href="hosting">
+              <Button styleType="tertiary" size="small">
+                내경매
+              </Button>
+            </Link>
+            <Link href="add">
+              <Button styleType="tertiary" size="small">
+                경매생성
+              </Button>
+            </Link>
+            <Link href="login">
+              <Button styleType="primary" size="small">
+                로그인
+              </Button>
+            </Link>
+            <Link href="register">
+              <Button styleType="primary" size="small">
+                회원가입
+              </Button>
+            </Link>
           </Buttons>
         </Addon>
       </Content>

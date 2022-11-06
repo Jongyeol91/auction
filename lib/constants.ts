@@ -1,6 +1,6 @@
 export const AUTH_DESCRIPTIONS = {
   login: {
-    userIdPlaceholder: '아이디를 입력하세요.',
+    userIdPlaceholder: '이메일을 입력해주세요.',
     passwordPlaceholder: '비밀번호를 입력하세요.',
     buttonText: '로그인',
     actionText: '회원가입',
@@ -8,7 +8,7 @@ export const AUTH_DESCRIPTIONS = {
     actionLink: '/register',
   },
   register: {
-    userIdPlaceholder: '5~20자 영문 숫자 입력',
+    userIdPlaceholder: '이메일을 입력해주세요',
     passwordPlaceholder: '8자 이상, 영문/숫자/특수문자 중 2가지 이상 입력',
     buttonText: '회원가입',
     actionText: '로그인',
@@ -16,3 +16,13 @@ export const AUTH_DESCRIPTIONS = {
     actionLink: '/login',
   },
 } as const;
+
+export const AUCTION_TYPE_OPTION = [
+  { label: '경매', value: 'NORMAL' },
+  { label: '역경매', value: 'REVERSE' },
+];
+
+export const AUCTION_TYPE = {
+  NORMAL: '경매',
+  REVERSE: '역경매',
+};

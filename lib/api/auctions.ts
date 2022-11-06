@@ -11,8 +11,24 @@ export async function getMetals() {
   return res.data;
 }
 
-export async function getAuctions() {
-  const res = await defaultAxios.get('/auctions?page=1&size=9&auctionType=NORMAL');
+export async function getAuctions({ pageParam = 0, pageSize = 9, auctionType = 'NORMAL' }) {
+  const res = await defaultAxios.get(`/auctions`, {
+    params: {
+      size: pageSize,
+      page: pageParam,
+      auctionType,
+    },
+  });
+  return res.data.auctions;
+}
+
+export async function getHostingAuctions({ pageParam = 0, pageSize = 9 }) {
+  const res = await defaultAxios.get(`/auctions/hosting`, {
+    params: {
+      size: pageSize,
+      page: pageParam,
+    },
+  });
   return res.data.auctions;
 }
 

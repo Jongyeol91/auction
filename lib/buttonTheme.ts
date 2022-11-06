@@ -15,7 +15,33 @@ const primary = css`
   border: none;
   border-radius: 4px;
   &:hover {
-    background: ${colors.secondary};
+    background: ${colors.hover};
+  }
+  &:disabled {
+    ${disabled}
+  }
+`;
+
+const secondary = css`
+  background: ${colors.secondary};
+  color: ${colors.gray1};
+  border: none;
+  border-radius: 4px;
+  &:hover {
+    background: ${colors.hover};
+  }
+  &:disabled {
+    ${disabled}
+  }
+`;
+
+const tertiary = css`
+  background: ${colors.tertiary};
+  color: ${colors.gray1};
+  border: none;
+  border-radius: 4px;
+  &:hover {
+    background: ${colors.hover};
   }
   &:disabled {
     ${disabled}
@@ -29,6 +55,7 @@ export const sizeStyles = {
     padding: 0 12px;
   `,
   medium: css`
+    min-width: 100px;
     font-size: 12px;
     height: 40px;
     padding: 0 10px;
@@ -37,6 +64,8 @@ export const sizeStyles = {
 
 const buttonTheme = {
   primary,
+  secondary,
+  tertiary,
 };
 
 export default buttonTheme;

@@ -11,6 +11,7 @@ export const colors = {
   black: 'black',
   white: 'white',
   primary: 'hotpink',
-  secondary: 'pink',
-  tertiary: 'lightpink',
+  secondary: 'rebeccapurple',
+  tertiary: '#cd48bee3',
+  hover: 'gray',
 };

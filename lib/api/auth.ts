@@ -5,6 +5,27 @@ interface AuthParam {
   password: string;
 }
 
+interface RegisterParam {
+  business: {
+    businessType: string;
+    businessName: string;
+    representative: string;
+    registrationNumber: string;
+    licenceImageUrl: string;
+  };
+  personal: {
+    name: string;
+    email: string;
+    password: string;
+  };
+  account: {
+    bank: string;
+    accountNumber: string;
+    accountHolder: string;
+  };
+  isEnabled: string;
+}
+
 export interface AuthResult {
   tokens: Tokens;
 }
@@ -19,8 +40,8 @@ export interface User {
   username: string;
 }
 
-export async function register(params: AuthParam) {
-  const res = await defaultAxios.post<AuthResult>('api/auth/register', params);
+export async function register(params: RegisterParam) {
+  const res = await defaultAxios.post('/user', params);
   const result = res.data;
   // ssr에서 필요
   // const cookieHeader = res.headers['set-cookie'];

@@ -98,3 +98,18 @@ export interface AuctionParam {
   description?: string;
   auctionImageUrl?: string;
 }
+
+export interface PriceIndexCategoryAllResponse {
+  id: number;
+  name: string;
+  originUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PriceIndexCategoryResponse {
+  id: number;
+  value: string;
+  createdAt: string;
+  updatedAt: string;
+}

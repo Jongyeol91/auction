@@ -17,7 +17,8 @@ export interface Props extends React.HtmlHTMLAttributes<HTMLInputElement> {
     | 'tel'
     | 'url'
     | 'email'
-    | 'submit';
+    | 'submit'
+    | 'password';
 }
 
 const Input = forwardRef<HTMLInputElement, Props>(({ ...rest }: Props, ref) => {

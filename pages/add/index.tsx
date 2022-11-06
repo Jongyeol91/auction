@@ -8,6 +8,7 @@ import LabelSelect from '@/components/common/LabelSelect';
 import { useMetals } from '@/hooks/auctions';
 import { useEffect } from 'react';
 import LabelInput from '@/components/common/LabelInput';
+import { AUCTION_TYPE_OPTION } from '@/lib/constants';
 
 export const auctionsAtom = atom<FieldValues>({ metals: '', metalOptions: '' });
 
@@ -61,7 +62,7 @@ function Add() {
   return (
     <BasicTemplete>
       <AddTemplate
-        title="경매ㅎㅎ"
+        title="경매 / 역경매 만들기"
         buttonText="다음"
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
@@ -75,10 +76,7 @@ function Add() {
             render={({ field }) => (
               <LabelSelect
                 label="타입"
-                options={[
-                  { label: '경매', value: 'NORMAL' },
-                  { label: '역경매', value: 'REVERSE' },
-                ]}
+                options={AUCTION_TYPE_OPTION}
                 {...field}
                 errorMessage={errors.metal?.message?.toString()}
               />
