@@ -5,28 +5,31 @@ import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
-import { MainChart } from '@/components/charts/MainChart';
-import { getPriceIndexCategory, getPriceIndexCategoryAll } from '@/lib/api/price-index';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { getProfile } from '@/lib/api/auth';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
+import { colors } from '@/lib/colors';
+import { NORMAL, REVERSE } from '@/lib/constants';
+import { AuctionType } from '@/lib/api/types';
 
 const Home: NextPage = () => {
-  // const { data: userData } = useQuery({
-  //   queryKey: ['getProfile'],
-  //   queryFn: getProfile,
-  // });
+  const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
 
   const [user, setUser] = useAtom(userAtom);
-  // setUser(userData);
-
-  const { data: auctions, isLoading, fetchNextPage } = useFetchInfiniteAuctions();
+  const {
+    data: auctions,
+    isLoading,
+    fetchNextPage,
+  } = useFetchInfiniteAuctions(selectedAuctionType);
 
   const handleGetProfile = async () => {
     const user = await getProfile();
     setUser(user);
+  };
+
+  const selectMenu = (selectedMenu: AuctionType) => {
+    setSelectedAuctionType(selectedMenu);
   };
 
   useEffect(() => {
@@ -41,6 +44,20 @@ const Home: NextPage = () => {
   return (
     <StyledTabTamplete>
       <Content>
+        <SubMenuLayout>
+          <StyledMenu selected={!selectedAuctionType} onClick={() => selectMenu(null)}>
+            전체경매
+          </StyledMenu>
+          <StyledMenu selected={selectedAuctionType === NORMAL} onClick={() => selectMenu(NORMAL)}>
+            경매
+          </StyledMenu>
+          <StyledMenu
+            selected={selectedAuctionType === REVERSE}
+            onClick={() => selectMenu(REVERSE)}
+          >
+            역경매
+          </StyledMenu>
+        </SubMenuLayout>
         <AuctionCardList auctions={auctions}></AuctionCardList>
         <ButtonWrapper>
           <Button styleType="primary" size="medium" onClick={fetchNextPage}>
@@ -74,6 +91,20 @@ const Content = styled.div`
     min-height: 100px;
     margin-left: auto;
     margin-right: auto;
+  }
+`;
+
+const SubMenuLayout = styled.div`
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  font-size: 16px;
+`;
+
+const StyledMenu = styled.h3<{ selected: boolean }>`
+  color: ${({ selected }) => (selected ? `${colors.primary}` : `${colors.gray5}`)};
+  &:hover {
+    cursor: pointer;
   }
 `;
 

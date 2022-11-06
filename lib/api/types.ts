@@ -1,3 +1,5 @@
+export type AuctionType = 'NORMAL' | 'REVERSE' | null;
+
 export interface CreateAuctionResponse {
   metal: string;
   metalOption: string;
@@ -93,7 +95,7 @@ export interface AuctionParam {
     metalOptionId: number;
     price: number;
   };
-  auctionType: 'NORMAL' | 'REVERSE';
+  auctionType: 'NORMAL' | 'REVERSE' | null;
   endTime: string;
   description?: string;
   auctionImageUrl?: string;
