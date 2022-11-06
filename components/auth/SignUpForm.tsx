@@ -9,11 +9,13 @@ import { useRouter } from 'next/router';
 import LabelSelect from '../common/LabelSelect';
 import { email, password } from '@/lib/utils/pattern';
 import { media } from '@/lib/media';
-import { useRegister } from '@/hooks/auth';
+import { useModifyUser, useRegister } from '@/hooks/auth';
 import Swal from 'sweetalert2';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 interface Props {
-  mode: 'login' | 'register';
+  mode: 'modify' | 'register';
 }
 
 type User = {
@@ -24,6 +26,10 @@ type User = {
 };
 
 function SignUpForm({ mode }: Props) {
+  const [user, setUser] = useAtom(userAtom);
+
+  const isModifyMode = !!user;
+
   const {
     register: registerHookForm,
     handleSubmit,
@@ -31,8 +37,9 @@ function SignUpForm({ mode }: Props) {
     control,
     formState: { errors },
   } = useForm();
+
   const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
-    AUTH_DESCRIPTIONS[mode];
+    AUTH_DESCRIPTIONS[isModifyMode ? 'modify' : 'register'];
 
   const router = useRouter();
 
@@ -42,8 +49,17 @@ function SignUpForm({ mode }: Props) {
       router.replace('/');
     },
     onError: (e: any) => {
-      console.log(e);
-      Swal.fire('실패!', e.response.data.message, 'error');
+      Swal.fire('가입 실패!', e.response.data.message, 'error');
+    },
+  });
+
+  const { mutate: mutateModifyUser } = useModifyUser({
+    onSuccess: () => {
+      Swal.fire('수정 성공!', '회원정보가 수정되었습니다.', 'success');
+      router.replace('/');
+    },
+    onError: (e: any) => {
+      Swal.fire('수정 실패!', e.response.data.message, 'error');
     },
   });
 
@@ -61,27 +77,42 @@ function SignUpForm({ mode }: Props) {
       accountNumber,
       accountHolder,
     } = data;
-    if (mode === 'register') {
-      const business = {
-        businessType,
-        businessName,
-        representative,
-        registrationNumber,
-        licenceImageUrl,
-      };
-      const personal = {
-        name,
-        email,
-        password,
-      };
-      const account = {
-        bank,
-        accountNumber,
-        accountHolder,
-      };
 
-      //await register({ business, personal, account, isEnabled: 'Y' });
-      await mutateRegister({ business, personal, account, isEnabled: 'Y' });
+    const business = {
+      businessType,
+      businessName,
+      representative,
+      registrationNumber,
+      licenceImageUrl,
+    };
+    const personal = {
+      name,
+      email,
+      password,
+    };
+    const account = {
+      bank,
+      accountNumber,
+      accountHolder,
+    };
+
+    if (!isModifyMode) {
+      mutateRegister({ business, personal, account, isEnabled: 'Y' });
+    } else {
+      const personalUpdateCommand = {
+        name,
+      };
+      const params = {
+        data: {
+          business,
+          personalUpdateCommand,
+          accountUpdateCommand: account,
+          isEnabled: 'Y',
+          inDeleted: 'Y',
+        },
+        id: user.id,
+      };
+      mutateModifyUser(params);
     }
   };
 
@@ -99,6 +130,7 @@ function SignUpForm({ mode }: Props) {
         <h2>계정 정보</h2>
         <LabelInput
           label="이메일"
+          defaultValue={isModifyMode && user?.personal.email}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             required: '필수 입력',
@@ -107,31 +139,36 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="이름"
+          defaultValue={isModifyMode && user?.personal.name}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />
-        <LabelInput
-          label="비밀번호"
-          type="password"
-          errorMessage={errors?.password?.message?.toString()}
-          placeholder={passwordPlaceholder}
-          {...registerHookForm('password', {
-            required: '필수 입력',
-            pattern: { value: password, message: '8자리 이상, 특수문자 포함' },
-          })}
-        />
-        <LabelInput
-          label="비밀번호 확인"
-          type="password"
-          errorMessage={errors?.repassword?.message?.toString()}
-          placeholder={passwordPlaceholder}
-          {...registerHookForm('repassword', {
-            required: '필수 입력',
-            validate: {
-              checkPassword: (v) => checkPassword(v) || '비밀번호가 일치하지 않습니다.',
-            },
-          })}
-        />
+        {!isModifyMode && (
+          <>
+            <LabelInput
+              label="비밀번호"
+              type="password"
+              errorMessage={errors?.password?.message?.toString()}
+              placeholder={passwordPlaceholder}
+              {...registerHookForm('password', {
+                required: '필수 입력',
+                pattern: { value: password, message: '8자리 이상, 특수문자 포함' },
+              })}
+            />
+            <LabelInput
+              label="비밀번호 확인"
+              type="password"
+              errorMessage={errors?.repassword?.message?.toString()}
+              placeholder={passwordPlaceholder}
+              {...registerHookForm('repassword', {
+                required: '필수 입력',
+                validate: {
+                  checkPassword: (v) => checkPassword(v) || '비밀번호가 일치하지 않습니다.',
+                },
+              })}
+            />
+          </>
+        )}
         <h2>회사 정보</h2>
         <Controller
           name="businessType"
@@ -152,16 +189,19 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="회사명"
+          defaultValue={isModifyMode && user?.business.businessName}
           errorMessage={errors.businessName?.message?.toString()}
           {...registerHookForm('businessName', { required: '필수 입력' })}
         />
         <LabelInput
           label="대표자 명"
+          defaultValue={isModifyMode && user?.business.representative}
           errorMessage={errors.representative?.message?.toString()}
           {...registerHookForm('representative', { required: '필수 입력' })}
         />
         <LabelInput
           label="사업자등록번호"
+          defaultValue={isModifyMode && user?.business.registrationNumber}
           errorMessage={errors.registrationNumber?.message?.toString()}
           {...registerHookForm('registrationNumber', { required: '필수 입력' })}
         />
@@ -173,16 +213,19 @@ function SignUpForm({ mode }: Props) {
         <h2>계좌 정보</h2>
         <LabelInput
           label="은행명"
+          defaultValue={isModifyMode && user?.account.bank}
           errorMessage={errors.bank?.message?.toString()}
           {...registerHookForm('bank', { required: '필수 입력' })}
         />
         <LabelInput
           label="계좌번호"
+          defaultValue={isModifyMode && user?.account.accountNumber}
           errorMessage={errors.accountNumber?.message?.toString()}
           {...registerHookForm('accountNumber', { required: '필수 입력' })}
         />
         <LabelInput
           label="예금주"
+          defaultValue={isModifyMode && user?.account.accountHolder}
           errorMessage={errors.accountHolder?.message?.toString()}
           {...registerHookForm('accountHolder', { required: '필수 입력' })}
         />
@@ -192,7 +235,7 @@ function SignUpForm({ mode }: Props) {
         <Button type="submit" styleType="primary" layoutMode="fullWidth">
           {buttonText}
         </Button>
-        <QuestionLink question={question} name={actionText} href={actionLink} />
+        {!isModifyMode && <QuestionLink question={question} name={actionText} href={actionLink} />}
       </ActionsBox>
     </StyledForm>
   );
@@ -201,7 +244,6 @@ function SignUpForm({ mode }: Props) {
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  flex: 1;
   justify-content: space-between;
   ${media.mobile} {
     justify-content: center;

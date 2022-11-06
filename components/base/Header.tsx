@@ -23,21 +23,25 @@ function Header() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            <Link href="notification">
-              <Button styleType="secondary" size="small">
-                알림
-              </Button>
-            </Link>
-            <Link href="hosting">
-              <Button styleType="tertiary" size="small">
-                내경매
-              </Button>
-            </Link>
-            <Link href="add">
-              <Button styleType="tertiary" size="small">
-                경매생성
-              </Button>
-            </Link>
+            {user && (
+              <>
+                <Link href="notification">
+                  <Button styleType="secondary" size="small">
+                    알림
+                  </Button>
+                </Link>
+                <Link href="hosting">
+                  <Button styleType="tertiary" size="small">
+                    내경매
+                  </Button>
+                </Link>
+                <Link href="add">
+                  <Button styleType="tertiary" size="small">
+                    경매생성
+                  </Button>
+                </Link>
+              </>
+            )}
             <Link href="chart">
               <Button styleType="tertiary" size="small">
                 시세

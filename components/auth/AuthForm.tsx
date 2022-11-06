@@ -44,8 +44,8 @@ function AuthForm({ mode }: Props) {
         //   secure: true,
         //   sameTite: 'none',
         // });
-        localStorage.setItem('accessToken', result.token);
-        setDefaultAxiosAuth(result.token);
+        await localStorage.setItem('accessToken', result.token);
+        await setDefaultAxiosAuth(result.token);
         router.replace('/');
         // const token = getCookieToken('accessToken');
         // console.log(token);
