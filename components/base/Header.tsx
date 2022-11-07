@@ -19,7 +19,9 @@ function Header() {
   return (
     <Block>
       <Content>
-        <Addon></Addon>
+        <Addon>
+          <h3><b>EMETAL</b></h3>
+        </Addon>
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
