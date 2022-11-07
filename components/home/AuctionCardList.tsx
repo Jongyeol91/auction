@@ -12,7 +12,7 @@ function AuctionCardList({ auctions }: Props) {
     <List>
       {auctions?.pages?.map((page) =>
         page.content?.map((auctionContent) => (
-          <AuctionCard key={auctionContent.id} auctionContent={auctionContent} />
+          <AuctionCard key={auctionContent.id} auctionContent={auctionContent} forbidden />
         )),
       )}
     </List>

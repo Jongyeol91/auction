@@ -7,7 +7,6 @@ import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
 import { AuctionType } from '@/lib/api/types';
 import { useState } from 'react';
-import { NORMAL, REVERSE } from '@/lib/constants';
 import { colors } from '@/lib/colors';
 
 const Home: NextPage = () => {
@@ -20,8 +19,6 @@ const Home: NextPage = () => {
   } = useFetchInfiniteMyAuctions(selectedAuctionType);
 
   const selectMenu = (selectedMenu) => {
-    console.log(selectedMenu);
-
     setSelectedAuctionType(selectedMenu);
   };
 
@@ -44,7 +41,7 @@ const Home: NextPage = () => {
             참가(경매/역경매)
           </StyledMenu>
         </SubMenuLayout>
-        <AuctionCardList auctions={auctions}></AuctionCardList>
+        <AuctionCardList auctions={auctions} forbidden></AuctionCardList>
         {hasNextPage && (
           <ButtonWrapper>
             <Button size="medium" onClick={fetchNextPage}>

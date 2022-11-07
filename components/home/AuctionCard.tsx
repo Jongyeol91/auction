@@ -17,6 +17,7 @@ const { Countdown } = Statistic;
 
 interface Props {
   auctionContent: AuctionContent;
+  forbidden: boolean;
 }
 
 const typeMap = {
@@ -60,7 +61,7 @@ const timer = (endtime: string): React.ReactNode => {
   );
 };
 
-function AuctionCard({ auctionContent }: Props) {
+function AuctionCard({ auctionContent, forbidden }: Props) {
   const {
     id,
     auctionItem,
@@ -129,7 +130,7 @@ function AuctionCard({ auctionContent }: Props) {
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
       </TitleWrapper>
       <DescriptionArea>{description}</DescriptionArea>
-      {seletced && auctionStatusType === 'ACTIVE' && (
+      {seletced && auctionStatusType === 'ACTIVE' && !forbidden && (
         <Bid onSubmit={handleSubmit(onSubmit)}>
           <StyledInput type="number" min={1} {...register('price', { required: '필수 입력' })} />
           <Button styleType="primary" type="submit">
