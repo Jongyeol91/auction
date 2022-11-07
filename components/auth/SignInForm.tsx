@@ -9,6 +9,7 @@ import { defaultAxios, setDefaultAxiosAuth } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
 import { media } from '@/lib/media';
 import { getCookieToken, setCookieToken } from '@/lib/cookie';
+import Swal from 'sweetalert2';
 
 interface Props {
   mode: 'login' | 'register';
@@ -37,18 +38,22 @@ function SignInForm({ mode }: Props) {
     } else {
       console.log('start');
 
-      const { status, result } = await login(data);
-      if (status == 200) {
-        // setCookieToken('accessToken', result.token, {
-        //   path: '/',
-        //   secure: true,
-        //   sameTite: 'none',
-        // });
-        await localStorage.setItem('accessToken', result.token);
-        await setDefaultAxiosAuth(result.token);
-        router.replace('/');
-        // const token = getCookieToken('accessToken');
-        // console.log(token);
+      try {
+        const { status, result } = await login(data);
+        if (status == 200) {
+          // setCookieToken('accessToken', result.token, {
+          //   path: '/',
+          //   secure: true,
+          //   sameTite: 'none',
+          // });
+          await localStorage.setItem('accessToken', result.token);
+          await setDefaultAxiosAuth(result.token);
+          router.replace('/');
+          // const token = getCookieToken('accessToken');
+          // console.log(token);
+        }
+      } catch (e) {
+        Swal.fire('실패', e.response.data.message, 'error');
       }
     }
   };
