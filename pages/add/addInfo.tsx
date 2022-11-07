@@ -36,7 +36,7 @@ function Add() {
       router.replace('/');
     },
     onError: (e: any) => {
-      alert(e.response.data.message);
+      Swal.fire('생성 실패', e.response.data.message, 'error');
     },
   });
 
