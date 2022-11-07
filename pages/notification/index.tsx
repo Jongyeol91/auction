@@ -71,7 +71,7 @@ function Notification() {
 
 const Content = styled.div`
   ${media.wide} {
-    width: 1200px;
+    width: 900px;
     min-height: 100px;
     margin-left: auto;
     margin-right: auto;
