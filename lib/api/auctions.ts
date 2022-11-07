@@ -37,6 +37,11 @@ export async function createAuction(auction: AuctionParam) {
   return res.data;
 }
 
+export async function bid(bidData) {
+  const res = await defaultAxios.post('/bid', bidData);
+  return res.data;
+}
+
 interface createAuction {
   metal: string;
   metalOption: string;

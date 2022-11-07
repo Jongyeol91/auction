@@ -23,7 +23,6 @@ const Home: NextPage = () => {
     fetchNextPage,
     hasNextPage,
   } = useFetchInfiniteAuctions(selectedAuctionType);
-  console.log(auctions);
 
   const handleGetProfile = async () => {
     const user = await getProfile();

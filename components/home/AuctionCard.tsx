@@ -8,10 +8,12 @@ import { media } from '@/lib/media';
 import { useState } from 'react';
 import Button from '../common/Button';
 import { Statistic } from 'antd';
-import Input from '../common/Input';
+import { bid } from '@/lib/api/auctions';
+import { useMutation } from '@tanstack/react-query';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 const { Countdown } = Statistic;
-const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is also O
 
 interface Props {
   auctionContent: AuctionContent;
@@ -31,7 +33,7 @@ const auctionStatusMap = {
   ACTIVE: '진행중',
   FAILED: '유찰',
   COMPLETED: '완료',
-}
+};
 
 const timer = (endtime: string): React.ReactNode => {
   const now = dayjs();
@@ -40,7 +42,7 @@ const timer = (endtime: string): React.ReactNode => {
   const remainMilliseconds = now.diff(_endtime, 'milliseconds') * -1;
   const deadline = Date.now() + remainMilliseconds; // Moment is also O
 
-  let remainHours = now.diff(_endtime, 'hours');
+  const remainHours = now.diff(_endtime, 'hours');
   let remainDays = Math.floor(remainHours / 24);
   remainDays *= -1;
 
@@ -59,19 +61,49 @@ const timer = (endtime: string): React.ReactNode => {
 };
 
 function AuctionCard({ auctionContent }: Props) {
-  const { auctionItem, auctionImageUrl, hostUser, auctionType, endTime, description, auctionStatusType } = auctionContent;
+  const {
+    id,
+    auctionItem,
+    auctionImageUrl,
+    hostUser,
+    auctionType,
+    endTime,
+    description,
+    auctionStatusType,
+  } = auctionContent;
   const { metalName, metalOptionName, amount, price } = auctionItem;
 
   const [seletced, setSelected] = useState<boolean>(false);
 
+  const { mutate: mutateBid } = useMutation(bid, {
+    onSuccess: () => {
+      Swal.fire('입찰', '입찰 하였습니다.', 'success');
+    },
+    onError: (e) => {
+      Swal.fire('입찰 실패', e.response.data.message, 'error');
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    mutateBid({ ...data, auctionId: id });
+  };
+
   const statusTag = () => {
-    let statusText = auctionStatusMap[auctionStatusType]
-    if(auctionStatusType == 'ACTIVE') {
-      return <Tag color={colors.primary}>{statusText}</Tag>
+    const statusText = auctionStatusMap[auctionStatusType];
+    if (auctionStatusType == 'ACTIVE') {
+      return <Tag color={colors.primary}>{statusText}</Tag>;
     }
 
-    return <Tag>{statusText}</Tag>
-  }
+    return <Tag>{statusText}</Tag>;
+  };
 
   return (
     <Block>
@@ -96,13 +128,13 @@ function AuctionCard({ auctionContent }: Props) {
         {timer(endTime)}
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
       </TitleWrapper>
-      <DescriptionArea>
-        {description}
-      </DescriptionArea>
-      {seletced && (
-        <Bid>
-          <Input />
-          <Button styleType="primary">입찰</Button>
+      <DescriptionArea>{description}</DescriptionArea>
+      {seletced && auctionStatusType === 'ACTIVE' && (
+        <Bid onSubmit={handleSubmit(onSubmit)}>
+          <StyledInput type="number" min={1} {...register('price', { required: '필수 입력' })} />
+          <Button styleType="primary" type="submit">
+            입찰
+          </Button>
         </Bid>
       )}
     </Block>
@@ -113,6 +145,12 @@ const Block = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
+`;
+
+const StyledInput = styled.input`
+  padding: 6px;
+  margin-right: 8px;
+  width: 100%;
 `;
 
 const FirstLine = styled.div`
@@ -155,7 +193,7 @@ const Thumbnail = styled.img`
   }
 `;
 
-const Bid = styled.div`
+const Bid = styled.form`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -167,7 +205,7 @@ const DescriptionArea = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  word-wrap:break-word;
+  word-wrap: break-word;
   line-height: 1.5em;
   height: 4.5em;
   color: ${colors.gray7};
