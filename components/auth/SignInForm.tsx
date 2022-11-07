@@ -19,7 +19,7 @@ type Inputs = {
   password: string;
 };
 
-function AuthForm({ mode }: Props) {
+function SignInForm({ mode }: Props) {
   const {
     register: registerHookForm,
     handleSubmit,
@@ -78,7 +78,14 @@ function AuthForm({ mode }: Props) {
         <Button type="submit" styleType="primary" layoutMode="fullWidth">
           {buttonText}
         </Button>
-        <QuestionLink question={question} name={actionText} href={actionLink} />
+        <QuestionLinkWrapper>
+          <QuestionLink question={question} name={actionText} href={actionLink} />
+          <QuestionLink
+            question={'비밀번호가 기억나지 않으세요?'}
+            name={'비빌번호 찾기'}
+            href={'/setting/account'}
+          />
+        </QuestionLinkWrapper>
       </ActionsBox>
     </StyledForm>
   );
@@ -103,6 +110,12 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const QuestionLinkWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const ActionsBox = styled.div`
   padding: 16px;
   width: 100%;
@@ -115,4 +128,4 @@ const ActionsBox = styled.div`
   }
 `;
 
-export default AuthForm;
+export default SignInForm;

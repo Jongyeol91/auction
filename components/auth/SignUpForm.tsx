@@ -13,6 +13,7 @@ import { useModifyUser, useRegister } from '@/hooks/auth';
 import Swal from 'sweetalert2';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
+import { colors } from '@/lib/colors';
 
 interface Props {
   mode: 'modify' | 'register';
@@ -128,9 +129,10 @@ function SignUpForm({ mode }: Props) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <h2>계정 정보</h2>
+
         <LabelInput
           label="이메일"
-          defaultValue={isModifyMode && user?.personal.email}
+          defaultValue={isModifyMode ? user?.personal.emai : ''}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             required: '필수 입력',
@@ -139,7 +141,7 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="이름"
-          defaultValue={isModifyMode && user?.personal.name}
+          defaultValue={isModifyMode ? user?.personal.name : ''}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />
@@ -189,19 +191,19 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="회사명"
-          defaultValue={isModifyMode && user?.business.businessName}
+          defaultValue={isModifyMode ? user?.business.businessName : ''}
           errorMessage={errors.businessName?.message?.toString()}
           {...registerHookForm('businessName', { required: '필수 입력' })}
         />
         <LabelInput
           label="대표자 명"
-          defaultValue={isModifyMode && user?.business.representative}
+          defaultValue={isModifyMode ? user?.business.representative : ''}
           errorMessage={errors.representative?.message?.toString()}
           {...registerHookForm('representative', { required: '필수 입력' })}
         />
         <LabelInput
           label="사업자등록번호"
-          defaultValue={isModifyMode && user?.business.registrationNumber}
+          defaultValue={isModifyMode ? user?.business.registrationNumber : ''}
           errorMessage={errors.registrationNumber?.message?.toString()}
           {...registerHookForm('registrationNumber', { required: '필수 입력' })}
         />
@@ -213,22 +215,27 @@ function SignUpForm({ mode }: Props) {
         <h2>계좌 정보</h2>
         <LabelInput
           label="은행명"
-          defaultValue={isModifyMode && user?.account.bank}
+          defaultValue={isModifyMode ? user?.account.bank : ''}
           errorMessage={errors.bank?.message?.toString()}
           {...registerHookForm('bank', { required: '필수 입력' })}
         />
         <LabelInput
           label="계좌번호"
-          defaultValue={isModifyMode && user?.account.accountNumber}
+          defaultValue={isModifyMode ? user?.account.accountNumber : ''}
           errorMessage={errors.accountNumber?.message?.toString()}
           {...registerHookForm('accountNumber', { required: '필수 입력' })}
         />
         <LabelInput
           label="예금주"
-          defaultValue={isModifyMode && user?.account.accountHolder}
+          defaultValue={isModifyMode ? user?.account.accountHolder : ''}
           errorMessage={errors.accountHolder?.message?.toString()}
           {...registerHookForm('accountHolder', { required: '필수 입력' })}
         />
+        {isModifyMode && (
+          <FindPassword onClick={() => router.push('setting/account')}>
+            비밀번호 변경하기
+          </FindPassword>
+        )}
       </Wrapper>
 
       <ActionsBox>
@@ -270,6 +277,11 @@ const ActionsBox = styled.div`
   ${media.mobile} {
     margin-top: 24px;
   }
+`;
+
+const FindPassword = styled.span`
+  cursor: pointer;
+  color: ${colors.primary};
 `;
 
 export default SignUpForm;

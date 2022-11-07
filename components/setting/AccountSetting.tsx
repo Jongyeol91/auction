@@ -4,29 +4,44 @@ import styled from 'styled-components';
 import { colors } from '@/lib/colors';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
-import { changePassword } from '@/lib/api/user';
+import { changePassword, findPassword } from '@/lib/api/user';
 import { media } from '@/lib/media';
 import Swal from 'sweetalert2';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
+import Router from 'next/router';
 
 function AccountSetting() {
   const [user] = useAtom(userAtom);
+  const isModifyMode = !!user;
+
   const [form, setForm] = useState({
-    oldPassword: '',
-    newPassword: '',
+    value1: '',
+    value2: '',
   });
 
   const reset = () => {
     setForm({
-      oldPassword: '',
-      newPassword: '',
+      value1: '',
+      value2: '',
     });
   };
 
   const { mutate: mutateChangePassword } = useMutation(changePassword, {
     onSuccess: () => {
       Swal.fire('비밀번호 변경', '비밀번호가 변경되었습니다.', 'success');
+      Router.replace('/');
+      reset();
+    },
+    onError: (e) => {
+      Swal.fire('실패!', e.response.data.message, 'error');
+    },
+  });
+
+  const { mutate: mutateFindPassword } = useMutation(findPassword, {
+    onSuccess: () => {
+      Swal.fire('비밀번호 찾기', '임시 비밀번호가 발송되었습니다.', 'success');
+      Router.replace('/');
       reset();
     },
     onError: (e) => {
@@ -42,40 +57,42 @@ function AccountSetting() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    mutateChangePassword(form);
+    isModifyMode ? mutateChangePassword(form) : mutateFindPassword(form);
   };
 
-  if (!user) return null;
+  // if (!user) return null;
 
   return (
     <Block>
       <div>
-        <Title>내 계정</Title>
-        <Section>
-          <h4>아이디</h4>
-          <Username>{user?.name}</Username>
-        </Section>
+        <Title>{isModifyMode ? '내 계정' : '비밀번호 찾기'}</Title>
+        {isModifyMode && (
+          <Section>
+            <h4>아이디</h4>
+            <Username>{user?.personal.email}</Username>
+          </Section>
+        )}
         <Section>
           <h4>비밀번호</h4>
           <form onSubmit={onSubmit}>
             <InputGroup>
               <Input
-                name="oldPassword"
-                placeholder="현재 비밀번호"
-                type="password"
+                name="value1"
+                placeholder={isModifyMode ? '현재 비밀번호' : '이름'}
+                type={isModifyMode ? 'password' : 'text'}
                 onChange={onChange}
-                value={form.oldPassword}
+                value={form.value1}
               />
               <Input
-                name="newPassword"
-                placeholder="새 비밀번호"
-                type="password"
+                name="value2"
+                placeholder={isModifyMode ? '새 비밀번호' : '이메일'}
+                type={isModifyMode ? 'password' : 'email'}
                 onChange={onChange}
-                value={form.newPassword}
+                value={form.value2}
               />
             </InputGroup>
             <Button styleType="secondary" type="submit">
-              비밀번호 변경
+              {isModifyMode ? ' 비밀번호 변경' : '비밀번호 찾기'}
             </Button>
           </form>
         </Section>
@@ -91,7 +108,7 @@ const Title = styled.h1`
   margin-top: 0;
   margin-bottom: 32px;
   font-weight: 800;
-  color: ${colors.gray5};
+  color: ${colors.gray9};
   font-size: 48px;
   line-height: 1.5;
 `;
@@ -118,7 +135,7 @@ const Section = styled.section`
     margin-top: 0;
     margin-bottom: 8px;
     font-size: 16px;
-    color: ${colors.gray3};
+    color: ${colors.gray5};
   }
 
   & + & {
@@ -127,7 +144,7 @@ const Section = styled.section`
 `;
 const Username = styled.div`
   font-size: 16px;
-  color: ${colors.gray5};
+  color: ${colors.gray7};
 `;
 
 const InputGroup = styled.div`
