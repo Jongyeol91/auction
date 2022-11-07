@@ -21,7 +21,9 @@ const Home: NextPage = () => {
     data: auctions,
     isLoading,
     fetchNextPage,
+    hasNextPage,
   } = useFetchInfiniteAuctions(selectedAuctionType);
+  console.log(auctions);
 
   const handleGetProfile = async () => {
     const user = await getProfile();
@@ -60,9 +62,11 @@ const Home: NextPage = () => {
         </SubMenuLayout>
         <AuctionCardList auctions={auctions}></AuctionCardList>
         <ButtonWrapper>
-          <Button styleType="primary" size="medium" onClick={fetchNextPage}>
-            더보기
-          </Button>
+          {hasNextPage && (
+            <Button styleType="primary" size="medium" onClick={fetchNextPage}>
+              더보기
+            </Button>
+          )}
         </ButtonWrapper>
       </Content>
     </StyledTabTamplete>
@@ -96,7 +100,7 @@ const Content = styled.div`
 
 const SubMenuLayout = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 16px;
   padding: 10px 0;
   font-size: 16px;
 `;

@@ -22,8 +22,8 @@ export async function getAuctions({ pageParam = 0, pageSize = 9, auctionType = n
   return res.data.auctions;
 }
 
-export async function getHostingAuctions({ pageParam = 0, pageSize = 9 }) {
-  const res = await defaultAxios.get(`/auctions/hosting`, {
+export async function getMyAuctions({ pageParam = 0, pageSize = 9, myAuctionType = 'hosting' }) {
+  const res = await defaultAxios.get(`/auctions/${myAuctionType}`, {
     params: {
       size: pageSize,
       page: pageParam,
