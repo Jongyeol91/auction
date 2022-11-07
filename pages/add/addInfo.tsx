@@ -61,7 +61,7 @@ function Add() {
     <TabTamplete>
       <AddTemplate
         title="경매 / 역경매 만들기"
-        buttonText="다음"
+        buttonText="생성하기"
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >

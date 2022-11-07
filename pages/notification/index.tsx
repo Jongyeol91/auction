@@ -60,7 +60,8 @@ function Notification() {
                 //   item?.auction?.hostUser?.account.accountHolder
                 // }
               />
-                <Tag color={colors.gray4}>{item?.createdAt}</Tag>
+                {/*<Tag color={colors.gray4}>{item?.createdAt}</Tag>*/}
+                <h5>{item?.createdAt}</h5>
             </List.Item>
           )}
         />
@@ -71,7 +72,7 @@ function Notification() {
 
 const Content = styled.div`
   ${media.wide} {
-    width: 1200px;
+    width: 900px;
     min-height: 100px;
     margin-left: auto;
     margin-right: auto;
