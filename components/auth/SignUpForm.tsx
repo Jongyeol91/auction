@@ -223,6 +223,7 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="사업자등록증"
+          defaultValue={isModifyMode ? user?.business.licenceImageUrl : ''}
           errorMessage={errors.licenceImageUrl?.message?.toString()}
           {...registerHookForm('licenceImageUrl', { required: '필수 입력' })}
         />
