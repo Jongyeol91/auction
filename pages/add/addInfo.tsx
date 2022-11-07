@@ -50,7 +50,7 @@ function Add() {
     const reqBody = {
       auctionImageUrl: auctions.auctionImageUrl,
       auctionType: auctions.auctionType,
-      endTime: dayjs(data.endTime).format('YYYY-MM-DD hh:mm:ss'),
+      endTime: dayjs(data.endTime).format('YYYY-MM-DD HH:mm:ss'),
       auctionItem,
     };
 
