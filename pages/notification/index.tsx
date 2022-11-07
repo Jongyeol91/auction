@@ -60,7 +60,8 @@ function Notification() {
                 //   item?.auction?.hostUser?.account.accountHolder
                 // }
               />
-                <Tag color={colors.gray4}>{item?.createdAt}</Tag>
+                {/*<Tag color={colors.gray4}>{item?.createdAt}</Tag>*/}
+                <h5>{item?.createdAt}</h5>
             </List.Item>
           )}
         />

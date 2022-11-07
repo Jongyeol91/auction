@@ -20,7 +20,7 @@ function Header() {
     <Block>
       <Content>
         <Addon>
-          <h3><b>EMETAL</b></h3>
+          <Link href={'/'}><h3><b>EMETAL</b></h3></Link>
         </Addon>
         <Addon>
           {/* <SearchArea /> */}
