@@ -52,6 +52,7 @@ function Add() {
       auctionType: auctions.auctionType,
       endTime: dayjs(data.endTime).format('YYYY-MM-DD HH:mm:ss'),
       auctionItem,
+      description: data.description,
     };
 
     mutate(reqBody);
