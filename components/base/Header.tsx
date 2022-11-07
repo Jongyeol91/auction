@@ -6,26 +6,36 @@ import Link from 'next/link';
 import SearchArea from './SearchArea';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import { getProfile } from '@/lib/api/auth';
+import { useRouter } from 'next/router';
 
 function Header() {
+  const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
-  console.log('header', user);
+
+  const getToken = () => {
+    return localStorage.getItem('accessToken');
+  };
 
   const removeToken = () => {
     localStorage.removeItem('accessToken');
-    setUser('');
+    setUser(null);
+    router.replace('/');
   };
 
   return (
     <Block>
       <Content>
         <Addon>
-          <h3><b>EMETAL</b></h3>
+          <h3>
+            <b>EMETAL</b>
+          </h3>
         </Addon>
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            {user && (
+            {getToken() && (
               <>
                 <Link href="notification">
                   <Button styleType="secondary" size="small">
@@ -49,7 +59,7 @@ function Header() {
                 시세
               </Button>
             </Link>
-            {!user ? (
+            {!getToken() ? (
               <>
                 <Link href="login">
                   <Button styleType="primary" size="small">

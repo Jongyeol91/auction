@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 import { media } from '@/lib/media';
 import { getCookieToken, setCookieToken } from '@/lib/cookie';
 import Swal from 'sweetalert2';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 interface Props {
   mode: 'login' | 'register';
@@ -27,6 +29,9 @@ function SignInForm({ mode }: Props) {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const [user, setUser] = useAtom(userAtom);
+
   const { userIdPlaceholder, passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[mode];
 
@@ -36,21 +41,15 @@ function SignInForm({ mode }: Props) {
     if (mode === 'register') {
       await register(data);
     } else {
-      console.log('start');
-
       try {
         const { status, result } = await login(data);
         if (status == 200) {
-          // setCookieToken('accessToken', result.token, {
-          //   path: '/',
-          //   secure: true,
-          //   sameTite: 'none',
-          // });
           await localStorage.setItem('accessToken', result.token);
           await setDefaultAxiosAuth(result.token);
+          console.log('before', result);
+
           router.replace('/');
-          // const token = getCookieToken('accessToken');
-          // console.log(token);
+          console.log('after', result);
         }
       } catch (e) {
         Swal.fire('실패', e.response.data.message, 'error');
@@ -74,6 +73,7 @@ function SignInForm({ mode }: Props) {
         <LabelInput
           {...registerHookForm('password', { required: true })}
           label="비밀번호"
+          type="password"
           errorMessage={errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
           placeholder={passwordPlaceholder}
         />

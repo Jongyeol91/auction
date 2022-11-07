@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
 import { colors } from '@/lib/colors';
+import { useEffect } from 'react';
+import { getProfile } from '@/lib/api/auth';
 
 interface Props {
   mode: 'modify' | 'register';
@@ -28,6 +30,16 @@ type User = {
 
 function SignUpForm({ mode }: Props) {
   const [user, setUser] = useAtom(userAtom);
+
+  const me = async () => {
+    return await getProfile();
+  };
+
+  useEffect(() => {
+    const result = me();
+    console.log(result);
+    setUser(result);
+  }, []);
 
   const isModifyMode = !!user;
 
@@ -124,6 +136,7 @@ function SignUpForm({ mode }: Props) {
   const handleUser = () => {
     defaultAxios.get('/api/me');
   };
+  console.log(user);
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -132,7 +145,8 @@ function SignUpForm({ mode }: Props) {
 
         <LabelInput
           label="이메일"
-          defaultValue={isModifyMode ? user?.personal.emai : ''}
+          disabled={!!isModifyMode}
+          defaultValue={isModifyMode ? user?.personal.email : ''}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             required: '필수 입력',

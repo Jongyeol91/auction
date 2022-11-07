@@ -12,11 +12,11 @@ import { useAtom } from 'jotai';
 import { colors } from '@/lib/colors';
 import { NORMAL, REVERSE } from '@/lib/constants';
 import { AuctionType } from '@/lib/api/types';
+import { setDefaultAxiosAuth } from '@/lib/defaultAxios';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
 
-  const [user, setUser] = useAtom(userAtom);
   const {
     data: auctions,
     isLoading,
@@ -24,21 +24,9 @@ const Home: NextPage = () => {
     hasNextPage,
   } = useFetchInfiniteAuctions(selectedAuctionType);
 
-  const handleGetProfile = async () => {
-    const user = await getProfile();
-    setUser(user);
-  };
-
   const selectMenu = (selectedMenu: AuctionType) => {
     setSelectedAuctionType(selectedMenu);
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      handleGetProfile();
-    }
-  }, []);
 
   if (isLoading) return;
 
