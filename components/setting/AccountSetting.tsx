@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '@/lib/colors';
 import Button from '@/components/common/Button';
@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
 import Router from 'next/router';
-import { getProfile } from '@/lib/api/auth';
 
 function AccountSetting() {
   const [user, setUser] = useAtom(userAtom);

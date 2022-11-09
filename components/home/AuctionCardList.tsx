@@ -1,4 +1,4 @@
-import { type Auctions } from '@/lib/api/types';
+import { AuctionContent, type Auctions } from '@/lib/api/types';
 import { media } from '@/lib/media';
 import styled from 'styled-components';
 import AuctionCard from './AuctionCard';
@@ -11,7 +11,7 @@ function AuctionCardList({ auctions }: Props) {
   return (
     <List>
       {auctions?.pages?.map((page) =>
-        page.content?.map((auctionContent) => (
+        page.content?.map((auctionContent: AuctionContent) => (
           <AuctionCard key={auctionContent.id} auctionContent={auctionContent} forbidden />
         )),
       )}

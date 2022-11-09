@@ -1,34 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
+yarn install
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+22/11/9
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### 버그
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- [ ] 비딩 고치기!! (내경매, 참여경매 안되게)
+- [ ] 경매 생성, 회원 가입시 이미지 파일 첨부
+- [ ] 로그인 실패시 얼럿 나오면서 기존 화면 위로 밀리는 버그 수정
+- [ ] 모바일 헤더 수정 (검색 버튼 대체, 로그인시 노출 하는 버튼 정하기)
+- [ ] 경매 만들기 뒤로가기 했을 경우 금속옵션과 이미지 validation 걸리는 이슈 수정
+- [ ] 경매 만들기 pc 레이아웃 수정
+- [ ] 비밀번호 변경하기 페이지 텍스트 수정
+- [ ] 이메탈 로고 정렬, 마우스 호버시 cursor
 
-## Learn More
+### 요구사항
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [ ] 헤더 메뉴들을 아이콘으로 전환
+- [ ] 시세 최근 값을 메인 페이지에 노출, 클릭 후 시계열 데이터 볼 수 있도록 전환
+- [ ] 금속 옵션 유저가 생성할 수 있도록 처리
+- [ ] 경매 호스트 이름 비노출 처리
+- [ ] 알람 클릭시 드롭다운으로 해당 경매건 카드 노출
+- [ ] 경매 박스 디자인 수정
+- [ ] footer
+- [ ] 필터링 기능
