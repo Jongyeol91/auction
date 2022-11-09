@@ -4,7 +4,8 @@ import { media } from '@/lib/media';
 
 import { List, Tag } from 'antd';
 import styled from 'styled-components';
-import { colors } from '@/lib/colors';
+
+type NotificationType = keyof typeof notificationTypeColorMap;
 
 const notificationTypeColorMap = {
   BID_WON: 'blue', // 입찰낙찰
@@ -22,17 +23,7 @@ const notificationTypeTextMap = {
   ADMIN_NOTICE: '관리자공지',
 };
 
-const auctionTypeColorMap = {
-  NORMAL: 'green',
-  REVERSE: 'blue',
-};
-
-const auctionTypeTextMap = {
-  NORMAL: '경매',
-  REVERSE: '역경매',
-};
-
-const notificationItem = (notificationType) => {
+const notificationItem = (notificationType: NotificationType) => {
   const color = notificationTypeColorMap[notificationType];
   const text = notificationTypeTextMap[notificationType];
   return <Tag color={color}> {text}</Tag>;
@@ -47,20 +38,14 @@ function Notification() {
         <List
           itemLayout="horizontal"
           dataSource={data?.content}
-          renderItem={(item) => (
+          renderItem={(item: {
+            notificationType: NotificationType;
+            content: string;
+            createdAt: string;
+          }) => (
             <List.Item>
               {notificationItem(item?.notificationType)}
-              <List.Item.Meta
-                title={<a>{item?.content}</a>}
-                // description={
-                //   AUCTION_TYPE[item?.auction?.auctionType] +
-                //   ' ' +
-                //   item?.auction?.auctionItem?.amount +
-                //   '개 ' +
-                //   item?.auction?.hostUser?.account.accountHolder
-                // }
-              />
-              {/*<Tag color={colors.gray4}>{item?.createdAt}</Tag>*/}
+              <List.Item.Meta title={<a>{item?.content}</a>} />
               <h5>{item?.createdAt}</h5>
             </List.Item>
           )}
