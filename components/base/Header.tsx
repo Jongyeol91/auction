@@ -3,23 +3,17 @@ import { media } from '@/lib/media';
 import styled from 'styled-components';
 import Button from '../common/Button';
 import Link from 'next/link';
-import SearchArea from './SearchArea';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
-import { useEffect } from 'react';
-import { getProfile } from '@/lib/api/auth';
 import { useRouter } from 'next/router';
+import { getStroageItem, removeStorageItem } from '@/lib/local-storage';
 
 function Header() {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
 
-  const getToken = () => {
-    return localStorage.getItem('accessToken');
-  };
-
   const removeToken = () => {
-    localStorage.removeItem('accessToken');
+    removeStorageItem('accessToken');
     setUser(null);
     router.replace('/');
   };
@@ -37,7 +31,7 @@ function Header() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            {getToken() && (
+            {getStroageItem('accessToken') && (
               <>
                 <Link href="notification">
                   <Button styleType="secondary" size="small">
@@ -61,7 +55,7 @@ function Header() {
                 시세
               </Button>
             </Link>
-            {!getToken() ? (
+            {!getStroageItem('accessToken') ? (
               <>
                 <Link href="login">
                   <Button styleType="primary" size="small">
