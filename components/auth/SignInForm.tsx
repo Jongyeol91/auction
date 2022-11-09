@@ -9,6 +9,9 @@ import { defaultAxios, setDefaultAxiosAuth } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
 import { media } from '@/lib/media';
 import { getCookieToken, setCookieToken } from '@/lib/cookie';
+import Swal from 'sweetalert2';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 interface Props {
   mode: 'login' | 'register';
@@ -19,13 +22,16 @@ type Inputs = {
   password: string;
 };
 
-function AuthForm({ mode }: Props) {
+function SignInForm({ mode }: Props) {
   const {
     register: registerHookForm,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const [user, setUser] = useAtom(userAtom);
+
   const { userIdPlaceholder, passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[mode];
 
@@ -35,20 +41,18 @@ function AuthForm({ mode }: Props) {
     if (mode === 'register') {
       await register(data);
     } else {
-      console.log('start');
+      try {
+        const { status, result } = await login(data);
+        if (status == 200) {
+          await localStorage.setItem('accessToken', result.token);
+          await setDefaultAxiosAuth(result.token);
+          console.log('before', result);
 
-      const { status, result } = await login(data);
-      if (status == 200) {
-        // setCookieToken('accessToken', result.token, {
-        //   path: '/',
-        //   secure: true,
-        //   sameTite: 'none',
-        // });
-        localStorage.setItem('accessToken', result.token);
-        setDefaultAxiosAuth(result.token);
-        router.replace('/');
-        // const token = getCookieToken('accessToken');
-        // console.log(token);
+          router.replace('/');
+          console.log('after', result);
+        }
+      } catch (e) {
+        Swal.fire('실패', e.response.data.message, 'error');
       }
     }
   };
@@ -69,6 +73,7 @@ function AuthForm({ mode }: Props) {
         <LabelInput
           {...registerHookForm('password', { required: true })}
           label="비밀번호"
+          type="password"
           errorMessage={errors.password?.type === 'required' && '비밀번호를 입력해주세요'}
           placeholder={passwordPlaceholder}
         />
@@ -78,7 +83,14 @@ function AuthForm({ mode }: Props) {
         <Button type="submit" styleType="primary" layoutMode="fullWidth">
           {buttonText}
         </Button>
-        <QuestionLink question={question} name={actionText} href={actionLink} />
+        <QuestionLinkWrapper>
+          <QuestionLink question={question} name={actionText} href={actionLink} />
+          <QuestionLink
+            question={'비밀번호가 기억나지 않으세요?'}
+            name={'비빌번호 찾기'}
+            href={'/setting/account'}
+          />
+        </QuestionLinkWrapper>
       </ActionsBox>
     </StyledForm>
   );
@@ -103,6 +115,12 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const QuestionLinkWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const ActionsBox = styled.div`
   padding: 16px;
   width: 100%;
@@ -115,4 +133,4 @@ const ActionsBox = styled.div`
   }
 `;
 
-export default AuthForm;
+export default SignInForm;

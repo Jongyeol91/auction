@@ -15,6 +15,14 @@ export const AUTH_DESCRIPTIONS = {
     question: '이미 회원이신가요?',
     actionLink: '/login',
   },
+  modify: {
+    userIdPlaceholder: '이메일을 입력해주세요',
+    passwordPlaceholder: '8자 이상, 영문/숫자/특수문자 중 2가지 이상 입력',
+    buttonText: '수정',
+    actionText: '로그인',
+    question: '이미 회원이신가요?',
+    actionLink: '/login',
+  },
 } as const;
 
 export const NORMAL = 'NORMAL';

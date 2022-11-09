@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { getAuctions, getMetals, createAuction, getHostingAuctions } from '@/lib/api/auctions';
+import { getAuctions, getMetals, createAuction, getMyAuctions } from '@/lib/api/auctions';
 import { AuctionParam, AuctionType } from '@/lib/api/types';
 
 const useMetals = () => useQuery(['metals'], () => getMetals());
@@ -20,10 +20,10 @@ const useFetchInfiniteAuctions = (auctionType: AuctionType) =>
     },
   );
 
-const useFetchInfiniteHostingAuctions = () =>
+const useFetchInfiniteMyAuctions = (myAuctionType = 'hosting') =>
   useInfiniteQuery(
-    ['getInfiniteHotingAuctions'],
-    ({ pageParam = 0 }) => getHostingAuctions({ pageParam }),
+    ['getInfiniteHotingAuctions', myAuctionType],
+    ({ pageParam = 0 }) => getMyAuctions({ pageParam, myAuctionType }),
     {
       getNextPageParam: (lastPage) => {
         if (!lastPage.last) {
@@ -38,5 +38,5 @@ export {
   useGetAuctions,
   useCreateAuction,
   useFetchInfiniteAuctions,
-  useFetchInfiniteHostingAuctions,
+  useFetchInfiniteMyAuctions,
 };

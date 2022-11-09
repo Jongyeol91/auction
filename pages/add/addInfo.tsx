@@ -36,7 +36,7 @@ function Add() {
       router.replace('/');
     },
     onError: (e: any) => {
-      alert(e.response.data.message);
+      Swal.fire('생성 실패', e.response.data.message, 'error');
     },
   });
 
@@ -50,8 +50,9 @@ function Add() {
     const reqBody = {
       auctionImageUrl: auctions.auctionImageUrl,
       auctionType: auctions.auctionType,
-      endTime: dayjs(data.endTime).format('YYYY-MM-DD hh:mm:ss'),
+      endTime: dayjs(data.endTime).format('YYYY-MM-DD HH:mm:ss'),
       auctionItem,
+      description: data.description,
     };
 
     mutate(reqBody);
@@ -61,7 +62,7 @@ function Add() {
     <TabTamplete>
       <AddTemplate
         title="경매 / 역경매 만들기"
-        buttonText="다음"
+        buttonText="생성하기"
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >

@@ -5,24 +5,29 @@ interface AuthParam {
   password: string;
 }
 
+interface Business {
+  businessType: string;
+  businessName: string;
+  representative: string;
+  registrationNumber: string;
+  licenceImageUrl: string;
+}
+
+interface Personal {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface Account {
+  bank: string;
+  accountNumber: string;
+  accountHolder: string;
+}
 interface RegisterParam {
-  business: {
-    businessType: string;
-    businessName: string;
-    representative: string;
-    registrationNumber: string;
-    licenceImageUrl: string;
-  };
-  personal: {
-    name: string;
-    email: string;
-    password: string;
-  };
-  account: {
-    bank: string;
-    accountNumber: string;
-    accountHolder: string;
-  };
+  business: Business;
+  personal: Personal;
+  account: Account;
   isEnabled: string;
 }
 
@@ -39,6 +44,13 @@ export interface User {
   id: number;
   username: string;
 }
+export interface ModifyUserParam {
+  business: Business;
+  personalUpdateCommand: {
+    name: string;
+  };
+  accountUpdateCommand: Account;
+}
 
 export async function register(params: RegisterParam) {
   const res = await defaultAxios.post('/user', params);
@@ -46,6 +58,13 @@ export async function register(params: RegisterParam) {
   // ssr에서 필요
   // const cookieHeader = res.headers['set-cookie'];
   // const headers = createCookieHeaders(cookieHeader);
+
+  return { result };
+}
+
+export async function modifyUser(params: ModifyUserParam) {
+  const res = await defaultAxios.put(`/user/${params.id}`, params.data);
+  const result = res.data;
 
   return { result };
 }

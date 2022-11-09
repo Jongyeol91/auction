@@ -1,12 +1,12 @@
-import { setDefaultAxiosCookie } from './defaultAxios';
+import { setDefaultAxiosAuth } from './defaultAxios';
 
-export function applyAuth(request: Request) {
-  const cookie = request.headers.get('Cookie');
+export function applyAuth() {
+  const token = localStorage.getItem('Authorization');
 
-  if (!cookie || !cookie.includes('token')) {
+  if (!token) {
     return false;
   }
 
-  setDefaultAxiosCookie(cookie);
+  setDefaultAxiosAuth(token);
   return true;
 }

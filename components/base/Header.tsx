@@ -6,44 +6,62 @@ import Link from 'next/link';
 import SearchArea from './SearchArea';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import { getProfile } from '@/lib/api/auth';
+import { useRouter } from 'next/router';
 
 function Header() {
+  const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
-  console.log('header', user);
+
+  const getToken = () => {
+    return localStorage.getItem('accessToken');
+  };
 
   const removeToken = () => {
     localStorage.removeItem('accessToken');
-    setUser('');
+    setUser(null);
+    router.replace('/');
   };
 
   return (
     <Block>
       <Content>
-        <Addon></Addon>
+        <Addon>
+          <Link href={'/'}>
+            <h3>
+              <b>EMETAL</b>
+            </h3>
+          </Link>
+        </Addon>
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            <Link href="notification">
-              <Button styleType="secondary" size="small">
-                알림
-              </Button>
-            </Link>
-            <Link href="hosting">
-              <Button styleType="tertiary" size="small">
-                내경매
-              </Button>
-            </Link>
-            <Link href="add">
-              <Button styleType="tertiary" size="small">
-                경매생성
-              </Button>
-            </Link>
+            {getToken() && (
+              <>
+                <Link href="notification">
+                  <Button styleType="secondary" size="small">
+                    알림
+                  </Button>
+                </Link>
+                <Link href="hosting">
+                  <Button styleType="tertiary" size="small">
+                    내경매
+                  </Button>
+                </Link>
+                <Link href="add">
+                  <Button styleType="tertiary" size="small">
+                    경매생성
+                  </Button>
+                </Link>
+              </>
+            )}
             <Link href="chart">
               <Button styleType="tertiary" size="small">
                 시세
               </Button>
             </Link>
-            {!user ? (
+            {!getToken() ? (
               <>
                 <Link href="login">
                   <Button styleType="primary" size="small">
