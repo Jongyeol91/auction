@@ -23,14 +23,14 @@ const notificationTypeTextMap = {
   ADMIN_NOTICE: '관리자공지',
 };
 
-const notificationItem = (notificationType: NotificationType) => {
-  const color = notificationTypeColorMap[notificationType];
-  const text = notificationTypeTextMap[notificationType];
-  return <Tag color={color}> {text}</Tag>;
-};
-
 function Notification() {
   const { data } = useGetNotification();
+
+  const notificationItem = (notificationType: NotificationType) => {
+    const color = notificationTypeColorMap[notificationType];
+    const text = notificationTypeTextMap[notificationType];
+    return <Tag color={color}> {text}</Tag>;
+  };
 
   return (
     <StyledTabTamplete>

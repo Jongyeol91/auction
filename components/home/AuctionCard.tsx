@@ -120,7 +120,7 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
         </TitleWrapper>
         <UserWrapper>
           <User />
-          {hostUser.personal.name}
+          {hostUser?.personal.name}
         </UserWrapper>
       </FirstLine>
       <TitleWrapper>
