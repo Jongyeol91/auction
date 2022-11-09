@@ -5,14 +5,10 @@ import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
-import { useEffect, useState } from 'react';
-import { getProfile } from '@/lib/api/auth';
-import { userAtom } from '@/store';
-import { useAtom } from 'jotai';
+import { useState } from 'react';
 import { colors } from '@/lib/colors';
 import { NORMAL, REVERSE } from '@/lib/constants';
 import { AuctionType } from '@/lib/api/types';
-import { setDefaultAxiosAuth } from '@/lib/defaultAxios';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
@@ -59,13 +55,6 @@ const Home: NextPage = () => {
     </StyledTabTamplete>
   );
 };
-
-// export async function getServerSideProps() {
-//   const auctions = await getAuctions();
-//   console.log(auctions);
-
-//   return { props: { auctions } };
-//}
 
 const ButtonWrapper = styled.div`
   display: flex;

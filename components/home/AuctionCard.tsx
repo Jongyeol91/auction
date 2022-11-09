@@ -12,6 +12,7 @@ import { bid } from '@/lib/api/auctions';
 import { useMutation } from '@tanstack/react-query';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { AUCTION_TYPE } from '@/lib/constants';
 
 const { Countdown } = Statistic;
 
@@ -19,11 +20,6 @@ interface Props {
   auctionContent: AuctionContent;
   forbidden: boolean;
 }
-
-const typeMap = {
-  NORMAL: '경매',
-  REVERSE: '역경매',
-};
 
 const auctionTypeColorMap = {
   NORMAL: 'green',
@@ -113,14 +109,14 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
       ) : null}
       <FirstLine>
         <TitleWrapper>
-          <Tag color={auctionTypeColorMap[auctionType]}>{typeMap[auctionType]}</Tag>
+          <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag>
           {statusTag()}
           <Tag>{metalName}</Tag>
           <Tag>{metalOptionName}</Tag>
         </TitleWrapper>
         <UserWrapper>
           <User />
-          {hostUser.personal.name}
+          {hostUser?.personal.name}
         </UserWrapper>
       </FirstLine>
       <TitleWrapper>
