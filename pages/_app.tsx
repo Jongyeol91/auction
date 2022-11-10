@@ -8,10 +8,10 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import { useEffect, useState } from 'react';
 import GlobalStyle from '@/styles/GlobalStyle';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { getProfile } from '@/lib/api/auth';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
 import { setDefaultAxiosAuth } from '@/lib/defaultAxios';
+import GlobalDialog from '@/components/base/GlobalDialog';
 
 // if (process.env.NODE_ENV === 'development') {
 //   require('mocks');
@@ -40,6 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ErrorBoundary>
           <Hydrate state={pageProps.dehydratedState}>
             <Component {...pageProps} />
+            <GlobalDialog />
           </Hydrate>
         </ErrorBoundary>
       </ThemeProvider>
