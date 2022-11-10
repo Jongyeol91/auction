@@ -5,14 +5,19 @@ import AuctionCard from './AuctionCard';
 
 interface Props {
   auctions: Auctions;
+  forbidden: boolean;
 }
 
-function AuctionCardList({ auctions }: Props) {
+function AuctionCardList({ auctions, forbidden }: Props) {
   return (
     <List>
       {auctions?.pages?.map((page) =>
         page.content?.map((auctionContent: AuctionContent) => (
-          <AuctionCard key={auctionContent.id} auctionContent={auctionContent} forbidden />
+          <AuctionCard
+            key={auctionContent.id}
+            auctionContent={auctionContent}
+            forbidden={forbidden}
+          />
         )),
       )}
     </List>
