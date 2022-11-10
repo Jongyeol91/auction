@@ -4,14 +4,11 @@ import Button from '@/components/common/Button';
 import QuestionLink from '@/components/auth/QuestionLink';
 import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { login, register } from '@/lib/api/auth';
-import { defaultAxios, setDefaultAxiosAuth } from '@/lib/defaultAxios';
+import { login } from '@/lib/api/auth';
+import { setDefaultAxiosAuth } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
 import { media } from '@/lib/media';
-import { getCookieToken, setCookieToken } from '@/lib/cookie';
-import Swal from 'sweetalert2';
-import { useAtom } from 'jotai';
-import { userAtom } from '@/store';
+import { useOpenDialog } from '@/hooks/useDialog';
 
 interface Props {
   mode: 'login' | 'register';
@@ -26,11 +23,10 @@ function SignInForm({ mode }: Props) {
   const {
     register: registerHookForm,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const [user, setUser] = useAtom(userAtom);
+  const { openDialog } = useOpenDialog();
 
   const { userIdPlaceholder, passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[mode];
@@ -38,27 +34,22 @@ function SignInForm({ mode }: Props) {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (mode === 'register') {
-      await register(data);
-    } else {
-      try {
-        const { status, result } = await login(data);
-        if (status == 200) {
-          await localStorage.setItem('accessToken', result.token);
-          await setDefaultAxiosAuth(result.token);
-          console.log('before', result);
+    try {
+      const { status, result } = await login(data);
+      if (status == 200) {
+        await localStorage.setItem('accessToken', result.token);
+        await setDefaultAxiosAuth(result.token);
+        console.log('before', result);
 
-          router.replace('/');
-          console.log('after', result);
-        }
-      } catch (e) {
-        Swal.fire('실패', e.response.data.message, 'error');
+        router.replace('/');
+        console.log('after', result);
       }
+    } catch (e: any) {
+      openDialog({
+        title: '로그인 실패',
+        description: e.response.data.message,
+      });
     }
-  };
-
-  const handleUser = () => {
-    defaultAxios.get('/api/me');
   };
 
   return (
