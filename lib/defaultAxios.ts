@@ -3,7 +3,7 @@ import axios from 'axios';
 export const defaultAxios = axios.create();
 const testToken = process.env.NEXT_PUBLIC_TEST_TOKEN;
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-const localBaseURL = process.env.NEXR_LOCAL_BASE_URL;
+const localBaseURL = process.env.NEXT_LOCAL_BASE_URL;
 const serviceKey = process.env.NEXT_PUBLIC_SERVICE_KEY;
 const NODE_ENV = process.env.NODE_ENV;
 

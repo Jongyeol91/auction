@@ -8,9 +8,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import { useEffect, useState } from 'react';
 import GlobalStyle from '@/styles/GlobalStyle';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { userAtom } from '@/store';
-import { useAtom } from 'jotai';
-import { setDefaultAxiosAuth } from '@/lib/defaultAxios';
+
 import GlobalDialog from '@/components/base/GlobalDialog';
 
 // if (process.env.NODE_ENV === 'development') {
@@ -18,19 +16,6 @@ import GlobalDialog from '@/components/base/GlobalDialog';
 // }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [, setUser] = useAtom(userAtom);
-
-  const handleGetProfile = async () => {
-    const token = await localStorage.getItem('accessToken');
-    if (token) {
-      await setDefaultAxiosAuth(token);
-    }
-    console.log('token', token);
-  };
-  useEffect(() => {
-    handleGetProfile();
-  }, []);
-
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>

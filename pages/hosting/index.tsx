@@ -6,23 +6,51 @@ import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
 import { AuctionType } from '@/lib/api/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { colors } from '@/lib/colors';
+import { getProfile } from '@/lib/api/auth';
+import { useRouter } from 'next/router';
+import { useUser } from '@/hooks/useUser';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>('hosting');
+  const [user, setUser] = useAtom(userAtom);
+  const router = useRouter();
+
   const {
     data: auctions,
     isLoading,
     hasNextPage,
     fetchNextPage,
-  } = useFetchInfiniteMyAuctions(selectedAuctionType);
+  } = useFetchInfiniteMyAuctions(selectedAuctionType, {
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.last) {
+        return lastPage.pageable.pageNumber + 1;
+      }
+    },
+    enabled: !!user,
+  });
+
+  const me = async () => {
+    const result = await getProfile();
+    if (result) {
+      setUser(result);
+    } else {
+      router.replace('/login');
+    }
+  };
+
+  useEffect(() => {
+    me();
+  }, []);
 
   const selectMenu = (selectedMenu) => {
     setSelectedAuctionType(selectedMenu);
   };
 
-  if (isLoading) return;
+  if (isLoading || !user) return;
 
   return (
     <StyledTabTamplete>

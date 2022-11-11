@@ -1,7 +1,8 @@
-import { defaultAxios } from '../defaultAxios';
+import { defaultAxios, setDefaultAxiosAuth } from '../defaultAxios';
+import { getStroageItem } from '../local-storage';
 
 interface AuthParam {
-  userId: string;
+  email: string;
   password: string;
 }
 
@@ -97,6 +98,11 @@ function createCookieHeaders(setCookieHeader: string[] | undefined) {
 }
 
 export async function getProfile() {
-  const res = await defaultAxios.get('user/profile');
-  return res.data;
+  const token = await getStroageItem('accessToken');
+  if (token) {
+    await setDefaultAxiosAuth(token);
+    const res = await defaultAxios.get('user/profile');
+    return res.data;
+  }
+  return null;
 }

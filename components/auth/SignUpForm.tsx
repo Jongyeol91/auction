@@ -30,15 +30,19 @@ type User = {
 
 function SignUpForm({ mode }: Props) {
   const [user, setUser] = useAtom(userAtom);
+  const router = useRouter();
 
   const me = async () => {
-    return await getProfile();
+    const result = await getProfile();
+    if (result) {
+      setUser(result);
+    } else {
+      router.replace('/register');
+    }
   };
 
   useEffect(() => {
-    const result = me();
-    console.log(result);
-    setUser(result);
+    me();
   }, []);
 
   const isModifyMode = !!user;
@@ -53,8 +57,6 @@ function SignUpForm({ mode }: Props) {
 
   const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[isModifyMode ? 'modify' : 'register'];
-
-  const router = useRouter();
 
   const { mutate: mutateRegister } = useRegister({
     onSuccess: () => {
@@ -149,7 +151,6 @@ function SignUpForm({ mode }: Props) {
           defaultValue={isModifyMode ? user?.personal.email : ''}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
-            required: '필수 입력',
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
           })}
         />

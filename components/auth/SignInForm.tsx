@@ -39,10 +39,7 @@ function SignInForm({ mode }: Props) {
       if (status == 200) {
         await localStorage.setItem('accessToken', result.token);
         await setDefaultAxiosAuth(result.token);
-        console.log('before', result);
-
         router.replace('/');
-        console.log('after', result);
       }
     } catch (e: any) {
       openDialog({
