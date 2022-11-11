@@ -6,58 +6,50 @@ import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { getStroageItem, removeStorageItem } from '@/lib/local-storage';
-import Notification from '@/components/vectors/Notification.svg';
-import SquarePlus from '@/components/vectors/SquarePlus.svg';
-import MyAuction from '@/components/vectors/MyAuction.svg';
-import Chart from '@/components/vectors/Chart.svg';
-import Auction from '@/components/vectors/Auction.svg';
+import { getProfile } from '@/lib/api/auth';
+import { useEffect } from 'react';
 
-function Header() {
+function TopHeader() {
+  const router = useRouter();
+  const [user, setUser] = useAtom(userAtom);
+
+  const me = async () => {
+    const result = await getProfile();
+    if (result) {
+      setUser(result);
+    }
+  };
+
+  useEffect(() => {
+    me();
+  }, []);
+
+  const removeToken = () => {
+    removeStorageItem('accessToken');
+    setUser(null);
+    router.replace('/');
+  };
+
   return (
     <Block>
       <Content>
-        <Addon></Addon>
+        <Addon>
+          <Link href={'/'}>
+            <LogoTitle>EMETAL</LogoTitle>
+          </Link>
+        </Addon>
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            {getStroageItem('accessToken') && (
-              <>
-                <Link href="notification">
-                  <IconWrapper>
-                    <Notification />
-                    <span>알림</span>
-                  </IconWrapper>
-                </Link>
-                <Link href="add">
-                  <IconWrapper>
-                    <SquarePlus />
-                    <span>경매 생성</span>
-                  </IconWrapper>
-                </Link>
-                <Link href="hosting">
-                  <IconWrapper>
-                    <Auction />
-                    <span>내경매</span>
-                  </IconWrapper>
-                </Link>
-              </>
-            )}
-            <Link href="chart">
-              <IconWrapper>
-                <Chart />
-                <span>시세</span>
-              </IconWrapper>
-            </Link>
             {!getStroageItem('accessToken') ? (
-              <></>
+              <>
+                <Link href="login">로그인</Link>
+                <Link href="register">회원가입</Link>
+              </>
             ) : (
               <>
-                <Link href="register">
-                  <IconWrapper>
-                    <MyAuction />
-                    <span>내정보</span>
-                  </IconWrapper>
-                </Link>
+                <span>{user?.personal?.name}님 환영합니다.</span>
+                <span onClick={removeToken}>로그아웃</span>
               </>
             )}
           </Buttons>
@@ -93,9 +85,9 @@ const IconWrapper = styled.div`
 `;
 
 const Block = styled.div`
-  background: ${colors.white};
+  background: ${colors.gray1};
   position: relative;
-  height: 72px;
+  height: 40px;
   border-bottom: 0.5px solid ${colors.gray3};
   padding: 0 16px;
   display: none;
@@ -128,9 +120,16 @@ const Buttons = styled.div`
   gap: 8px;
 `;
 
+const LogoTitle = styled.h1`
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  cursor: pointer;
+`;
+
 const HomeLink = styled(Link)`
   display: block;
   color: inherit;
 `;
 
-export default Header;
+export default TopHeader;

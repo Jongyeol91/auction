@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 import { colors } from '@/lib/colors';
 import { getProfile } from '@/lib/api/auth';
 import { useRouter } from 'next/router';
-import { useUser } from '@/hooks/useUser';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
 

@@ -3,6 +3,7 @@ import MobileHeader from '../base/MobileHeader';
 import FullHeightPage from '../common/FullHeightPage';
 import Footer from '../base/Footer';
 import Header from '../base/Header';
+import TopHeader from '../base/TopHeader';
 
 interface Props {
   children?: React.ReactNode;
@@ -16,6 +17,7 @@ function TabTamplete({ header, children, className }: Props) {
       {header ?? (
         <>
           <MobileHeader />
+          <TopHeader />
           <Header />
         </>
       )}
