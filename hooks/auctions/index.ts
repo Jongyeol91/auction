@@ -20,17 +20,11 @@ const useFetchInfiniteAuctions = (auctionType: AuctionType) =>
     },
   );
 
-const useFetchInfiniteMyAuctions = (myAuctionType = 'hosting') =>
+const useFetchInfiniteMyAuctions = (myAuctionType = 'hosting', options) =>
   useInfiniteQuery(
     ['getInfiniteHotingAuctions', myAuctionType],
     ({ pageParam = 0 }) => getMyAuctions({ pageParam, myAuctionType }),
-    {
-      getNextPageParam: (lastPage) => {
-        if (!lastPage.last) {
-          return lastPage.pageable.pageNumber + 1;
-        }
-      },
-    },
+    options,
   );
 
 export {
