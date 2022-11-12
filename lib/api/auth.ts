@@ -1,5 +1,4 @@
 import { defaultAxios, setDefaultAxiosAuth } from '../defaultAxios';
-import { getStroageItem } from '../local-storage';
 
 interface AuthParam {
   email: string;

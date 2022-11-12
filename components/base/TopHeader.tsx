@@ -39,7 +39,7 @@ function TopHeader() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            {!getStroageItem('accessToken') ? (
+            {!user ? (
               <>
                 <Link href="login">로그인</Link>
                 <Link href="register">회원가입</Link>

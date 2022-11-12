@@ -1,5 +1,3 @@
-import { userAtom } from '@/store';
-import { useAtom } from 'jotai';
 import { getProfile } from './api/auth';
 import Router from 'next/router';
 import { setDefaultAxiosAuth } from './defaultAxios';

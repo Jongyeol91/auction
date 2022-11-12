@@ -2,14 +2,16 @@ import { colors } from '@/lib/colors';
 import { media } from '@/lib/media';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { getStroageItem } from '@/lib/local-storage';
 import Notification from '@/components/vectors/Notification.svg';
 import SquarePlus from '@/components/vectors/SquarePlus.svg';
 import MyInfo from '@/components/vectors/MyInfo.svg';
 import Chart from '@/components/vectors/Chart.svg';
 import Auction from '@/components/vectors/Auction.svg';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/store';
 
 function Header() {
+  const [user] = useAtom(userAtom);
   return (
     <Block>
       <Content>
@@ -17,7 +19,7 @@ function Header() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            {getStroageItem('accessToken') && (
+            {!!user && (
               <>
                 <Link href="notification">
                   <IconWrapper>
@@ -45,7 +47,7 @@ function Header() {
                 <span>시세</span>
               </IconWrapper>
             </Link>
-            {!getStroageItem('accessToken') ? (
+            {user ? (
               <></>
             ) : (
               <>
