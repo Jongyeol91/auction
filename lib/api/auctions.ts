@@ -37,6 +37,19 @@ export async function createAuction(auction: AuctionParam) {
   return res.data;
 }
 
+export async function createAuctiomImage(image: File) {
+  const res = await defaultAxios.post(
+    '/auction/image',
+    { image },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+  return res.data;
+}
+
 export async function bid(bidData) {
   const res = await defaultAxios.post('/bid', bidData);
   return res.data;

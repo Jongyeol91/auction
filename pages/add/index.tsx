@@ -7,22 +7,43 @@ import BasicTemplete from '@/components/templates/BasicTemplate';
 import LabelSelect from '@/components/common/LabelSelect';
 import { useMetals } from '@/hooks/auctions';
 import { useEffect } from 'react';
-import LabelInput from '@/components/common/LabelInput';
 import { AUCTION_TYPE_OPTION } from '@/lib/constants';
+import { userAtom } from '@/store';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
 
-export const auctionsAtom = atom<FieldValues>({ metals: '', metalOptions: '' });
+interface FirstAuctionForm {
+  auctionType: 'NORMAL' | 'REVERSE';
+  metal: string;
+  metalOptionId: number | null;
+}
+
+export const firstAuctionFormAtom = atom<FirstAuctionForm>({
+  auctionType: 'NORMAL',
+  metal: '',
+  metalOptionId: null,
+});
 
 function Add() {
   const router = useRouter();
-  const [auctions, set] = useAtom(auctionsAtom);
+  const [auctionFormData, setAuctionFormData] = useAtom(firstAuctionFormAtom);
+  const [, setUser] = useAtom(userAtom);
+
   const {
-    register,
     watch,
     resetField,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const selectedMetal = watch('metal');
 
@@ -34,7 +55,7 @@ function Add() {
   if (isLoading) return;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    set(data);
+    setAuctionFormData(data);
     router.push('/add/addInfo');
   };
 
@@ -50,7 +71,7 @@ function Add() {
     const options = metalData
       ?.filter((data) => data.id === selectedMetal)
       .map((data) =>
-        data.metalOptions.map((metalOption) => ({
+        data.metalOptions.map((metalOption: { id: string; name: string }) => ({
           label: metalOption.name,
           value: metalOption.id,
         })),
@@ -70,7 +91,7 @@ function Add() {
         <Group>
           <Controller
             name="auctionType"
-            defaultValue={'NORMAL'}
+            defaultValue={auctionFormData?.auctionType}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -84,7 +105,7 @@ function Add() {
           />
           <Controller
             name="metal"
-            defaultValue={auctions.metal}
+            defaultValue={auctionFormData?.metal}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -97,8 +118,8 @@ function Add() {
             )}
           />
           <Controller
-            name="metalOption"
-            defaultValue={auctions.metalOption}
+            name="metalOptionId"
+            defaultValue={auctionFormData?.metalOptionId}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -106,15 +127,9 @@ function Add() {
                 label="금속 옵션"
                 options={filteredMetalOptions()}
                 {...field}
-                errorMessage={errors.metalOption?.message?.toString()}
+                errorMessage={errors.metalOptionId?.message?.toString()}
               />
             )}
-          />
-
-          <LabelInput
-            label="이미지"
-            errorMessage={errors.metalOption?.message?.toString()}
-            {...register('auctionImageUrl', { required: '필수 입력' })}
           />
         </Group>
       </AddTemplate>
