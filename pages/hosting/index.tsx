@@ -8,15 +8,22 @@ import Button from '@/components/common/Button';
 import { AuctionType } from '@/lib/api/types';
 import { useEffect, useState } from 'react';
 import { colors } from '@/lib/colors';
-import { getProfile } from '@/lib/api/auth';
-import { useRouter } from 'next/router';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>('hosting');
   const [user, setUser] = useAtom(userAtom);
-  const router = useRouter();
+
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const {
     data: auctions,
@@ -32,18 +39,18 @@ const Home: NextPage = () => {
     enabled: !!user,
   });
 
-  const me = async () => {
-    const result = await getProfile();
-    if (result) {
-      setUser(result);
-    } else {
-      router.replace('/login');
-    }
-  };
+  // const me = async () => {
+  //   const result = await getProfile();
+  //   if (result) {
+  //     setUser(result);
+  //   } else {
+  //     router.replace('/login');
+  //   }
+  // };
 
-  useEffect(() => {
-    me();
-  }, []);
+  // useEffect(() => {
+  //   me();
+  // }, []);
 
   const selectMenu = (selectedMenu) => {
     setSelectedAuctionType(selectedMenu);

@@ -11,11 +11,8 @@ import { email, password } from '@/lib/utils/pattern';
 import { media } from '@/lib/media';
 import { useModifyUser, useRegister } from '@/hooks/auth';
 import Swal from 'sweetalert2';
-import { useAtom } from 'jotai';
-import { userAtom } from '@/store';
 import { colors } from '@/lib/colors';
-import { useEffect } from 'react';
-import { getProfile } from '@/lib/api/auth';
+import { useUser } from '@/hooks/useUser';
 
 interface Props {
   mode: 'modify' | 'register';
@@ -29,21 +26,22 @@ type User = {
 };
 
 function SignUpForm({ mode }: Props) {
-  const [user, setUser] = useAtom(userAtom);
+  // const [user, setUser] = useAtom(userAtom);
+  const { user } = useUser();
   const router = useRouter();
 
-  const me = async () => {
-    const result = await getProfile();
-    if (result) {
-      setUser(result);
-    } else {
-      router.replace('/register');
-    }
-  };
+  // const me = async () => {
+  //   const result = await getProfile();
+  //   if (result) {
+  //     setUser(result);
+  //   } else {
+  //     router.replace('/register');
+  //   }
+  // };
 
-  useEffect(() => {
-    me();
-  }, []);
+  // useEffect(() => {
+  //   me();
+  // }, []);
 
   const isModifyMode = !!user;
 

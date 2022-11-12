@@ -98,11 +98,6 @@ function createCookieHeaders(setCookieHeader: string[] | undefined) {
 }
 
 export async function getProfile() {
-  const token = await getStroageItem('accessToken');
-  if (token) {
-    await setDefaultAxiosAuth(token);
-    const res = await defaultAxios.get('user/profile');
-    return res.data;
-  }
-  return null;
+  const res = await defaultAxios.get('user/profile');
+  return res.data;
 }
