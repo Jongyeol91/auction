@@ -37,7 +37,7 @@ const LabelSelect = forwardRef(({ label, errorMessage, options, ...field }: Prop
       <StyledSelect size="large" onFocus={onFocus} onBlur={onBlur} {...field}>
         {options?.map((option) => {
           return (
-            <Option key={option.label} value={option.value}>
+            <Option key={option.label + option.value} value={option.value}>
               {option.label}
             </Option>
           );
