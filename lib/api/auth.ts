@@ -1,4 +1,4 @@
-import { defaultAxios, setDefaultAxiosAuth } from '../defaultAxios';
+import { defaultAxios } from '../defaultAxios';
 
 interface AuthParam {
   email: string;
