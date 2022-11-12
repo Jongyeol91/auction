@@ -2,13 +2,10 @@ import { colors } from '@/lib/colors';
 import { media } from '@/lib/media';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { userAtom } from '@/store';
-import { useAtom } from 'jotai';
-import { useRouter } from 'next/router';
-import { getStroageItem, removeStorageItem } from '@/lib/local-storage';
+import { getStroageItem } from '@/lib/local-storage';
 import Notification from '@/components/vectors/Notification.svg';
 import SquarePlus from '@/components/vectors/SquarePlus.svg';
-import MyAuction from '@/components/vectors/MyAuction.svg';
+import MyInfo from '@/components/vectors/MyInfo.svg';
 import Chart from '@/components/vectors/Chart.svg';
 import Auction from '@/components/vectors/Auction.svg';
 
@@ -54,7 +51,7 @@ function Header() {
               <>
                 <Link href="register">
                   <IconWrapper>
-                    <MyAuction />
+                    <MyInfo />
                     <span>내정보</span>
                   </IconWrapper>
                 </Link>
@@ -89,6 +86,12 @@ const IconWrapper = styled.div`
     color: ${colors.gray9};
     font-size: 12px;
     margin: 0;
+  }
+  &:hover {
+    svg,
+    span {
+      color: ${colors.gray7};
+    }
   }
 `;
 
