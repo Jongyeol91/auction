@@ -33,7 +33,7 @@ const List = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
   ${media.wide} {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     margin-left: auto;
     margin-right: auto;
   }

@@ -6,22 +6,20 @@ import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { getStroageItem, removeStorageItem } from '@/lib/local-storage';
-import { getProfile } from '@/lib/api/auth';
 import { useEffect } from 'react';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
 
 function TopHeader() {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
 
-  const me = async () => {
-    const result = await getProfile();
-    if (result) {
-      setUser(result);
-    }
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
   };
 
   useEffect(() => {
-    me();
+    getUser();
   }, []);
 
   const removeToken = () => {
@@ -41,7 +39,7 @@ function TopHeader() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            {!getStroageItem('accessToken') ? (
+            {!user ? (
               <>
                 <Link href="login">로그인</Link>
                 <Link href="register">회원가입</Link>

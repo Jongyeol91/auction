@@ -12,7 +12,9 @@ import { bid } from '@/lib/api/auctions';
 import { useMutation } from '@tanstack/react-query';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-import { AUCTION_TYPE } from '@/lib/constants';
+import Weight from '@/components/vectors/Weight.svg';
+import Metal from '@/components/vectors/Metal.svg';
+import MoneyWon from '@/components/vectors/MoneyWon.svg';
 
 const { Countdown } = Statistic;
 
@@ -109,22 +111,33 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
       ) : null}
       <FirstLine>
         <TitleWrapper>
-          <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag>
+          {/* <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag> */}
           {statusTag()}
-          <Tag>{metalName}</Tag>
-          <Tag>{metalOptionName}</Tag>
+          {/* <Tag>{metalName}</Tag>
+          <Tag>{metalOptionName}</Tag> */}
+          {timer(endTime)}
         </TitleWrapper>
-        <UserWrapper>
+        {/* <UserWrapper>
           <User />
           {hostUser?.personal.name}
-        </UserWrapper>
+        </UserWrapper> */}
       </FirstLine>
-      <TitleWrapper>
-        <Tag>{amount + '톤'}</Tag>
-        <Tag>{'톤 당 ' + price + '원'}</Tag>
-        {timer(endTime)}
+      <InfoWrapper>
+        <IconWrapper>
+          <Metal />
+          <span>{metalName}</span>
+        </IconWrapper>
+        <IconWrapper>
+          <Weight />
+          <span>{amount + '톤'}</span>
+        </IconWrapper>
+        <IconWrapper>
+          <MoneyWon />
+          <span>{'톤 당 ' + price + '원'}</span>
+        </IconWrapper>
+
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
-      </TitleWrapper>
+      </InfoWrapper>
       <DescriptionArea>{description}</DescriptionArea>
       {seletced && auctionStatusType === 'ACTIVE' && !forbidden && (
         <Bid onSubmit={handleSubmit(onSubmit)}>
@@ -167,6 +180,13 @@ const TitleWrapper = styled.div`
     margin: 0;
   }
 `;
+const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 4px;
+`;
 
 const UserWrapper = styled.div`
   display: flex;
@@ -206,6 +226,28 @@ const DescriptionArea = styled.div`
   line-height: 1.5em;
   height: 4.5em;
   color: ${colors.gray7};
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 14px;
+  gap: 4px;
+  cursor: pointer;
+  svg {
+    width: 16px;
+    color: ${colors.gray9};
+  }
+  span {
+    display: flex;
+    justify-content: center;
+    color: ${colors.gray9};
+    font-size: 16px;
+    margin: 0;
+  }
 `;
 
 export default AuctionCard;

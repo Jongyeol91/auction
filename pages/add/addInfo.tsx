@@ -3,34 +3,73 @@ import LabelInput from '@/components/common/LabelInput';
 import TabTamplete from '@/components/templates/TabTemplate';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { useAtom } from 'jotai';
-import LabelDatePicker from '@/components/common/LabelDatePicker';
+import { atom, useAtom } from 'jotai';
 import LabelTextArea from '@/components/common/LableTextArea';
-import { auctionsAtom } from '.';
-import dayjs from 'dayjs';
 import { useCreateAuction } from '@/hooks/auctions';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { AUCTION_TYPE } from '@/lib/constants';
+import { useEffect } from 'react';
+import { userAtom } from '@/store';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { createAuctiomImage } from '@/lib/api/auctions';
+import Field from '@/components/common/Field';
+import LabelDatePicker from '@/components/common/LabelDatePicker';
+import dayjs from 'dayjs';
+import { AuctionItemParam } from '@/lib/api/types';
+import { firstAuctionFormAtom } from '@/pages/add/index';
+
+interface SecondFormParams {
+  auctionItem: AuctionItemParam;
+  endTime: string;
+  price: number;
+  description?: string;
+  auctionImageFile: File;
+}
+
+interface SecondFormSubmitData {
+  amount: number;
+  price: number;
+  metalOptionId: number;
+  endTime: string;
+  description?: string;
+  auctionImageFile: File;
+}
+
+const secondAuctionFormAtom = atom<SecondFormParams | null>(null);
 
 function Add() {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+  const [firstAuctionFormData, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
+  const [secondAuctionFormData, setSecondAuctionFormData] = useAtom(secondAuctionFormAtom);
+  const [, setUser] = useAtom(userAtom);
+
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [auctions, setAuctions] = useAtom(auctionsAtom);
 
-  const { mutate } = useCreateAuction({
-    onSuccess: () => {
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const methods = useForm();
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  const { mutate: mutateCreateAuction } = useCreateAuction({
+    onSuccess: async () => {
       queryClient.invalidateQueries(['auctions']);
       Swal.fire(
         '생성 성공!',
-        `${AUCTION_TYPE[auctions.auctionType]}매가 생성되었습니다.`,
+        `${AUCTION_TYPE[firstAuctionFormData.auctionType]}가 생성되었습니다.`,
         'success',
       );
       router.replace('/');
@@ -40,22 +79,45 @@ function Add() {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setAuctions((prev) => ({ ...prev, ...data }));
+  const { mutate: mutateImage } = useMutation(createAuctiomImage, {
+    onSuccess: async ({ imageUrl }: { imageUrl: string }) => {
+      console.log('s3 이미지 등록 완료: ', imageUrl);
+    },
+    onError: (e: any) => {
+      Swal.fire('이미지 업로드 실패', e.response.data.message, 'error');
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = (data: SecondFormSubmitData) => {
     const auctionItem = {
       amount: data.amount,
       price: data.price,
-      metalOptionId: auctions.metalOption,
+      metalOptionId: firstAuctionFormData?.metalOptionId,
     };
-    const reqBody = {
-      auctionImageUrl: auctions.auctionImageUrl,
-      auctionType: auctions.auctionType,
-      endTime: dayjs(data.endTime).format('YYYY-MM-DD HH:mm:ss'),
+    const currentPageAuctionFormData = {
       auctionItem,
+      endTime: dayjs(data.endTime).format('YYYY-MM-DD HH:mm:ss'),
       description: data.description,
     };
+    setSecondAuctionFormData(currentPageAuctionFormData);
 
-    mutate(reqBody);
+    const auctionImageFile = data.auctionImageFile;
+    mutateImage(auctionImageFile, {
+      onSuccess: ({ imageUrl }) => {
+        setFirstAuctionFormData({
+          auctionType: 'NORMAL',
+          metal: '',
+          metalOptionId: null,
+        });
+        mutateCreateAuction({
+          auctionType: firstAuctionFormData?.auctionType,
+          endTime: dayjs(data.endTime).format('YYYY-MM-DD HH:mm:ss'),
+          auctionItem,
+          description: data.description,
+          auctionImageUrl: imageUrl,
+        });
+      },
+    });
   };
 
   return (
@@ -67,23 +129,37 @@ function Add() {
         onSubmit={onSubmit}
       >
         <Group>
+          {/* <LabelInput
+            label="이미지"
+            type="file"
+            accept=".jpg,.jpeg,.png"
+            errorMessage={errors.metalOption?.message?.toString()}
+            {...register('auctionImageUrl', { required: '필수 입력' })}
+          /> */}
+          <Field
+            label="이미지"
+            name="auctionImageUrl"
+            fileName="auctionImageFile"
+            methods={methods}
+            type="imageUpload"
+          />
           <LabelInput
             label="물량"
             type="number"
-            defaultValue={auctions.amount}
+            defaultValue={secondAuctionFormData?.auctionItem.amount}
             errorMessage={errors.amount?.message?.toString()}
             {...register('amount', { valueAsNumber: true, required: '필수 입력' })}
           />
           <LabelInput
             label="단가"
             type="number"
-            defaultValue={auctions.price}
+            defaultValue={secondAuctionFormData?.auctionItem.price}
             errorMessage={errors.price?.message?.toString()}
             {...register('price', { valueAsNumber: true, required: '필수 입력' })}
           />
           <Controller
             name="endTime"
-            defaultValue={auctions.endTime}
+            defaultValue={secondAuctionFormData?.endTime}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -96,7 +172,7 @@ function Add() {
           />
           <StyledLabelTextArea
             label="설명"
-            defaultValue={auctions.descriptions}
+            defaultValue={secondAuctionFormData?.description}
             {...register('description')}
           />
         </Group>
@@ -104,7 +180,6 @@ function Add() {
     </TabTamplete>
   );
 }
-
 const Group = styled.div`
   display: flex;
   flex-direction: column;

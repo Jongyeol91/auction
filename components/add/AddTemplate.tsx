@@ -1,3 +1,4 @@
+import { colors } from '@/lib/colors';
 import { media } from '@/lib/media';
 import { UseFormHandleSubmit, FieldValues } from 'react-hook-form';
 import styled from 'styled-components';
@@ -24,10 +25,25 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   padding: 16px;
+  height: 100%;
   ${media.mobile} {
+    flex: 1;
     justify-content: center;
     width: 460px;
     align-self: center;
+  }
+  ${media.desktop} {
+    flex: 1;
+    justify-content: center;
+    width: 640px;
+    align-self: center;
+  }
+  h3 {
+    color: ${colors.gray5};
+    line-height: 1.5;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 16px;
   }
 `;
 
@@ -38,6 +54,10 @@ const Content = styled.main`
   display: flex;
   flex-direction: column;
   margin-bottom: 8px;
+  ${media.mobile} {
+    flex: initial;
+    padding-bottom: 24px;
+  }
 `;
 
 export default AddTemplate;

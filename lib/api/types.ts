@@ -59,6 +59,12 @@ export interface AuctionItem {
   price: number;
 }
 
+export interface AuctionItemParam {
+  metalOptionId: number;
+  amount: number;
+  price: number;
+}
+
 export interface HostUser {
   createdAt: number;
   updatedAt: number;
