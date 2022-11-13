@@ -121,3 +121,14 @@ export interface PriceIndexCategoryResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Notification {
+  id: number;
+  content: string;
+  isDisplayed: 'Y' | 'N';
+  notificationType: 'BID_WON' | 'BID_FAIL' | 'MISCARRIED' | 'ACTIONED_OFF' | 'ADMIN_NOTICE';
+  readAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  user: HostUser;
+}
