@@ -41,10 +41,10 @@ function TopHeader() {
           <Buttons>
             {!user ? (
               <>
-                <Link href="login">
+                <Link href="/login">
                   <StyledLink>로그인</StyledLink>
                 </Link>
-                <Link href="register">
+                <Link href="/register">
                   <StyledLink>회원가입</StyledLink>
                 </Link>
               </>
