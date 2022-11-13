@@ -148,6 +148,7 @@ function SignUpForm({ mode }: Props) {
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
+            required: '필수 입력',
           })}
         />
         <LabelInput
@@ -165,7 +166,7 @@ function SignUpForm({ mode }: Props) {
               placeholder={passwordPlaceholder}
               {...registerHookForm('password', {
                 required: '필수 입력',
-                pattern: { value: password, message: '8자리 이상, 특수문자 포함' },
+                pattern: { value: password, message: '8자리 이상, 문자, 특수문자 포함' },
               })}
             />
             <LabelInput
