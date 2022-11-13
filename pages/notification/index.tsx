@@ -1,8 +1,12 @@
 import TabTamplete from '@/components/templates/TabTemplate';
 import { useGetNotification } from '@/hooks/notification';
 import { media } from '@/lib/media';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { userAtom } from '@/store';
 
 import { List, Tag } from 'antd';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 type NotificationType = keyof typeof notificationTypeColorMap;
@@ -24,13 +28,31 @@ const notificationTypeTextMap = {
 };
 
 function Notification() {
-  const { data } = useGetNotification();
+  const [user, setUser] = useAtom(userAtom);
+
+  const { data, isLoading } = useGetNotification({ enabled: !!user });
+
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, []);
+
+  const getUser = async () => {
+    const userResult = await checkIsLoggedIn({ redirectTo: '/' });
+    if (userResult) {
+      setUser(userResult);
+      return;
+    }
+  };
 
   const notificationItem = (notificationType: NotificationType) => {
     const color = notificationTypeColorMap[notificationType];
     const text = notificationTypeTextMap[notificationType];
     return <Tag color={color}> {text}</Tag>;
   };
+
+  if (isLoading) return;
 
   return (
     <StyledTabTamplete>

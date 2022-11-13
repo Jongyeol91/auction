@@ -30,7 +30,7 @@ function Dialog({
       <Description>{description}</Description>
       <Footer>
         {mode === 'YESNO' && (
-          <Button styleType="secondary" onClick={onClose}>
+          <Button styleType="cancel" onClick={onClose}>
             {cancelText ?? '닫기'}
           </Button>
         )}

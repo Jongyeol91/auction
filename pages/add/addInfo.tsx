@@ -42,7 +42,7 @@ const secondAuctionFormAtom = atom<SecondFormParams | null>(null);
 function Add() {
   const [firstAuctionFormData, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
   const [secondAuctionFormData, setSecondAuctionFormData] = useAtom(secondAuctionFormAtom);
-  const [, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -53,7 +53,9 @@ function Add() {
   };
 
   useEffect(() => {
-    getUser();
+    if (!user) {
+      getUser();
+    }
   }, []);
 
   const methods = useForm();
@@ -146,6 +148,7 @@ function Add() {
           <LabelInput
             label="물량"
             type="number"
+            min={1}
             defaultValue={secondAuctionFormData?.auctionItem.amount}
             errorMessage={errors.amount?.message?.toString()}
             {...register('amount', { valueAsNumber: true, required: '필수 입력' })}
@@ -153,6 +156,7 @@ function Add() {
           <LabelInput
             label="단가"
             type="number"
+            min={1}
             defaultValue={secondAuctionFormData?.auctionItem.price}
             errorMessage={errors.price?.message?.toString()}
             {...register('price', { valueAsNumber: true, required: '필수 입력' })}

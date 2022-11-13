@@ -19,6 +19,12 @@ function Header() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
+            <Link href="add">
+              <IconWrapper>
+                <SquarePlus />
+                <span>경매 생성</span>
+              </IconWrapper>
+            </Link>
             {!!user && (
               <>
                 <Link href="notification">
@@ -27,12 +33,7 @@ function Header() {
                     <span>알림</span>
                   </IconWrapper>
                 </Link>
-                <Link href="add">
-                  <IconWrapper>
-                    <SquarePlus />
-                    <span>경매 생성</span>
-                  </IconWrapper>
-                </Link>
+
                 <Link href="hosting">
                   <IconWrapper>
                     <Auction />

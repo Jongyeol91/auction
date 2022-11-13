@@ -19,7 +19,9 @@ function TopHeader() {
   };
 
   useEffect(() => {
-    getUser();
+    if (!user) {
+      getUser();
+    }
   }, []);
 
   const removeToken = () => {

@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { AUCTION_TYPE_OPTION } from '@/lib/constants';
 import { userAtom } from '@/store';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { useOpenDialog } from '@/hooks/useDialog';
 
 interface FirstAuctionForm {
   auctionType: 'NORMAL' | 'REVERSE';
@@ -26,7 +27,8 @@ export const firstAuctionFormAtom = atom<FirstAuctionForm>({
 function Add() {
   const router = useRouter();
   const [auctionFormData, setAuctionFormData] = useAtom(firstAuctionFormAtom);
-  const [, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const { openDialog } = useOpenDialog();
 
   const {
     watch,
@@ -38,11 +40,24 @@ function Add() {
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
-    setUser(user);
+    if (user) {
+      setUser(user);
+    } else {
+      openDialog({
+        title: '경매 생성',
+        description: '로그인 이후 이용해주세요',
+        mode: 'YESNO',
+        confirmText: '로그인 하기',
+        onConfirm: () => router.replace('/login'),
+        onClose: () => router.replace('/'),
+      });
+    }
   };
 
   useEffect(() => {
-    getUser();
+    if (!user) {
+      getUser();
+    }
   }, []);
 
   const selectedMetal = watch('metal');
@@ -51,7 +66,7 @@ function Add() {
     resetField('metalOption');
   }, [resetField, selectedMetal]);
 
-  const { data: metalData, isLoading } = useMetals();
+  const { data: metalData, isLoading } = useMetals({ enabled: !!user });
   if (isLoading) return;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
