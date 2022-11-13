@@ -47,7 +47,7 @@ function Header() {
                 <span>시세</span>
               </IconWrapper>
             </Link>
-            {user ? (
+            {!user ? (
               <></>
             ) : (
               <>

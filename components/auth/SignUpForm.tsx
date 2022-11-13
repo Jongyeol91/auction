@@ -12,7 +12,10 @@ import { media } from '@/lib/media';
 import { useModifyUser, useRegister } from '@/hooks/auth';
 import Swal from 'sweetalert2';
 import { colors } from '@/lib/colors';
-import { useUser } from '@/hooks/useUser';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { userAtom } from '@/store';
 
 interface Props {
   mode: 'modify' | 'register';
@@ -26,22 +29,17 @@ type User = {
 };
 
 function SignUpForm({ mode }: Props) {
-  // const [user, setUser] = useAtom(userAtom);
-  const { user } = useUser();
   const router = useRouter();
+  const [user, setUser] = useAtom(userAtom);
 
-  // const me = async () => {
-  //   const result = await getProfile();
-  //   if (result) {
-  //     setUser(result);
-  //   } else {
-  //     router.replace('/register');
-  //   }
-  // };
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
 
-  // useEffect(() => {
-  //   me();
-  // }, []);
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const isModifyMode = !!user;
 
