@@ -9,6 +9,13 @@ const disabled = css`
   border: 1px solid ${({ theme }) => theme.gray5};
 `;
 
+const cancel = css`
+  background: ${colors.gray1};
+  color: ${colors.gray9};
+  border: 1px solid ${colors.gray2};
+  border-radius: 4px;
+`;
+
 const primary = css`
   background: ${colors.primary};
   color: ${colors.gray1};
@@ -69,6 +76,7 @@ export const sizeStyles = {
 };
 
 const buttonTheme = {
+  cancel,
   primary,
   secondary,
   tertiary,

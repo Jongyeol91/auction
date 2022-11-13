@@ -8,6 +8,7 @@ export const colors = {
   gray7: '#828388',
   gray8: '#75767b',
   gray9: '#55565b',
+  footerBG: '#f3f4f9',
   black: 'black',
   white: 'white',
   primary: 'orange',

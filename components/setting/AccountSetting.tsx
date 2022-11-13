@@ -60,8 +60,6 @@ function AccountSetting() {
     isModifyMode ? mutateChangePassword(form) : mutateFindPassword(form);
   };
 
-  // if (!user) return null;
-
   return (
     <Block>
       <div>
@@ -73,7 +71,7 @@ function AccountSetting() {
           </Section>
         )}
         <Section>
-          <h4>비밀번호</h4>
+          <h4>{isModifyMode ? '비밀번호 변경' : '이름과 이메일을 입력하세요.'}</h4>
           <form onSubmit={onSubmit}>
             <InputGroup>
               <Input

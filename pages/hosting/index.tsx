@@ -11,19 +11,26 @@ import { colors } from '@/lib/colors';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { useRouter } from 'next/router';
+import { useOpenDialog } from '@/hooks/useDialog';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>('hosting');
   const [user, setUser] = useAtom(userAtom);
 
-  const getUser = async () => {
-    const user = await checkIsLoggedIn();
-    setUser(user);
-  };
-
   useEffect(() => {
-    getUser();
+    if (!user) {
+      getUser();
+    }
   }, []);
+
+  const getUser = async () => {
+    const userResult = await checkIsLoggedIn({ redirectTo: '/' });
+    if (userResult) {
+      setUser(userResult);
+      return;
+    }
+  };
 
   const {
     data: auctions,

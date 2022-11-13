@@ -1,11 +1,16 @@
 import TabTamplete from '@/components/templates/TabTemplate';
 import { useGetNotification } from '@/hooks/notification';
 import { media } from '@/lib/media';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { userAtom } from '@/store';
 
-import { List, Tag } from 'antd';
+import { Tag, Collapse } from 'antd';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { Notification } from '@/lib/api/types';
 
-type NotificationType = keyof typeof notificationTypeColorMap;
+const { Panel } = Collapse;
 
 const notificationTypeColorMap = {
   BID_WON: 'blue', // 입찰낙찰
@@ -24,32 +29,53 @@ const notificationTypeTextMap = {
 };
 
 function Notification() {
-  const { data } = useGetNotification();
+  const [user, setUser] = useAtom(userAtom);
 
-  const notificationItem = (notificationType: NotificationType) => {
-    const color = notificationTypeColorMap[notificationType];
-    const text = notificationTypeTextMap[notificationType];
-    return <Tag color={color}> {text}</Tag>;
+  const { data, isLoading } = useGetNotification({ enabled: !!user });
+
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, []);
+
+  const getUser = async () => {
+    const userResult = await checkIsLoggedIn({ redirectTo: '/' });
+    if (userResult) {
+      setUser(userResult);
+      return;
+    }
   };
+
+  const notificationItem = (notification: Notification) => {
+    const color = notificationTypeColorMap[notification.notificationType];
+    const text = notificationTypeTextMap[notification.notificationType];
+    return (
+      <NotificationWapper>
+        <Wrapper>
+          <Tag color={color}> {text}</Tag>
+          {notification.content}
+        </Wrapper>
+        {notification.createdAt}
+      </NotificationWapper>
+    );
+  };
+
+  if (isLoading) return;
 
   return (
     <StyledTabTamplete>
       <Content>
-        <List
-          itemLayout="horizontal"
-          dataSource={data?.content}
-          renderItem={(item: {
-            notificationType: NotificationType;
-            content: string;
-            createdAt: string;
-          }) => (
-            <List.Item>
-              {notificationItem(item?.notificationType)}
-              <List.Item.Meta title={<a>{item?.content}</a>} />
-              <h5>{item?.createdAt}</h5>
-            </List.Item>
-          )}
-        />
+        <h2>알림</h2>
+        <Collapse defaultActiveKey={['1']}>
+          {data?.content.map((notification: Notification, idx: number) => {
+            return (
+              <Panel header={notificationItem(notification)} key={idx}>
+                <p>경매 카드를 넣어야 함</p>
+              </Panel>
+            );
+          })}
+        </Collapse>
       </Content>
     </StyledTabTamplete>
   );
@@ -63,6 +89,13 @@ const Content = styled.div`
     margin-right: auto;
   }
 `;
+
+const NotificationWapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Wrapper = styled.div``;
 
 const StyledTabTamplete = styled(TabTamplete)`
   padding: 16px 16px;

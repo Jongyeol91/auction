@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { userAtom } from '@/store';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { getStroageItem, removeStorageItem } from '@/lib/local-storage';
+import { removeStorageItem } from '@/lib/local-storage';
 import { useEffect } from 'react';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 
@@ -19,7 +19,9 @@ function TopHeader() {
   };
 
   useEffect(() => {
-    getUser();
+    if (!user) {
+      getUser();
+    }
   }, []);
 
   const removeToken = () => {
@@ -41,14 +43,18 @@ function TopHeader() {
           <Buttons>
             {!user ? (
               <>
-                <Link href="login">로그인</Link>
-                <Link href="register">회원가입</Link>
+                <Link href="/login">
+                  <StyledLink>로그인</StyledLink>
+                </Link>
+                <Link href="/register">
+                  <StyledLink>회원가입</StyledLink>
+                </Link>
               </>
             ) : (
-              <>
+              <UserInfoWrapper>
                 <span>{user?.personal?.name}님 환영합니다.</span>
-                <span onClick={removeToken}>로그아웃</span>
-              </>
+                <StyledLink onClick={removeToken}>로그아웃</StyledLink>
+              </UserInfoWrapper>
             )}
           </Buttons>
         </Addon>
@@ -56,31 +62,6 @@ function TopHeader() {
     </Block>
   );
 }
-
-const IconWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 30px;
-  height: 64px;
-  align-items: center;
-  justify-content: center;
-  margin: 0 10px;
-  padding: 0;
-  line-height: 14px;
-  cursor: pointer;
-  svg {
-    margin-bottom: 4px;
-    color: ${colors.gray9};
-  }
-  span {
-    display: flex;
-    justify-content: center;
-    width: 48px;
-    color: ${colors.gray9};
-    font-size: 12px;
-    margin: 0;
-  }
-`;
 
 const Block = styled.div`
   background: ${colors.gray1};
@@ -125,9 +106,19 @@ const LogoTitle = styled.h1`
   cursor: pointer;
 `;
 
-const HomeLink = styled(Link)`
-  display: block;
-  color: inherit;
+const StyledLink = styled.div`
+  color: ${colors.gray9};
+  font-weight: 700;
+  cursor: pointer;
+`;
+
+const UserInfoWrapper = styled.div`
+  span {
+    font-weight: 700;
+    color: ${colors.gray9};
+  }
+  display: flex;
+  gap: 16px;
 `;
 
 export default TopHeader;

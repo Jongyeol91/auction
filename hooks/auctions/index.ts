@@ -2,7 +2,8 @@ import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { getAuctions, getMetals, createAuction, getMyAuctions } from '@/lib/api/auctions';
 import { AuctionParam, AuctionType } from '@/lib/api/types';
 
-const useMetals = () => useQuery(['metals'], () => getMetals());
+const useMetals = (options: { enabled: boolean }) =>
+  useQuery(['metals'], () => getMetals(), options);
 const useGetAuctions = () => useQuery(['auctions'], () => getAuctions({}));
 const useCreateAuction = (options) =>
   useMutation((data: AuctionParam) => createAuction(data), options);
