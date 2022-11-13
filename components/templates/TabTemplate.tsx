@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import MobileHeader from '../base/MobileHeader';
-import FullHeightPage from '../common/FullHeightPage';
 import Footer from '../base/Footer';
 import Header from '../base/Header';
 import TopHeader from '../base/TopHeader';
+import { media } from '@/lib/media';
+import AutoHeightPage from '../common/AutoHeightPage';
+import GlobalFooter from '../base/GlobalFooter';
 
 interface Props {
   children?: React.ReactNode;
@@ -13,7 +15,7 @@ interface Props {
 
 function TabTamplete({ header, children, className }: Props) {
   return (
-    <FullHeightPage>
+    <AutoHeightPage>
       {header ?? (
         <>
           <MobileHeader />
@@ -22,8 +24,9 @@ function TabTamplete({ header, children, className }: Props) {
         </>
       )}
       <Content className={className}>{children}</Content>
+      <GlobalFooter />
       <Footer />
-    </FullHeightPage>
+    </AutoHeightPage>
   );
 }
 
@@ -32,6 +35,9 @@ const Content = styled.div`
   flex-direction: column;
   flex: 1;
   overflow: scroll;
+  ${media.mobile} {
+    overflow: hidden;
+  }
 `;
 
 export default TabTamplete;
