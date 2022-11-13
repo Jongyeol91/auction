@@ -11,7 +11,7 @@ export async function getMetals() {
   return res.data;
 }
 
-export async function getAuctions({ pageParam = 0, pageSize = 9, auctionType = null }) {
+export async function getAuctions({ pageParam = 0, pageSize = 12, auctionType = null }) {
   const res = await defaultAxios.get(`/auctions`, {
     params: {
       size: pageSize,
@@ -22,7 +22,7 @@ export async function getAuctions({ pageParam = 0, pageSize = 9, auctionType = n
   return res.data.auctions;
 }
 
-export async function getMyAuctions({ pageParam = 0, pageSize = 9, myAuctionType = 'hosting' }) {
+export async function getMyAuctions({ pageParam = 0, pageSize = 12, myAuctionType = 'hosting' }) {
   const res = await defaultAxios.get(`/auctions/${myAuctionType}`, {
     params: {
       size: pageSize,
