@@ -9,7 +9,7 @@ export const AUTH_DESCRIPTIONS = {
   },
   register: {
     userIdPlaceholder: '이메일을 입력해주세요',
-    passwordPlaceholder: '8자 이상, 영문/숫자/특수문자 중 2가지 이상 입력',
+    passwordPlaceholder: '8자 이상, 숫자, 특수문자 포함',
     buttonText: '회원가입',
     actionText: '로그인',
     question: '이미 회원이신가요?',
@@ -17,7 +17,7 @@ export const AUTH_DESCRIPTIONS = {
   },
   modify: {
     userIdPlaceholder: '이메일을 입력해주세요',
-    passwordPlaceholder: '8자 이상, 영문/숫자/특수문자 중 2가지 이상 입력',
+    passwordPlaceholder: '8자 이상, 숫자, 특수문자 포함',
     buttonText: '수정',
     actionText: '로그인',
     question: '이미 회원이신가요?',
