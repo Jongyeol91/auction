@@ -24,9 +24,9 @@ const Home: NextPage = () => {
   const [, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
   // const [user] = useAtom(userAtom);
 
-  useEffect(() => {
-    setFirstAuctionFormData(null);
-  }, []);
+  // useEffect(() => {
+  //   setFirstAuctionFormData(null);
+  // }, []);
 
   const {
     data: auctions,
