@@ -169,7 +169,6 @@ function Add() {
           />
           <Controller
             name="endTime"
-            defaultValue={secondAuctionFormData?.endTime}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
