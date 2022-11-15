@@ -11,8 +11,6 @@ import { colors } from '@/lib/colors';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
-import { useRouter } from 'next/router';
-import { useOpenDialog } from '@/hooks/useDialog';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>('hosting');
@@ -45,19 +43,6 @@ const Home: NextPage = () => {
     },
     enabled: !!user,
   });
-
-  // const me = async () => {
-  //   const result = await getProfile();
-  //   if (result) {
-  //     setUser(result);
-  //   } else {
-  //     router.replace('/login');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   me();
-  // }, []);
 
   const selectMenu = (selectedMenu) => {
     setSelectedAuctionType(selectedMenu);
@@ -94,13 +79,6 @@ const Home: NextPage = () => {
     </StyledTabTamplete>
   );
 };
-
-// export async function getServerSideProps() {
-//   const auctions = await getAuctions();
-//   console.log(auctions);
-
-//   return { props: { auctions } };
-//}
 
 const ButtonWrapper = styled.div`
   display: flex;
