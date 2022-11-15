@@ -1,6 +1,5 @@
 import AddTemplate from '@/components/add/AddTemplate';
 import LabelInput from '@/components/common/LabelInput';
-import TabTamplete from '@/components/templates/TabTemplate';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
@@ -19,6 +18,7 @@ import LabelDatePicker from '@/components/common/LabelDatePicker';
 import dayjs from 'dayjs';
 import { AuctionItemParam } from '@/lib/api/types';
 import { firstAuctionFormAtom } from '@/pages/add/index';
+import BasicTemplete from '@/components/templates/BasicTemplate';
 
 interface SecondFormParams {
   auctionItem: AuctionItemParam;
@@ -123,7 +123,7 @@ function Add() {
   };
 
   return (
-    <TabTamplete>
+    <BasicTemplete>
       <AddTemplate
         title="경매 / 역경매 만들기"
         buttonText="생성하기"
@@ -146,7 +146,7 @@ function Add() {
             type="imageUpload"
           />
           <LabelInput
-            label="물량"
+            label="물량 (톤)"
             type="number"
             min={1}
             defaultValue={secondAuctionFormData?.auctionItem.amount}
@@ -154,7 +154,7 @@ function Add() {
             {...register('amount', { valueAsNumber: true, required: '필수 입력' })}
           />
           <LabelInput
-            label="단가"
+            label="단가 (원)"
             type="number"
             min={1}
             defaultValue={secondAuctionFormData?.auctionItem.price}
@@ -181,7 +181,7 @@ function Add() {
           />
         </Group>
       </AddTemplate>
-    </TabTamplete>
+    </BasicTemplete>
   );
 }
 const Group = styled.div`

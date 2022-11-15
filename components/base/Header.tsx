@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Notification from '@/components/vectors/Notification.svg';
 import SquarePlus from '@/components/vectors/SquarePlus.svg';
 import MyInfo from '@/components/vectors/MyInfo.svg';
-import Chart from '@/components/vectors/Chart.svg';
 import Auction from '@/components/vectors/Auction.svg';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
@@ -19,7 +18,7 @@ function Header() {
         <Addon>
           {/* <SearchArea /> */}
           <Buttons>
-            <Link href="add">
+            <Link href="/add">
               <IconWrapper>
                 <SquarePlus />
                 <span>경매 생성</span>
@@ -27,14 +26,14 @@ function Header() {
             </Link>
             {!!user && (
               <>
-                <Link href="notification">
+                <Link href="/notification">
                   <IconWrapper>
                     <Notification />
                     <span>알림</span>
                   </IconWrapper>
                 </Link>
 
-                <Link href="hosting">
+                <Link href="/hosting">
                   <IconWrapper>
                     <Auction />
                     <span>내경매</span>
@@ -42,17 +41,17 @@ function Header() {
                 </Link>
               </>
             )}
-            <Link href="chart">
+            {/* <Link href="chart">
               <IconWrapper>
                 <Chart />
                 <span>시세</span>
               </IconWrapper>
-            </Link>
+            </Link> */}
             {!user ? (
               <></>
             ) : (
               <>
-                <Link href="register">
+                <Link href="/register">
                   <IconWrapper>
                     <MyInfo />
                     <span>내정보</span>
