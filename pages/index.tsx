@@ -11,10 +11,16 @@ import { NORMAL, REVERSE } from '@/lib/constants';
 import { AuctionType } from '@/lib/api/types';
 import { useAtom } from 'jotai';
 import { firstAuctionFormAtom } from './add';
+import { Card, Carousel } from 'antd';
+
+const gridStyle: React.CSSProperties = {
+  width: '25%',
+  textAlign: 'center',
+};
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
-  const [setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
+  const [, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
 
   useEffect(() => {
     setFirstAuctionFormData(null);
@@ -36,6 +42,35 @@ const Home: NextPage = () => {
   return (
     <StyledTabTamplete>
       <Content>
+        <SubMenuLayout>
+          <StyledMenu selected={!selectedAuctionType}>시세</StyledMenu>
+        </SubMenuLayout>
+        <StyledCarousel autoplay>
+          <div>
+            <Card>
+              <Card.Grid style={gridStyle}>구리 1000만원</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>금 1</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <Card.Grid style={gridStyle}>구리 1000만원</Card.Grid>
+              <Card.Grid hoverable={false} style={gridStyle}>
+                Content
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>금 1</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+              <Card.Grid style={gridStyle}>Content</Card.Grid>
+            </Card>
+          </div>
+        </StyledCarousel>
         <SubMenuLayout>
           <StyledMenu selected={!selectedAuctionType} onClick={() => selectMenu(null)}>
             전체경매
@@ -93,6 +128,10 @@ const StyledMenu = styled.h3<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StyledCarousel = styled(Carousel)`
+  margin-bottom: 30px;
 `;
 
 export default Home;
