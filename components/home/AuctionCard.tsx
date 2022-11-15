@@ -1,7 +1,6 @@
 import { type AuctionContent } from '@/lib/api/types';
 import { colors } from '@/lib/colors';
 import styled from 'styled-components';
-import User from '@/components/vectors/User.svg';
 import { Tag } from 'antd';
 import dayjs from 'dayjs';
 import { media } from '@/lib/media';
@@ -15,6 +14,7 @@ import Swal from 'sweetalert2';
 import Weight from '@/components/vectors/Weight.svg';
 import Metal from '@/components/vectors/Metal.svg';
 import MoneyWon from '@/components/vectors/MoneyWon.svg';
+import { AUCTION_TYPE } from '@/lib/constants';
 
 const { Countdown } = Statistic;
 
@@ -60,16 +60,8 @@ const timer = (endtime: string): React.ReactNode => {
 };
 
 function AuctionCard({ auctionContent, forbidden }: Props) {
-  const {
-    id,
-    auctionItem,
-    auctionImageUrl,
-    hostUser,
-    auctionType,
-    endTime,
-    description,
-    auctionStatusType,
-  } = auctionContent;
+  const { id, auctionItem, auctionImageUrl, auctionType, endTime, description, auctionStatusType } =
+    auctionContent;
   const { metalName, metalOptionName, amount, price } = auctionItem;
 
   const [seletced, setSelected] = useState<boolean>(false);
@@ -111,7 +103,7 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
       ) : null}
       <FirstLine>
         <TitleWrapper>
-          {/* <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag> */}
+          <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag>
           {statusTag()}
           {/* <Tag>{metalName}</Tag>
           <Tag>{metalOptionName}</Tag> */}
