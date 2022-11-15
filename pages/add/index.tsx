@@ -106,7 +106,6 @@ function Add() {
         <Group>
           <Controller
             name="auctionType"
-            defaultValue={auctionFormData?.auctionType}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -120,7 +119,6 @@ function Add() {
           />
           <Controller
             name="metal"
-            defaultValue={auctionFormData?.metal}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
@@ -134,7 +132,6 @@ function Add() {
           />
           <Controller
             name="metalOptionId"
-            defaultValue={auctionFormData?.metalOptionId}
             control={control}
             rules={{ required: '필수 입력' }}
             render={({ field }) => (

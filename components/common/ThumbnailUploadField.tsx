@@ -113,7 +113,6 @@ const ThumbnailUploadField = ({
           );
         }}
       />
-      {deletable && url ? <DeleteButton onClick={onDeleteButtonClick} /> : null}
     </Wrapper>
   );
 };

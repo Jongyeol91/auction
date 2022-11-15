@@ -5,13 +5,20 @@ import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { colors } from '@/lib/colors';
 import { NORMAL, REVERSE } from '@/lib/constants';
 import { AuctionType } from '@/lib/api/types';
+import { useAtom } from 'jotai';
+import { firstAuctionFormAtom } from './add';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
+  const [setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
+
+  useEffect(() => {
+    setFirstAuctionFormData(null);
+  }, []);
 
   const {
     data: auctions,

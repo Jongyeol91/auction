@@ -20,7 +20,7 @@ const { Countdown } = Statistic;
 
 interface Props {
   auctionContent: AuctionContent;
-  forbidden: boolean;
+  forbidden?: boolean;
 }
 
 const auctionTypeColorMap = {

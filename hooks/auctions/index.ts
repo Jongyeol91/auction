@@ -4,7 +4,9 @@ import { AuctionParam, AuctionType } from '@/lib/api/types';
 
 const useMetals = (options: { enabled: boolean }) =>
   useQuery(['metals'], () => getMetals(), options);
+
 const useGetAuctions = () => useQuery(['auctions'], () => getAuctions({}));
+
 const useCreateAuction = (options) =>
   useMutation((data: AuctionParam) => createAuction(data), options);
 
