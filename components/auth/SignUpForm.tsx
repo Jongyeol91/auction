@@ -16,6 +16,9 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 import { userAtom } from '@/store';
+import Input from '../common/Input';
+import { useMutation } from '@tanstack/react-query';
+import { registerImage } from '@/lib/api/auth';
 
 interface Props {
   mode: 'modify' | 'register';
@@ -31,6 +34,7 @@ type User = {
 function SignUpForm({ mode }: Props) {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
+  const isModifyMode = !!user;
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -40,8 +44,6 @@ function SignUpForm({ mode }: Props) {
   useEffect(() => {
     getUser();
   }, []);
-
-  const isModifyMode = !!user;
 
   const {
     register: registerHookForm,
@@ -53,6 +55,15 @@ function SignUpForm({ mode }: Props) {
 
   const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[isModifyMode ? 'modify' : 'register'];
+
+  const { mutate: mutateRegisterImage } = useMutation(registerImage, {
+    onSuccess: async ({ imageUrl }: { imageUrl: string }) => {
+      console.log('s3 사업자등록증 업로드 완료: ', imageUrl);
+    },
+    onError: (e: any) => {
+      Swal.fire('회원가입 실패', e.response.data.message, 'error');
+    },
+  });
 
   const { mutate: mutateRegister } = useRegister({
     onSuccess: () => {
@@ -80,14 +91,16 @@ function SignUpForm({ mode }: Props) {
       businessName,
       representative,
       registrationNumber,
-      licenceImageUrl,
       name,
       email,
       password,
       bank,
       accountNumber,
       accountHolder,
+      licenceImageUrl = user?.business.licenceImageUrl,
     } = data;
+
+    console.log(licenceImageUrl);
 
     const business = {
       businessType,
@@ -108,7 +121,17 @@ function SignUpForm({ mode }: Props) {
     };
 
     if (!isModifyMode) {
-      mutateRegister({ business, personal, account, isEnabled: 'Y' });
+      const licenceImageFile = data.licenceImageFile[0];
+      mutateRegisterImage(licenceImageFile, {
+        onSuccess: ({ imageUrl }) => {
+          mutateRegister({
+            business: { ...business, licenceImageUrl: imageUrl, test: 'test' },
+            personal,
+            account,
+            isEnabled: 'Y',
+          });
+        },
+      });
     } else {
       const personalUpdateCommand = {
         name,
@@ -131,24 +154,18 @@ function SignUpForm({ mode }: Props) {
     return getValues('password') === repasswordValue;
   };
 
-  const handleUser = () => {
-    defaultAxios.get('/api/me');
-  };
-  console.log(user);
-
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <h2>계정 정보</h2>
-
         <LabelInput
           label="이메일"
-          disabled={!!isModifyMode}
+          type="email"
+          disabled={isModifyMode}
           defaultValue={isModifyMode ? user?.personal.email : ''}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
-            required: '필수 입력',
           })}
         />
         <LabelInput
@@ -219,12 +236,23 @@ function SignUpForm({ mode }: Props) {
           errorMessage={errors.registrationNumber?.message?.toString()}
           {...registerHookForm('registrationNumber', { required: '필수 입력' })}
         />
-        <LabelInput
+        {/* <LabelInput
           label="사업자등록증"
           defaultValue={isModifyMode ? user?.business.licenceImageUrl : ''}
           errorMessage={errors.licenceImageUrl?.message?.toString()}
           {...registerHookForm('licenceImageUrl', { required: '필수 입력' })}
-        />
+        /> */}
+        {!isModifyMode && (
+          <div>
+            <StyledLabelInput
+              label="사업자등록증"
+              type="file"
+              accept=".jpg,.jpeg,.png"
+              errorMessage={errors.metalOption?.message?.toString()}
+              {...registerHookForm('licenceImageFile', { required: '필수 입력' })}
+            />
+          </div>
+        )}
         <h2>계좌 정보</h2>
         <LabelInput
           label="은행명"
@@ -295,6 +323,18 @@ const ActionsBox = styled.div`
 const FindPassword = styled.span`
   cursor: pointer;
   color: ${colors.primary};
+`;
+
+const StyledLabelInput = styled(LabelInput)`
+  border: none;
+`;
+
+const StyledInput = styled.input`
+  margin: 0;
+`;
+
+const Title = styled.div`
+  font-size: 16px;
 `;
 
 export default SignUpForm;

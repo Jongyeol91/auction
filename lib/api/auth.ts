@@ -62,6 +62,22 @@ export async function register(params: RegisterParam) {
   return { result };
 }
 
+export async function registerImage(image: File) {
+  const res = await defaultAxios.post(
+    '/user/image',
+    { image },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+  return res.data;
+  // ssr에서 필요
+  // const cookieHeader = res.headers['set-cookie'];
+  // const headers = createCookieHeaders(cookieHeader);
+}
+
 export async function modifyUser(params: ModifyUserParam) {
   const res = await defaultAxios.put(`/user/${params.id}`, params.data);
   const result = res.data;
