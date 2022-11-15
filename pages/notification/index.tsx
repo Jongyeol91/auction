@@ -71,11 +71,11 @@ function Notification() {
         <Collapse defaultActiveKey={['1']}>
           {data?.notificationResponses.content.map((notification: Notification, idx: number) => {
             return (
-              <Panel header={notificationItem(notification)} key={idx}>
+              <StyledPanel header={notificationItem(notification)} key={idx}>
                 <CardWrapper>
                   <AuctionCard auctionContent={notification.auctionResponse} />
                 </CardWrapper>
-              </Panel>
+              </StyledPanel>
             );
           })}
         </Collapse>
@@ -105,8 +105,12 @@ const StyledTabTamplete = styled(TabTamplete)`
 `;
 
 const CardWrapper = styled.div`
-  width: 100%;
+  width: 350px;
   display: flex;
+  justify-content: center;
+`;
+
+const StyledPanel = styled(Panel)`
   justify-content: center;
 `;
 
