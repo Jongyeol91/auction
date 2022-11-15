@@ -72,7 +72,9 @@ function Notification() {
           {data?.notificationResponses.content.map((notification: Notification, idx: number) => {
             return (
               <Panel header={notificationItem(notification)} key={idx}>
-                <AuctionCard auctionContent={notification.auctionResponse} />
+                <CardWrapper>
+                  <AuctionCard auctionContent={notification.auctionResponse} />
+                </CardWrapper>
               </Panel>
             );
           })}
@@ -100,6 +102,12 @@ const Wrapper = styled.div``;
 
 const StyledTabTamplete = styled(TabTamplete)`
   padding: 16px 16px;
+`;
+
+const CardWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 export default Notification;
