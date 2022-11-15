@@ -78,6 +78,7 @@ function SignUpForm({ mode }: Props) {
   const { mutate: mutateModifyUser } = useModifyUser({
     onSuccess: () => {
       Swal.fire('수정 성공!', '회원정보가 수정되었습니다.', 'success');
+      getUser();
       router.replace('/');
     },
     onError: (e: any) => {
@@ -99,8 +100,6 @@ function SignUpForm({ mode }: Props) {
       accountHolder,
       licenceImageUrl = user?.business?.licenceImageUrl,
     } = data;
-
-    console.log(licenceImageUrl);
 
     const business = {
       businessType,
