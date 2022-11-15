@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import { AuctionItemParam } from '@/lib/api/types';
 import { firstAuctionFormAtom } from '@/pages/add/index';
 import BasicTemplete from '@/components/templates/BasicTemplate';
+import { useOpenDialog } from '@/hooks/useDialog';
 
 interface SecondFormParams {
   auctionItem: AuctionItemParam;
@@ -43,6 +44,7 @@ function Add() {
   const [firstAuctionFormData, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
   const [secondAuctionFormData, setSecondAuctionFormData] = useAtom(secondAuctionFormAtom);
   const [user, setUser] = useAtom(userAtom);
+  const { openDialog } = useOpenDialog();
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -53,6 +55,10 @@ function Add() {
   };
 
   useEffect(() => {
+    if (!firstAuctionFormData.metal) {
+      openDialog({ title: '새로고침 발생', description: '경매를 다시 만들어주세요' });
+      router.push('/add');
+    }
     if (!user) {
       getUser();
     }

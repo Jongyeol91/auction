@@ -7,5 +7,5 @@ export async function getNotification({ pageParam = 0, pageSize = 9 }) {
       page: pageParam,
     },
   });
-  return res.data.notifications;
+  return res.data;
 }

@@ -9,6 +9,7 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Notification } from '@/lib/api/types';
+import AuctionCard from '@/components/home/AuctionCard';
 
 const { Panel } = Collapse;
 
@@ -68,10 +69,10 @@ function Notification() {
       <Content>
         <h2>알림</h2>
         <Collapse defaultActiveKey={['1']}>
-          {data?.content.map((notification: Notification, idx: number) => {
+          {data?.notificationResponses.content.map((notification: Notification, idx: number) => {
             return (
               <Panel header={notificationItem(notification)} key={idx}>
-                <p>경매 카드를 넣어야 함</p>
+                <AuctionCard auctionContent={notification.auctionResponse} />
               </Panel>
             );
           })}
