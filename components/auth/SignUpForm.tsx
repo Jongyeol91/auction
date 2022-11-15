@@ -34,6 +34,7 @@ type User = {
 function SignUpForm({ mode }: Props) {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
+  const isModifyMode = !!user;
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -43,8 +44,6 @@ function SignUpForm({ mode }: Props) {
   useEffect(() => {
     getUser();
   }, []);
-
-  const isModifyMode = !!user;
 
   const {
     register: registerHookForm,
@@ -98,13 +97,17 @@ function SignUpForm({ mode }: Props) {
       bank,
       accountNumber,
       accountHolder,
+      licenceImageUrl = user?.business.licenceImageUrl,
     } = data;
+
+    console.log(licenceImageUrl);
 
     const business = {
       businessType,
       businessName,
       representative,
       registrationNumber,
+      licenceImageUrl,
     };
     const personal = {
       name,
@@ -116,9 +119,9 @@ function SignUpForm({ mode }: Props) {
       accountNumber,
       accountHolder,
     };
-    const licenceImageFile = data.licenceImageFile[0];
 
     if (!isModifyMode) {
+      const licenceImageFile = data.licenceImageFile[0];
       mutateRegisterImage(licenceImageFile, {
         onSuccess: ({ imageUrl }) => {
           mutateRegister({
@@ -157,12 +160,12 @@ function SignUpForm({ mode }: Props) {
         <h2>계정 정보</h2>
         <LabelInput
           label="이메일"
-          disabled={!!isModifyMode}
-          defaultValue={isModifyMode ? user?.personal.email : '12'}
+          type="email"
+          disabled={isModifyMode}
+          defaultValue={isModifyMode ? user?.personal.email : ''}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
-            required: '필수 입력',
           })}
         />
         <LabelInput
@@ -239,15 +242,17 @@ function SignUpForm({ mode }: Props) {
           errorMessage={errors.licenceImageUrl?.message?.toString()}
           {...registerHookForm('licenceImageUrl', { required: '필수 입력' })}
         /> */}
-        <div>
-          <StyledLabelInput
-            label="사업자등록증"
-            type="file"
-            accept=".jpg,.jpeg,.png"
-            errorMessage={errors.metalOption?.message?.toString()}
-            {...registerHookForm('licenceImageFile', { required: '필수 입력' })}
-          />
-        </div>
+        {!isModifyMode && (
+          <div>
+            <StyledLabelInput
+              label="사업자등록증"
+              type="file"
+              accept=".jpg,.jpeg,.png"
+              errorMessage={errors.metalOption?.message?.toString()}
+              {...registerHookForm('licenceImageFile', { required: '필수 입력' })}
+            />
+          </div>
+        )}
         <h2>계좌 정보</h2>
         <LabelInput
           label="은행명"

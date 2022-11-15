@@ -7,7 +7,7 @@ function GlobalFooter() {
       <Wrapper>
         <FirstRow>
           <FirstRowColumn1Title>
-            <p>Everyday with you (슬로건)</p>
+            <p>Everyday with you</p>
             <p>EMETAL</p>
           </FirstRowColumn1Title>
           <div>
