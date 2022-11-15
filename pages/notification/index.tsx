@@ -68,7 +68,7 @@ function Notification() {
     <StyledTabTamplete>
       <Content>
         <h2>알림</h2>
-        <Collapse defaultActiveKey={['1']}>
+        <Collapse>
           {data?.notificationResponses.content.map((notification: Notification, idx: number) => {
             return (
               <Panel header={notificationItem(notification)} key={idx}>
