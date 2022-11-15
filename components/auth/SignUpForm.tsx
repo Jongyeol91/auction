@@ -97,7 +97,7 @@ function SignUpForm({ mode }: Props) {
       bank,
       accountNumber,
       accountHolder,
-      licenceImageUrl = user?.business.licenceImageUrl,
+      licenceImageUrl = user?.business?.licenceImageUrl,
     } = data;
 
     console.log(licenceImageUrl);
