@@ -42,14 +42,14 @@ function TopHeader() {
           {/* <SearchArea /> */}
           <Buttons>
             {!user ? (
-              <>
+              <AuthWrapper>
                 <Link href="/login">
                   <StyledLink>로그인</StyledLink>
                 </Link>
                 <Link href="/register">
                   <StyledLink>회원가입</StyledLink>
                 </Link>
-              </>
+              </AuthWrapper>
             ) : (
               <UserInfoWrapper>
                 <span>{user?.personal?.name}님 환영합니다.</span>
@@ -91,6 +91,11 @@ const Content = styled.div`
 const Addon = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const AuthWrapper = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 
 const Buttons = styled.div`
