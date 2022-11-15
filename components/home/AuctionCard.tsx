@@ -212,11 +212,11 @@ const DescriptionArea = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   line-height: 1.5em;
-  height: 4.5em;
+  height: 7.5em;
   color: ${colors.gray7};
 `;
 
