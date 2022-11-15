@@ -34,6 +34,7 @@ type User = {
 function SignUpForm({ mode }: Props) {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
+  const isModifyMode = !!user;
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -43,8 +44,6 @@ function SignUpForm({ mode }: Props) {
   useEffect(() => {
     getUser();
   }, []);
-
-  const isModifyMode = !!user;
 
   const {
     register: registerHookForm,
@@ -62,7 +61,7 @@ function SignUpForm({ mode }: Props) {
       console.log('s3 사업자등록증 업로드 완료: ', imageUrl);
     },
     onError: (e: any) => {
-      Swal.fire('이미지 업로드 실패', e.response.data.message, 'error');
+      Swal.fire('회원가입 실패', e.response.data.message, 'error');
     },
   });
 
@@ -92,20 +91,23 @@ function SignUpForm({ mode }: Props) {
       businessName,
       representative,
       registrationNumber,
-      licenceImageUrl,
       name,
       email,
       password,
       bank,
       accountNumber,
       accountHolder,
+      licenceImageUrl = user?.business.licenceImageUrl,
     } = data;
+
+    console.log(licenceImageUrl);
 
     const business = {
       businessType,
       businessName,
       representative,
       registrationNumber,
+      licenceImageUrl,
     };
     const personal = {
       name,
@@ -117,13 +119,13 @@ function SignUpForm({ mode }: Props) {
       accountNumber,
       accountHolder,
     };
-    const licenceImageFile = { image: data.licenceImageFile };
 
     if (!isModifyMode) {
+      const licenceImageFile = data.licenceImageFile[0];
       mutateRegisterImage(licenceImageFile, {
         onSuccess: ({ imageUrl }) => {
           mutateRegister({
-            business: { ...business, licenceImageUrl: imageUrl },
+            business: { ...business, licenceImageUrl: imageUrl, test: 'test' },
             personal,
             account,
             isEnabled: 'Y',
@@ -158,12 +160,12 @@ function SignUpForm({ mode }: Props) {
         <h2>계정 정보</h2>
         <LabelInput
           label="이메일"
-          disabled={!!isModifyMode}
+          type="email"
+          disabled={isModifyMode}
           defaultValue={isModifyMode ? user?.personal.email : ''}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
-            required: '필수 입력',
           })}
         />
         <LabelInput
@@ -240,16 +242,17 @@ function SignUpForm({ mode }: Props) {
           errorMessage={errors.licenceImageUrl?.message?.toString()}
           {...registerHookForm('licenceImageUrl', { required: '필수 입력' })}
         /> */}
-        <div>
-          <Title>사업자등록증</Title>
-          <StyledInput
-            label="이미지"
-            type="file"
-            accept=".jpg,.jpeg,.png"
-            errorMessage={errors.metalOption?.message?.toString()}
-            {...registerHookForm('licenceImageFile', { required: '필수 입력' })}
-          />
-        </div>
+        {!isModifyMode && (
+          <div>
+            <StyledLabelInput
+              label="사업자등록증"
+              type="file"
+              accept=".jpg,.jpeg,.png"
+              errorMessage={errors.metalOption?.message?.toString()}
+              {...registerHookForm('licenceImageFile', { required: '필수 입력' })}
+            />
+          </div>
+        )}
         <h2>계좌 정보</h2>
         <LabelInput
           label="은행명"
@@ -320,6 +323,10 @@ const ActionsBox = styled.div`
 const FindPassword = styled.span`
   cursor: pointer;
   color: ${colors.primary};
+`;
+
+const StyledLabelInput = styled(LabelInput)`
+  border: none;
 `;
 
 const StyledInput = styled.input`
