@@ -247,7 +247,6 @@ function SignUpForm({ mode }: Props) {
             <StyledLabelInput
               label="사업자등록증"
               type="file"
-              accept=".jpg,.jpeg,.png"
               errorMessage={errors.metalOption?.message?.toString()}
               {...registerHookForm('licenceImageFile', { required: '필수 입력' })}
             />
