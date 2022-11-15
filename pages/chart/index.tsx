@@ -7,14 +7,10 @@ import styled from 'styled-components';
 
 function Chart() {
   const [categoryId, setCategoryId] = useState<number>(1);
-  const { data: priceIndexCategoryAllData } = useQuery(
-    {
-      queryKey: ['categoryAll'],
-      queryFn: () => getPriceIndexCategoryAll(),
-    },
-    { enabled: !!user },
-  );
-  console.log(priceIndexCategoryAllData);
+  const { data: priceIndexCategoryAllData } = useQuery({
+    queryKey: ['categoryAll'],
+    queryFn: () => getPriceIndexCategoryAll(),
+  });
 
   const { data: priceIndexData } = useQuery({
     queryKey: ['category', categoryId],
