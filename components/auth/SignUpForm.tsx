@@ -62,7 +62,7 @@ function SignUpForm({ mode }: Props) {
       console.log('s3 사업자등록증 업로드 완료: ', imageUrl);
     },
     onError: (e: any) => {
-      Swal.fire('이미지 업로드 실패', e.response.data.message, 'error');
+      Swal.fire('회원가입 실패', e.response.data.message, 'error');
     },
   });
 
@@ -92,7 +92,6 @@ function SignUpForm({ mode }: Props) {
       businessName,
       representative,
       registrationNumber,
-      licenceImageUrl,
       name,
       email,
       password,
@@ -117,13 +116,13 @@ function SignUpForm({ mode }: Props) {
       accountNumber,
       accountHolder,
     };
-    const licenceImageFile = { image: data.licenceImageFile };
+    const licenceImageFile = data.licenceImageFile[0];
 
     if (!isModifyMode) {
       mutateRegisterImage(licenceImageFile, {
         onSuccess: ({ imageUrl }) => {
           mutateRegister({
-            business: { ...business, licenceImageUrl: imageUrl },
+            business: { ...business, licenceImageUrl: imageUrl, test: 'test' },
             personal,
             account,
             isEnabled: 'Y',
@@ -159,7 +158,7 @@ function SignUpForm({ mode }: Props) {
         <LabelInput
           label="이메일"
           disabled={!!isModifyMode}
-          defaultValue={isModifyMode ? user?.personal.email : ''}
+          defaultValue={isModifyMode ? user?.personal.email : '12'}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
@@ -241,9 +240,8 @@ function SignUpForm({ mode }: Props) {
           {...registerHookForm('licenceImageUrl', { required: '필수 입력' })}
         /> */}
         <div>
-          <Title>사업자등록증</Title>
-          <StyledInput
-            label="이미지"
+          <StyledLabelInput
+            label="사업자등록증"
             type="file"
             accept=".jpg,.jpeg,.png"
             errorMessage={errors.metalOption?.message?.toString()}
@@ -320,6 +318,10 @@ const ActionsBox = styled.div`
 const FindPassword = styled.span`
   cursor: pointer;
   color: ${colors.primary};
+`;
+
+const StyledLabelInput = styled(LabelInput)`
+  border: none;
 `;
 
 const StyledInput = styled.input`
