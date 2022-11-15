@@ -155,7 +155,6 @@ function Add() {
             label="물량 (톤)"
             type="number"
             min={1}
-            defaultValue={secondAuctionFormData?.auctionItem.amount}
             errorMessage={errors.amount?.message?.toString()}
             {...register('amount', { valueAsNumber: true, required: '필수 입력' })}
           />
@@ -163,7 +162,6 @@ function Add() {
             label="단가 (원)"
             type="number"
             min={1}
-            defaultValue={secondAuctionFormData?.auctionItem.price}
             errorMessage={errors.price?.message?.toString()}
             {...register('price', { valueAsNumber: true, required: '필수 입력' })}
           />
@@ -179,11 +177,7 @@ function Add() {
               />
             )}
           />
-          <StyledLabelTextArea
-            label="설명"
-            defaultValue={secondAuctionFormData?.description}
-            {...register('description')}
-          />
+          <StyledLabelTextArea label="설명" {...register('description')} />
         </Group>
       </AddTemplate>
     </BasicTemplete>
