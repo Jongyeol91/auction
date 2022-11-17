@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import BulletList from '@/components/vectors/BulletList.svg';
 import Search from '@/components/vectors/Search.svg';
 import Add from '@/components/vectors/Add.svg';
+import Notification from '@/components/vectors/Notification.svg';
 import React, { useMemo } from 'react';
 import { colors } from '@/lib/colors';
 import { useRouter } from 'next/router';
@@ -11,6 +12,7 @@ const IconMap = {
   home: <BulletList />,
   search: <Search />,
   add: <Add />,
+  notification: <Notification />,
 };
 
 interface Props {
@@ -39,6 +41,7 @@ const Item = styled.a<{ isActive?: boolean }>`
   align-items: center;
   justify-content: center;
   width: 24px;
+  color: ${colors.gray6};
   ${({ isActive }) =>
     isActive &&
     css`

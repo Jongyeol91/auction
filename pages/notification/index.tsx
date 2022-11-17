@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Notification } from '@/lib/api/types';
 import AuctionCard from '@/components/home/AuctionCard';
+import { useRouter } from 'next/router';
+import { useOpenDialog } from '@/hooks/useDialog';
 
 const { Panel } = Collapse;
 
@@ -31,22 +33,32 @@ const notificationTypeTextMap = {
 
 function Notification() {
   const [user, setUser] = useAtom(userAtom);
+  const router = useRouter();
+  const { openDialog } = useOpenDialog();
 
   const { data, isLoading } = useGetNotification({ enabled: !!user });
+
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    if (user) {
+      setUser(user);
+    } else {
+      openDialog({
+        title: '알림',
+        description: '로그인 이후 이용해주세요',
+        mode: 'YESNO',
+        confirmText: '로그인 하기',
+        onConfirm: () => router.replace('/login'),
+        onClose: () => router.replace('/'),
+      });
+    }
+  };
 
   useEffect(() => {
     if (!user) {
       getUser();
     }
   }, []);
-
-  const getUser = async () => {
-    const userResult = await checkIsLoggedIn({ redirectTo: '/' });
-    if (userResult) {
-      setUser(userResult);
-      return;
-    }
-  };
 
   const notificationItem = (notification: Notification) => {
     const color = notificationTypeColorMap[notification.notificationType];
@@ -62,7 +74,7 @@ function Notification() {
     );
   };
 
-  if (isLoading) return;
+  if (isLoading || !user) return;
 
   return (
     <StyledTabTamplete>

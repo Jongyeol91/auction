@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import MobileHeader from '../base/MobileHeader';
-import Footer from '../base/Footer';
+import Footer from '../base/MobileBottomNavigation';
 import Header from '../base/Header';
 import TopHeader from '../base/TopHeader';
 import { media } from '@/lib/media';
 import AutoHeightPage from '../common/AutoHeightPage';
 import GlobalFooter from '../base/GlobalFooter';
+import useCheckMobile from '@/hooks/useCheckMobile';
 
 interface Props {
   children?: React.ReactNode;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 function TabTamplete({ header, children, className }: Props) {
+  const isMobile = useCheckMobile();
   return (
     <AutoHeightPage>
       {header ?? (
@@ -24,7 +26,7 @@ function TabTamplete({ header, children, className }: Props) {
         </>
       )}
       <Content className={className}>{children}</Content>
-      <GlobalFooter />
+      {!isMobile && <GlobalFooter />}
       <Footer />
     </AutoHeightPage>
   );

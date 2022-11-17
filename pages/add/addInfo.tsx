@@ -42,7 +42,7 @@ const secondAuctionFormAtom = atom<SecondFormParams | null>(null);
 
 function Add() {
   const [firstAuctionFormData, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
-  const [secondAuctionFormData, setSecondAuctionFormData] = useAtom(secondAuctionFormAtom);
+  const [, setSecondAuctionFormData] = useAtom(secondAuctionFormAtom);
   const [user, setUser] = useAtom(userAtom);
   const { openDialog } = useOpenDialog();
 
@@ -129,7 +129,7 @@ function Add() {
   };
 
   return (
-    <BasicTemplete>
+    <BasicTemplete hasBackButton>
       <AddTemplate
         title="경매 / 역경매 만들기"
         buttonText="생성하기"

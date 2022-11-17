@@ -95,8 +95,10 @@ function Add() {
     return options;
   };
 
+  if (!user) return;
+
   return (
-    <BasicTemplete>
+    <BasicTemplete hasBackButton>
       <AddTemplate
         title="경매 / 역경매 만들기"
         buttonText="다음"

@@ -1,4 +1,5 @@
 import ArrowLeft from '@/components/vectors/ArrowLeft';
+import { colors } from '@/lib/colors';
 import styled from 'styled-components';
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 function HeaderBackButton({ onClick }: Props) {
   return (
     <IconButton onClick={onClick}>
-      <ArrowLeft />
+      <ArrowLeft color={colors.gray5} />
     </IconButton>
   );
 }
