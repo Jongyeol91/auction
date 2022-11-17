@@ -8,6 +8,7 @@ export interface CreateAuctionResponse {
 }
 
 export interface Auctions {
+  pages: any;
   totalElements: number;
   totalPages: number;
   sort: Sort;

@@ -10,7 +10,7 @@ interface Props {
   headerRight?: string;
 }
 
-function MobileHeader({ title = 'emetal', headerLeft, headerRight }: Props) {
+function MobileHeader({ title = 'EMETAL', headerLeft, headerRight }: Props) {
   return (
     <Block>
       {headerLeft && <HeaderSide position="left">{headerLeft}</HeaderSide>}
@@ -44,7 +44,7 @@ const Block = styled.header`
 `;
 
 const Title = styled.div`
-  color: ${colors.gray3};
+  color: ${colors.gray7};
   font-weight: 600;
 `;
 

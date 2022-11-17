@@ -5,28 +5,14 @@ import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { colors } from '@/lib/colors';
 import { NORMAL, REVERSE } from '@/lib/constants';
 import { AuctionType } from '@/lib/api/types';
-import { useAtom } from 'jotai';
-import { firstAuctionFormAtom } from './add';
-import { Card, Carousel } from 'antd';
-import { userAtom } from '@/store';
-
-const gridStyle: React.CSSProperties = {
-  width: '25%',
-  textAlign: 'center',
-};
+import ChartCarousel from '@/components/charts/ChartCarousel';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
-  const [, setFirstAuctionFormData] = useAtom(firstAuctionFormAtom);
-  // const [user] = useAtom(userAtom);
-
-  // useEffect(() => {
-  //   setFirstAuctionFormData(null);
-  // }, []);
 
   const {
     data: auctions,
@@ -58,61 +44,9 @@ const Home: NextPage = () => {
     <StyledTabTamplete>
       <Content>
         <SubMenuLayout>
-          <StyledMenu selected={!selectedAuctionType}>시세</StyledMenu>
+          <StyledMenu selected>시세</StyledMenu>
         </SubMenuLayout>
-        <StyledCarousel autoplay>
-          <div>
-            <Card>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>구리</span>
-                  <span>500만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>알루미늄</span>
-                  <span>1000만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>금</span>
-                  <span>1000만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>은</span> <span>2000만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-            </Card>
-          </div>
-          <div>
-            <Card>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>철</span> <span>3000만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>텅스텐</span> <span>1000만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>합성 금속</span> <span>100만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-              <Card.Grid style={gridStyle}>
-                <ChartTextWrapper>
-                  <span>희토류</span> <span>9000만원</span>
-                </ChartTextWrapper>
-              </Card.Grid>
-            </Card>
-          </div>
-        </StyledCarousel>
+        <ChartCarousel />
         <SubMenuLayout>
           <StyledMenu selected={!selectedAuctionType} onClick={() => selectMenu(null)}>
             전체경매
@@ -170,24 +104,6 @@ const StyledMenu = styled.h3<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const ChartTextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  span {
-    &:nth-child(1) {
-      font-size: 16px;
-      font-weight: 700;
-    }
-    font-weight: 700;
-    color: ${colors.gray7};
-  }
-`;
-
-const StyledCarousel = styled(Carousel)`
-  margin-bottom: 40px;
 `;
 
 export default Home;

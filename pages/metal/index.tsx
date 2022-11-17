@@ -11,6 +11,10 @@ import { AUCTION_TYPE_OPTION } from '@/lib/constants';
 import { userAtom } from '@/store';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 import { useOpenDialog } from '@/hooks/useDialog';
+import LabelInput from '@/components/common/LabelInput';
+import { useMutation } from '@tanstack/react-query';
+import { createMetal } from '@/lib/api/metal';
+import Swal from 'sweetalert2';
 
 interface FirstAuctionForm {
   auctionType: 'NORMAL' | 'REVERSE';
@@ -24,19 +28,31 @@ export const firstAuctionFormAtom = atom<FirstAuctionForm>({
   metalOptionId: null,
 });
 
-function Add() {
+function MetalPage() {
   const router = useRouter();
   const [auctionFormData, setAuctionFormData] = useAtom(firstAuctionFormAtom);
   const [user, setUser] = useAtom(userAtom);
   const { openDialog } = useOpenDialog();
 
   const {
+    register,
     watch,
     resetField,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const selectedMetal = watch('metal');
+
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, []);
+
+  useEffect(() => {
+    resetField('metalOption');
+  }, [resetField, selectedMetal]);
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -44,7 +60,7 @@ function Add() {
       setUser(user);
     } else {
       openDialog({
-        title: '경매 생성',
+        title: '금속 생성',
         description: '로그인 이후 이용해주세요',
         mode: 'YESNO',
         confirmText: '로그인 하기',
@@ -54,24 +70,23 @@ function Add() {
     }
   };
 
-  useEffect(() => {
-    if (!user) {
-      getUser();
-    }
-  }, []);
-
-  const selectedMetal = watch('metal');
-
-  useEffect(() => {
-    resetField('metalOption');
-  }, [resetField, selectedMetal]);
+  const { mutate: createMetalMutate } = useMutation(createMetal, {
+    onSuccess: async () => {
+      Swal.fire('금속 등록 성공', '금속이 등록되었습니다.', 'success');
+    },
+    onError: (e: any) => {
+      Swal.fire('금속 등록 실패', e.response.data.message, 'error');
+    },
+  });
 
   const { data: metalData, isLoading } = useMetals({ enabled: !!user });
   if (isLoading) return;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setAuctionFormData(data);
-    router.push('/add/addInfo');
+    console.log(data);
+
+    createMetalMutate(data);
+    //router.push('/add/addInfo');
   };
 
   const filteredMetals = () => {
@@ -95,44 +110,22 @@ function Add() {
     return options;
   };
 
-  if (!user) return;
-
   return (
-    <BasicTemplete hasBackButton>
+    <BasicTemplete>
       <AddTemplate
-        title="경매 / 역경매 만들기"
+        title="금속 만들기"
         buttonText="다음"
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
       >
         <Group>
-          <Controller
-            name="auctionType"
-            control={control}
-            rules={{ required: '필수 입력' }}
-            render={({ field }) => (
-              <LabelSelect
-                label="타입"
-                options={AUCTION_TYPE_OPTION}
-                {...field}
-                errorMessage={errors.metal?.message?.toString()}
-              />
-            )}
+          <LabelInput
+            label="금속"
+            errorMessage={errors.metal?.message?.toString()}
+            {...register('metal', { required: '필수 입력' })}
           />
-          <Controller
-            name="metal"
-            control={control}
-            rules={{ required: '필수 입력' }}
-            render={({ field }) => (
-              <LabelSelect
-                label="금속"
-                options={filteredMetals()}
-                {...field}
-                errorMessage={errors.metal?.message?.toString()}
-              />
-            )}
-          />
-          <Controller
+
+          {/* <Controller
             name="metalOptionId"
             control={control}
             rules={{ required: '필수 입력' }}
@@ -144,7 +137,7 @@ function Add() {
                 errorMessage={errors.metalOptionId?.message?.toString()}
               />
             )}
-          />
+          /> */}
         </Group>
       </AddTemplate>
     </BasicTemplete>
@@ -156,7 +149,7 @@ const Group = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 16px;
-  flex: 1;
+  padding-bottom: 16px;
 `;
 
-export default Add;
+export default MetalPage;

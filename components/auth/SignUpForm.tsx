@@ -4,7 +4,6 @@ import Button from '@/components/common/Button';
 import QuestionLink from '@/components/auth/QuestionLink';
 import { AUTH_DESCRIPTIONS } from '@/lib/constants';
 import { useForm, SubmitHandler, Controller, FieldValues } from 'react-hook-form';
-import { defaultAxios } from '@/lib/defaultAxios';
 import { useRouter } from 'next/router';
 import LabelSelect from '../common/LabelSelect';
 import { email, password } from '@/lib/utils/pattern';
@@ -16,7 +15,6 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 import { userAtom } from '@/store';
-import Input from '../common/Input';
 import { useMutation } from '@tanstack/react-query';
 import { registerImage } from '@/lib/api/auth';
 
@@ -43,12 +41,14 @@ function SignUpForm({ mode }: Props) {
 
   useEffect(() => {
     getUser();
+    reset();
   }, []);
 
   const {
     register: registerHookForm,
     handleSubmit,
     getValues,
+    reset,
     control,
     formState: { errors },
   } = useForm();
@@ -161,7 +161,7 @@ function SignUpForm({ mode }: Props) {
           label="이메일"
           type="email"
           disabled={isModifyMode}
-          defaultValue={isModifyMode ? user?.personal.email : ''}
+          defaultValue={'234234'}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
@@ -169,7 +169,7 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="이름"
-          defaultValue={isModifyMode ? user?.personal.name : ''}
+          value={isModifyMode ? user?.personal.name : ''}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />
