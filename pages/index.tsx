@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     <StyledTabTamplete>
       <Content>
         <SubMenuLayout>
-          <StyledMenu selected={!selectedAuctionType}>시세</StyledMenu>
+          <StyledMenu selected>시세</StyledMenu>
         </SubMenuLayout>
         <ChartCarousel />
         <SubMenuLayout>
