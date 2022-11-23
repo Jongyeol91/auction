@@ -11,6 +11,7 @@ import { AUCTION_TYPE_OPTION } from '@/lib/constants';
 import { userAtom } from '@/store';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 import { useOpenDialog } from '@/hooks/useDialog';
+import Link from 'next/link';
 
 interface FirstAuctionForm {
   auctionType: 'NORMAL' | 'REVERSE';
@@ -63,7 +64,7 @@ function Add() {
   const selectedMetal = watch('metal');
 
   useEffect(() => {
-    resetField('metalOption');
+    resetField('metalOptionId');
   }, [resetField, selectedMetal]);
 
   const { data: metalData, isLoading } = useMetals({ enabled: !!user });
@@ -106,6 +107,9 @@ function Add() {
         onSubmit={onSubmit}
       >
         <Group>
+          <Link href="/metal" target="_blank">
+            원하는 금속이 없다면?
+          </Link>
           <Controller
             name="auctionType"
             control={control}

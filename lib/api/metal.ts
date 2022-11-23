@@ -1,17 +1,16 @@
-import { adminAxios } from '../adminAxios';
-import { AuctionParam } from './types';
-
-// export async function createAuction(params: createAuction) {
-//   const res = await defaultAxios.post<CreateAuctionResponse>('/api/auction', params);
-//   return res.data;
-// }
+import { defaultAxios } from '@/lib/defaultAxios';
 
 export async function getMetals() {
-  const res = await adminAxios.get('/metals');
+  const res = await defaultAxios.get('/metals');
   return res.data;
 }
 
 export async function createMetal(data: { metal: string }) {
-  const res = await adminAxios.post('/metal', { name: data.metal });
+  const res = await defaultAxios.post('/metal', { name: data.metal });
+  return res.data;
+}
+
+export async function createMetalOption(data: { metalId: number; name: string }) {
+  const res = await defaultAxios.post('/metal/option', data);
   return res.data;
 }
