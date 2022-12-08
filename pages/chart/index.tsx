@@ -1,12 +1,34 @@
 import { MainChart } from '@/components/charts/MainChart';
 import Button from '@/components/common/Button';
+import BasicTemplete from '@/components/templates/BasicTemplate';
+import TabTamplete from '@/components/templates/TabTemplate';
 import { getPriceIndexCategory, getPriceIndexCategoryAll } from '@/lib/api/price-index';
+import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import { userAtom } from '@/store';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 function Chart() {
-  const [categoryId, setCategoryId] = useState<number>(1);
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [categoryId, setCategoryId] = useState<number>(id);
+  const [user, setUser] = useAtom(userAtom);
+
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
+
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, []);
+
   const { data: priceIndexCategoryAllData } = useQuery({
     queryKey: ['categoryAll'],
     queryFn: () => getPriceIndexCategoryAll(),
@@ -18,27 +40,35 @@ function Chart() {
   });
 
   return (
-    <ChartWrapper>
-      <ChartInnerWrapper>
-        <MainChart priceIndexData={priceIndexData} />
-      </ChartInnerWrapper>
-      <ChartButtonWrapper>
-        {priceIndexCategoryAllData?.map((cv) => (
-          <Button key={cv.id} onClick={() => setCategoryId(cv.id)} layoutMode="fullWidth">
-            {cv.name}
-          </Button>
-        ))}
-      </ChartButtonWrapper>
-    </ChartWrapper>
+    <TabTamplete>
+      <ChartWrapper>
+        <ChartInnerWrapper>
+          <MainChart priceIndexData={priceIndexData} />
+        </ChartInnerWrapper>
+        <ChartButtonWrapper>
+          {priceIndexCategoryAllData?.map((cv) => (
+            <Button
+              key={cv.id}
+              isSelected={cv.id == categoryId}
+              onClick={() => setCategoryId(cv.id)}
+              layoutMode="fullWidth"
+            >
+              {cv.name}
+            </Button>
+          ))}
+        </ChartButtonWrapper>
+      </ChartWrapper>
+    </TabTamplete>
   );
 }
 
 const ChartWrapper = styled.div`
+  width: 1200px;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   height: 400px;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const ChartInnerWrapper = styled.div`
