@@ -11,6 +11,7 @@ import { colors } from '@/lib/colors';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/store';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
+import EmptyPage from '@/components/common/Empty';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>('hosting');
@@ -67,7 +68,11 @@ const Home: NextPage = () => {
             참가(경매/역경매)
           </StyledMenu>
         </SubMenuLayout>
-        <AuctionCardList auctions={auctions} forbidden></AuctionCardList>
+        {auctions?.pages.content ? (
+          <AuctionCardList auctions={auctions} forbidden></AuctionCardList>
+        ) : (
+          <EmptyPage description="개설하거나 참가한 경매가 없습니다" />
+        )}
         {hasNextPage && (
           <ButtonWrapper>
             <Button size="medium" onClick={fetchNextPage}>

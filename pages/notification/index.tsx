@@ -12,6 +12,7 @@ import { Notification } from '@/lib/api/types';
 import AuctionCard from '@/components/home/AuctionCard';
 import { useRouter } from 'next/router';
 import { useOpenDialog } from '@/hooks/useDialog';
+import EmptyPage from '@/components/common/Empty';
 
 const { Panel } = Collapse;
 
@@ -37,6 +38,7 @@ function Notification() {
   const { openDialog } = useOpenDialog();
 
   const { data, isLoading } = useGetNotification({ enabled: !!user });
+  console.log(data);
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -91,6 +93,9 @@ function Notification() {
             );
           })}
         </Collapse>
+        {data?.notificationResponses.content.length == 0 && (
+          <EmptyPage description="알림이 아직 없습니다." />
+        )}
       </Content>
     </StyledTabTamplete>
   );
