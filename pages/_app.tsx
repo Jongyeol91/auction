@@ -21,7 +21,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <ThemeProvider theme={colors}>
-        <GlobalStyle />
         <ErrorBoundary>
           <Hydrate state={pageProps.dehydratedState}>
             <Component {...pageProps} />

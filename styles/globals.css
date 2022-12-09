@@ -12,7 +12,6 @@ a {
 * {
   box-sizing: border-box;
 }
-
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -24,9 +23,25 @@ a {
   }
 } */
 
+/* @font-face {
+  font-family: 'Pretendard';
+  font-weight: 900;
+  font-display: swap;
+  src: local('Pretendard Black'), url('/fonts/Pretendard-Black.woff2') format('woff2'),
+    url('/fonts/Pretendard-Black.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-display: swap;
+  src: local('Pretendard SemiBold'), url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+    url('/fonts/Pretendard-SemiBold.woff') format('woff');
+} */
+
 #__next {
   height: 100%;
-
+  font-family: Pretendard;
   display: flex;
   flex-direction: column;
 }
