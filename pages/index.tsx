@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import styled from 'styled-components';
-import { useFetchInfiniteAuctions } from '@/hooks/auctions';
+import { useFetchInfiniteAuctions, useMetals } from '@/hooks/auctions';
 import TabTamplete from '@/components/templates/TabTemplate';
 import AuctionCardList from '@/components/home/AuctionCardList';
 import { media } from '@/lib/media';
@@ -16,7 +16,7 @@ import EmptyPage from '@/components/common/Empty';
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
   const [sort, setSort] = useState('createdAt,desc');
-  const [metalId, setMetalId] = useState();
+  const [metalId, setMetalId] = useState('');
 
   const onSelectSort = (sort: string) => {
     setSort(sort);
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
     setMetalId(metalId);
   };
 
-  // const { data: metalData, isLoading: isLoadingMetals } = useMetals();
+  const { data: metalData, isLoading: isLoadingMetals } = useMetals();
 
   const {
     data: auctions,
@@ -75,11 +75,11 @@ const Home: NextPage = () => {
 
           <FilterWrapper>
             <LabelSelect options={FILTER_TYPE_OPTION} onChange={onSelectSort} defaultValue={sort} />
-            {/* <LabelSelect
-              options={renderMetalLabel()}
+            <LabelSelect
+              options={[{ label: '금속전체', value: '' }, ...renderMetalLabel()]}
               onChange={onSelectMetalId}
               defaultValue={metalId}
-            /> */}
+            />
           </FilterWrapper>
         </AuctionMenuWrapper>
         {auctions ? (
@@ -119,8 +119,14 @@ const Content = styled.div`
 
 const FilterWrapper = styled.div`
   display: flex;
-  padding: 10px 0;
-  gap: 4px;
+  flex-direction: column;
+  margin-bottom: 16px;
+  ${media.tablet} {
+    margin-bottom: 0;
+    padding: 10px 0;
+    gap: 4px;
+    flex-direction: row;
+  }
 `;
 
 const SubMenuLayout = styled.div`
@@ -131,9 +137,11 @@ const SubMenuLayout = styled.div`
 `;
 
 const AuctionMenuWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${media.tablet} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const StyledMenu = styled.h3<{ selected: boolean }>`
