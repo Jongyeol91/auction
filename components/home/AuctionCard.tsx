@@ -82,7 +82,7 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
   };
 
   const onClickCard = () => {
-    if (auctionStatusType !== 'ACTIVE') {
+    if (auctionStatusType !== 'ACTIVE' && !forbidden) {
       Swal.fire('입찰불가', `${AUCTION_STATUS_MAP[auctionStatusType]}된 경매입니다.`, 'error');
     }
     setSelected(!seletced);
