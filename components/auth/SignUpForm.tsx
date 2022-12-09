@@ -157,19 +157,21 @@ function SignUpForm({ mode }: Props) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <h2>계정 정보</h2>
+
         <LabelInput
           label="이메일"
           type="email"
-          defaultValue={user?.personal.email}
-          disabled={isModifyMode}
+          defaultValue={isModifyMode ? user?.personal.email : ''}
+          readOnly={!!isModifyMode}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
+            required: '필수',
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
           })}
         />
         <LabelInput
           label="이름"
-          defaultValue={user?.personal.name}
+          defaultValue={isModifyMode ? user?.personal.name : ''}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />
