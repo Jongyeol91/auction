@@ -15,6 +15,7 @@ import Weight from '@/components/vectors/Weight.svg';
 import Metal from '@/components/vectors/Metal.svg';
 import MoneyWon from '@/components/vectors/MoneyWon.svg';
 import { AUCTION_TYPE, AUCTION_STATUS_MAP } from '@/lib/constants';
+import LabelInput from '../common/LabelInput';
 
 const { Countdown } = Statistic;
 
@@ -42,13 +43,11 @@ const timer = (endtime: string): React.ReactNode => {
   const imminent = remainDays < 7;
   return (
     <>
-      <Tag color={imminent ? 'error' : ''}>
-        <Countdown
-          value={deadline}
-          valueStyle={{ fontSize: 12, color: imminent ? 'red' : 'black' }}
-          format="D일 HH시간 mm분 ss초"
-        ></Countdown>
-      </Tag>
+      <Countdown
+        value={deadline}
+        valueStyle={{ fontSize: 12, color: imminent ? 'red' : 'black' }}
+        format="D일 HH시간 mm분 ss초"
+      ></Countdown>
     </>
   );
 };
@@ -105,16 +104,12 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
       ) : null}
       <FirstLine>
         <TitleWrapper>
-          <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag>
-          {statusTag()}
-          {/* <Tag>{metalName}</Tag>
-          <Tag>{metalOptionName}</Tag> */}
-          {timer(endTime)}
+          <TypeWrapper>
+            {statusTag()}
+            <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag>
+          </TypeWrapper>
+          <>{timer(endTime)}</>
         </TitleWrapper>
-        {/* <UserWrapper>
-          <User />
-          {hostUser?.personal.name}
-        </UserWrapper> */}
       </FirstLine>
       <InfoWrapper>
         <IconWrapper>
@@ -135,7 +130,12 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
       <DescriptionArea>{description}</DescriptionArea>
       {seletced && auctionStatusType === 'ACTIVE' && !forbidden && (
         <Bid onSubmit={handleSubmit(onSubmit)}>
-          <StyledInput type="number" min={1} {...register('price', { required: '필수 입력' })} />
+          <StyledInput
+            type="number"
+            min={1}
+            placeholder="입찰 금액을 입력하세요"
+            {...register('price', { required: '필수 입력' })}
+          />
           <Button styleType="primary" type="submit">
             입찰
           </Button>
@@ -151,10 +151,12 @@ const Block = styled.div`
   margin-bottom: 16px;
 `;
 
-const StyledInput = styled.input`
-  padding: 6px;
+const StyledInput = styled(LabelInput)`
+  padding: 8px;
   margin-right: 8px;
   width: 100%;
+  height: auto;
+  border: 1px solid ${colors.gray5};
 `;
 
 const FirstLine = styled.div`
@@ -164,9 +166,11 @@ const FirstLine = styled.div`
 
 const TitleWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   margin-bottom: 4px;
+  justify-content: space-between;
   h3 {
     font-size: 14px;
     font-weight: 600;
@@ -181,6 +185,8 @@ const InfoWrapper = styled.div`
   align-items: flex-start;
   margin-bottom: 4px;
 `;
+
+const TypeWrapper = styled.div``;
 
 const UserWrapper = styled.div`
   display: flex;
@@ -219,13 +225,13 @@ const DescriptionArea = styled.div`
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   line-height: 1.5em;
-  height: 7.5em;
+  height: 4.5em;
   color: ${colors.gray7};
 `;
 
 const IconWrapper = styled.div`
   display: flex;
-  height: 30px;
+  height: 24px;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -240,7 +246,7 @@ const IconWrapper = styled.div`
     display: flex;
     justify-content: center;
     color: ${colors.gray9};
-    font-size: 16px;
+    font-size: 14px;
     margin: 0;
   }
 `;

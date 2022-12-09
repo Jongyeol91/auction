@@ -52,7 +52,6 @@ const Content = styled.div`
   overflow: scroll;
   ${media.mobile} {
     overflow: hidden;
-    align-items: center;
   }
 `;
 

@@ -107,9 +107,14 @@ function Add() {
         onSubmit={onSubmit}
       >
         <Group>
-          <Link href="/metal" target="_blank">
-            원하는 금속이 없다면?
-          </Link>
+          <LinkWrapper>
+            <Link href="/metal" target="_blank">
+              원하는 금속이 없다면?
+            </Link>
+            <Link href="/metal/add-metal-option" target="_blank">
+              원하는 금속 옵션이 없다면?
+            </Link>
+          </LinkWrapper>
           <Controller
             name="auctionType"
             control={control}
@@ -160,6 +165,11 @@ const Group = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 16px;
+`;
+
+const LinkWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export default Add;

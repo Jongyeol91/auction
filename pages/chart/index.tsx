@@ -1,8 +1,8 @@
 import { MainChart } from '@/components/charts/MainChart';
 import Button from '@/components/common/Button';
-import BasicTemplete from '@/components/templates/BasicTemplate';
 import TabTamplete from '@/components/templates/TabTemplate';
 import { getPriceIndexCategory, getPriceIndexCategoryAll } from '@/lib/api/price-index';
+import { media } from '@/lib/media';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 import { userAtom } from '@/store';
 import { useQuery } from '@tanstack/react-query';
@@ -63,12 +63,16 @@ function Chart() {
 }
 
 const ChartWrapper = styled.div`
-  width: 1200px;
-  margin-top: 20px;
-  margin-bottom: 20px;
   display: flex;
-  height: 400px;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  ${media.wide} {
+    flex-direction: row;
+    width: 1200px;
+    min-height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 const ChartInnerWrapper = styled.div`
@@ -76,10 +80,14 @@ const ChartInnerWrapper = styled.div`
 `;
 
 const ChartButtonWrapper = styled.div`
-  width: 100px;
   display: flex;
-  gap: 2px;
   flex-direction: column;
+  padding: 8px;
+  gap: 4px;
+  ${media.wide} {
+    width: 100px;
+    flex-direction: column;
+  }
 `;
 
 export default Chart;
