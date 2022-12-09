@@ -4,23 +4,28 @@ import FullHeightPage from '../common/FullHeightPage';
 import HeaderBackButton from '../base/HeaderBackButton';
 import { useGoBack } from '@/hooks/useGoBack';
 import TopHeader from '../base/TopHeader';
+import { UserOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 
 interface Props {
   children?: React.ReactNode;
   title?: string;
   hasBackButton?: boolean;
-  headerRight?: string;
+  hasLoginButton?: React.ReactNode;
 }
 
-function BasicTemplete({ children, title, hasBackButton, headerRight }: Props) {
+function BasicTemplete({ children, title, hasBackButton, hasLoginButton }: Props) {
   const goBack = useGoBack();
+  const router = useRouter();
   return (
     <FullHeightPage>
       <TopHeader />
       <MobileHeader
         title={title}
         headerLeft={hasBackButton ? <HeaderBackButton onClick={goBack} /> : undefined}
-        headerRight={headerRight}
+        headerRight={
+          hasLoginButton ? <UserOutlined onClick={() => router.push('/register')} /> : undefined
+        }
       />
       <Content>{children}</Content>
     </FullHeightPage>

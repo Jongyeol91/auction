@@ -99,7 +99,7 @@ function Add() {
   if (!user) return;
 
   return (
-    <BasicTemplete hasBackButton>
+    <BasicTemplete hasBackButton hasLoginButton>
       <AddTemplate
         title="경매 / 역경매 만들기"
         buttonText="다음"
@@ -160,7 +160,6 @@ const Group = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 16px;
-  flex: 1;
 `;
 
 export default Add;

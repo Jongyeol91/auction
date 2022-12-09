@@ -79,7 +79,7 @@ function Notification() {
   if (isLoading || !user) return;
 
   return (
-    <StyledTabTamplete>
+    <StyledTabTamplete hasBackButton>
       <Content>
         <h2>알림</h2>
         <Collapse>

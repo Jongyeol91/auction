@@ -52,7 +52,7 @@ const Home: NextPage = () => {
   if (isLoading || !user) return;
 
   return (
-    <StyledTabTamplete>
+    <StyledTabTamplete hasBackButton hasLoginButton>
       <Content>
         <SubMenuLayout>
           <StyledMenu

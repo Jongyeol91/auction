@@ -40,7 +40,7 @@ function Chart() {
   });
 
   return (
-    <TabTamplete>
+    <TabTamplete hasBackButton>
       <ChartWrapper>
         <ChartInnerWrapper>
           <MainChart priceIndexData={priceIndexData} />

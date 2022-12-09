@@ -2,20 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors } from '@/lib/colors';
 import { media } from '@/lib/media';
+import { useRouter } from 'next/router';
 
 // Todo: svg 컴포넌트 로고로 바꿀 경우 React.ReactNode 로 타입 바꾸기
 interface Props {
   title?: string;
   headerLeft?: React.ReactNode;
-  headerRight?: string;
+  headerRight?: React.ReactNode;
 }
 
 function MobileHeader({ title = 'EMETAL', headerLeft, headerRight }: Props) {
+  const router = useRouter();
   return (
     <Block>
       {headerLeft && <HeaderSide position="left">{headerLeft}</HeaderSide>}
       <Title>{title}</Title>
-      {headerRight && <HeaderSide position="right">right</HeaderSide>}
+      {headerRight && <HeaderSide position="right">{headerRight}</HeaderSide>}
     </Block>
   );
 }

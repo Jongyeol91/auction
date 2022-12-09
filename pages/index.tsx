@@ -7,61 +7,86 @@ import { media } from '@/lib/media';
 import Button from '@/components/common/Button';
 import { useState } from 'react';
 import { colors } from '@/lib/colors';
-import { NORMAL, REVERSE } from '@/lib/constants';
+import { FILTER_TYPE_OPTION, NORMAL, REVERSE } from '@/lib/constants';
 import { AuctionType } from '@/lib/api/types';
 import ChartCarousel from '@/components/charts/ChartCarousel';
+import LabelSelect from '@/components/common/LabelSelect';
+import EmptyPage from '@/components/common/Empty';
 
 const Home: NextPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(null);
+  const [sort, setSort] = useState('createdAt,desc');
+  const [metalId, setMetalId] = useState();
+
+  const onSelectSort = (sort: string) => {
+    setSort(sort);
+  };
+
+  const onSelectMetalId = (metalId: number) => {
+    setMetalId(metalId);
+  };
+
+  // const { data: metalData, isLoading: isLoadingMetals } = useMetals();
 
   const {
     data: auctions,
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = useFetchInfiniteAuctions(selectedAuctionType);
-
-  // const { data: priceIndexCategoryAllData } = useQuery(
-  //   {
-  //     queryKey: ['categoryAll'],
-  //     queryFn: () => getPriceIndexCategoryAll(),
-  //   },
-  //   { enabled: !!user },
-  // );
-
-  // const { data: priceIndexData } = useQuery({
-  //   queryKey: ['category', 1],
-  //   queryFn: ({ queryKey }) => getPriceIndexCategory(queryKey[1]),
-  // });
+  } = useFetchInfiniteAuctions(selectedAuctionType, sort, metalId);
 
   const selectMenu = (selectedMenu: AuctionType) => {
     setSelectedAuctionType(selectedMenu);
   };
 
+  const renderMetalLabel = () => {
+    return metalData?.map((metal) => {
+      return { label: metal.name, value: metal.id };
+    });
+  };
+
   if (isLoading) return;
 
   return (
-    <StyledTabTamplete>
+    <StyledTabTamplete hasLoginButton>
       <Content>
         <SubMenuLayout>
           <StyledMenu selected>시세</StyledMenu>
         </SubMenuLayout>
         <ChartCarousel />
-        <SubMenuLayout>
-          <StyledMenu selected={!selectedAuctionType} onClick={() => selectMenu(null)}>
-            전체경매
-          </StyledMenu>
-          <StyledMenu selected={selectedAuctionType === NORMAL} onClick={() => selectMenu(NORMAL)}>
-            경매
-          </StyledMenu>
-          <StyledMenu
-            selected={selectedAuctionType === REVERSE}
-            onClick={() => selectMenu(REVERSE)}
-          >
-            역경매
-          </StyledMenu>
-        </SubMenuLayout>
-        <AuctionCardList auctions={auctions}></AuctionCardList>
+        <AuctionMenuWrapper>
+          <SubMenuLayout>
+            <StyledMenu selected={!selectedAuctionType} onClick={() => selectMenu(null)}>
+              전체경매
+            </StyledMenu>
+            <StyledMenu
+              selected={selectedAuctionType === NORMAL}
+              onClick={() => selectMenu(NORMAL)}
+            >
+              경매
+            </StyledMenu>
+            <StyledMenu
+              selected={selectedAuctionType === REVERSE}
+              onClick={() => selectMenu(REVERSE)}
+            >
+              역경매
+            </StyledMenu>
+          </SubMenuLayout>
+
+          <FilterWrapper>
+            <LabelSelect options={FILTER_TYPE_OPTION} onChange={onSelectSort} defaultValue={sort} />
+            {/* <LabelSelect
+              options={renderMetalLabel()}
+              onChange={onSelectMetalId}
+              defaultValue={metalId}
+            /> */}
+          </FilterWrapper>
+        </AuctionMenuWrapper>
+        {auctions ? (
+          <AuctionCardList auctions={auctions}></AuctionCardList>
+        ) : (
+          <EmptyPage description="아직 해당하는 경매가 없습니다." />
+        )}
         <ButtonWrapper>
           {hasNextPage && (
             <Button styleType="primary" size="medium" onClick={fetchNextPage}>
@@ -92,11 +117,23 @@ const Content = styled.div`
   }
 `;
 
+const FilterWrapper = styled.div`
+  display: flex;
+  padding: 10px 0;
+  gap: 4px;
+`;
+
 const SubMenuLayout = styled.div`
   display: flex;
   gap: 16px;
   padding: 10px 0;
   font-size: 16px;
+`;
+
+const AuctionMenuWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const StyledMenu = styled.h3<{ selected: boolean }>`
