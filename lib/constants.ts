@@ -33,7 +33,20 @@ export const AUCTION_TYPE_OPTION = [
   { label: '역경매', value: 'REVERSE' },
 ];
 
+export const FILTER_TYPE_OPTION = [
+  { label: '최신순', value: 'createdAt,desc' },
+  { label: '오래된순', value: 'createdAt,asc' },
+];
+
 export const AUCTION_TYPE = {
   NORMAL: '경매',
   REVERSE: '역경매',
+};
+
+export const ACTIVE = 'ACTIVE';
+
+export const AUCTION_STATUS_MAP = {
+  FAILED: '유찰',
+  COMPLETED: '낙찰',
+  ACTIVE: '진행중',
 };

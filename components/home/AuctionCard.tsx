@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Tag } from 'antd';
 import dayjs from 'dayjs';
 import { media } from '@/lib/media';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../common/Button';
 import { Statistic } from 'antd';
 import { bid } from '@/lib/api/auctions';
@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 import Weight from '@/components/vectors/Weight.svg';
 import Metal from '@/components/vectors/Metal.svg';
 import MoneyWon from '@/components/vectors/MoneyWon.svg';
-import { AUCTION_TYPE } from '@/lib/constants';
+import { AUCTION_TYPE, AUCTION_STATUS_MAP } from '@/lib/constants';
 
 const { Countdown } = Statistic;
 
@@ -26,12 +26,6 @@ interface Props {
 const auctionTypeColorMap = {
   NORMAL: 'green',
   REVERSE: 'blue',
-};
-
-const auctionStatusMap = {
-  ACTIVE: '진행중',
-  FAILED: '유찰',
-  COMPLETED: '완료',
 };
 
 const timer = (endtime: string): React.ReactNode => {
@@ -62,6 +56,7 @@ const timer = (endtime: string): React.ReactNode => {
 function AuctionCard({ auctionContent, forbidden }: Props) {
   const { id, auctionItem, auctionImageUrl, auctionType, endTime, description, auctionStatusType } =
     auctionContent;
+
   const { metalName, metalOptionName, amount, price } = auctionItem;
 
   const [seletced, setSelected] = useState<boolean>(false);
@@ -87,8 +82,15 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
     mutateBid({ ...data, auctionId: id });
   };
 
+  const onClickCard = () => {
+    if (auctionStatusType !== 'ACTIVE') {
+      Swal.fire('입찰불가', `${AUCTION_STATUS_MAP[auctionStatusType]}된 경매입니다.`, 'error');
+    }
+    setSelected(!seletced);
+  };
+
   const statusTag = () => {
-    const statusText = auctionStatusMap[auctionStatusType];
+    const statusText = AUCTION_STATUS_MAP[auctionStatusType];
     if (auctionStatusType == 'ACTIVE') {
       return <Tag color={colors.primary}>{statusText}</Tag>;
     }
@@ -99,7 +101,7 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
   return (
     <Block>
       {auctionImageUrl ? (
-        <Thumbnail src={auctionImageUrl} alt={metalName} onClick={() => setSelected(!seletced)} />
+        <Thumbnail src={auctionImageUrl} alt={metalName} onClick={() => onClickCard()} />
       ) : null}
       <FirstLine>
         <TitleWrapper>
@@ -197,6 +199,7 @@ const Thumbnail = styled.img`
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.125);
   display: block; // lineheight 때문에 불필요한 여백 방지
   margin-bottom: 8px;
+  cursor: pointer;
   ${media.tablet} {
     aspect-ratio: 288/192;
   }

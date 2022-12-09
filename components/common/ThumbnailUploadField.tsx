@@ -123,8 +123,12 @@ const StyledUpload = styled(Upload)`
   width: 100%;
 
   & > .ant-upload {
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
+    width: 200px;
+    height: 130px;
+    ${media.tablet} {
+      width: ${(props) => props.width};
+      height: ${(props) => props.height};
+    }
   }
 `;
 

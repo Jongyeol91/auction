@@ -11,12 +11,20 @@ export async function getMetals() {
   return res.data;
 }
 
-export async function getAuctions({ pageParam = 0, pageSize = 12, auctionType = null }) {
+export async function getAuctions({
+  pageParam = 0,
+  pageSize = 12,
+  auctionType = '',
+  sort,
+  metalId,
+}) {
   const res = await defaultAxios.get(`/auctions`, {
     params: {
       size: pageSize,
       page: pageParam,
       auctionType,
+      sort,
+      metalId,
     },
   });
   return res.data.auctions;
