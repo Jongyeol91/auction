@@ -160,8 +160,8 @@ function SignUpForm({ mode }: Props) {
         <LabelInput
           label="이메일"
           type="email"
+          defaultValue={user?.personal.email}
           disabled={isModifyMode}
-          defaultValue={'234234'}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
@@ -169,7 +169,7 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="이름"
-          value={isModifyMode ? user?.personal.name : ''}
+          defaultValue={user?.personal.name}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />

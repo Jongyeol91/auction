@@ -129,7 +129,7 @@ function Add() {
   };
 
   return (
-    <BasicTemplete hasBackButton>
+    <BasicTemplete hasBackButton hasLoginButton>
       <AddTemplate
         title="경매 / 역경매 만들기"
         buttonText="생성하기"

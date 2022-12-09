@@ -73,7 +73,7 @@ function MetalPage() {
   };
 
   return (
-    <BasicTemplete>
+    <BasicTemplete hasBackButton>
       <AddTemplate
         title="금속 만들기"
         buttonText="다음"

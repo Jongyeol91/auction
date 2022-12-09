@@ -23,9 +23,11 @@ const Page = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   ${media.mobile} {
     flex: 1;
     height: auto;
+    overflow: visible;
   }
 `;
 

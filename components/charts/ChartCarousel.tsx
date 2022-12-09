@@ -1,70 +1,53 @@
 import useCheckMobile from '@/hooks/useCheckMobile';
+import { getPriceIndexCategoryAll } from '@/lib/api/price-index';
 import { colors } from '@/lib/colors';
 import { media } from '@/lib/media';
+import { useQuery } from '@tanstack/react-query';
 import { Card, Carousel } from 'antd';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 function ChartCarousel() {
   const isMobile = useCheckMobile();
+  const router = useRouter();
+
+  const { data: priceIndexCategoryAllData, isLoading } = useQuery({
+    queryKey: ['categoryAll'],
+    queryFn: () => getPriceIndexCategoryAll(),
+  });
+
+  if (isLoading) return;
+
+  const totalNum = priceIndexCategoryAllData?.length;
+  const loopNum = Math.ceil(totalNum / 4);
 
   const gridStyle: React.CSSProperties = {
     width: isMobile ? '50%' : '25%',
     textAlign: 'center',
   };
 
+  const onClickCard = (id) => {
+    router.push('/chart?id=' + id);
+  };
+
   return (
     <StyledCarousel autoplay>
-      <div>
-        <Card>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>구리</span>
-              <span>500만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>알루미늄</span>
-              <span>1000만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>금</span>
-              <span>1000만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>은</span> <span>2000만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-        </Card>
-      </div>
-      <div>
-        <Card>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>철</span> <span>3000만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>텅스텐</span> <span>1000만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>합성 금속</span> <span>100만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <ChartTextWrapper>
-              <span>희토류</span> <span>9000만원</span>
-            </ChartTextWrapper>
-          </Card.Grid>
-        </Card>
-      </div>
+      {[...Array(loopNum)].map((e, i) => {
+        let lastNum = (i + 1) * 4;
+        let startNum = i * 4;
+        return (
+          <Card key={i}>
+            {priceIndexCategoryAllData.slice(startNum, lastNum).map((indexData, idx) => (
+              <Card.Grid key={idx} style={gridStyle} onClick={() => onClickCard(indexData.id)}>
+                <ChartTextWrapper>
+                  <span>{indexData.name}</span>
+                  <span>{indexData.displayValue}</span>
+                </ChartTextWrapper>
+              </Card.Grid>
+            ))}
+          </Card>
+        );
+      })}
     </StyledCarousel>
   );
 }

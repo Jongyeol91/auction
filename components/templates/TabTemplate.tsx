@@ -7,20 +7,33 @@ import { media } from '@/lib/media';
 import AutoHeightPage from '../common/AutoHeightPage';
 import GlobalFooter from '../base/GlobalFooter';
 import useCheckMobile from '@/hooks/useCheckMobile';
+import HeaderBackButton from '../base/HeaderBackButton';
+import { useGoBack } from '@/hooks/useGoBack';
+import { UserOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 
 interface Props {
   children?: React.ReactNode;
   className?: string;
   header?: React.ReactNode | string;
+  hasBackButton?: boolean;
+  hasLoginButton?: boolean;
 }
 
-function TabTamplete({ header, children, className }: Props) {
+function TabTamplete({ header, children, className, hasBackButton, hasLoginButton }: Props) {
   const isMobile = useCheckMobile();
+  const goBack = useGoBack();
+  const router = useRouter();
   return (
     <AutoHeightPage>
       {header ?? (
         <>
-          <MobileHeader />
+          <MobileHeader
+            headerLeft={hasBackButton ? <HeaderBackButton onClick={goBack} /> : undefined}
+            headerRight={
+              hasLoginButton ? <UserOutlined onClick={() => router.push('/register')} /> : undefined
+            }
+          />
           <TopHeader />
           <Header />
         </>
@@ -39,6 +52,7 @@ const Content = styled.div`
   overflow: scroll;
   ${media.mobile} {
     overflow: hidden;
+    align-items: center;
   }
 `;
 

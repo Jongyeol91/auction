@@ -12,7 +12,7 @@ interface Option {
 }
 
 interface Props {
-  label: string;
+  label?: string;
   errorMessage?: string;
   options: Array<Option>;
 }
@@ -52,6 +52,7 @@ LabelSelect.displayName = 'LabelSelect';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 140px;
 `;
 
 const Block = styled.div`

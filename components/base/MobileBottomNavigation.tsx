@@ -10,6 +10,7 @@ function MobileBottomNavigation() {
     <StyledFooter>
       <FooterTabItem icon="home" exact href="/" />
       {user ? <FooterTabItem icon="notification" exact href="/notification" /> : ''}
+      {user ? <FooterTabItem icon="hosting" exact href="/hosting" /> : ''}
       <FooterTabItem icon="add" href="/add" />
     </StyledFooter>
   );

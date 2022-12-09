@@ -3,6 +3,7 @@ import BulletList from '@/components/vectors/BulletList.svg';
 import Search from '@/components/vectors/Search.svg';
 import Add from '@/components/vectors/Add.svg';
 import Notification from '@/components/vectors/Notification.svg';
+import Auction from '@/components/vectors/Auction.svg';
 import React, { useMemo } from 'react';
 import { colors } from '@/lib/colors';
 import { useRouter } from 'next/router';
@@ -13,6 +14,7 @@ const IconMap = {
   search: <Search />,
   add: <Add />,
   notification: <Notification />,
+  hosting: <Auction />,
 };
 
 interface Props {
