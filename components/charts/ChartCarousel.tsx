@@ -33,8 +33,8 @@ function ChartCarousel() {
   return (
     <StyledCarousel autoplay>
       {[...Array(loopNum)].map((e, i) => {
-        let lastNum = (i + 1) * 4;
-        let startNum = i * 4;
+        const lastNum = (i + 1) * 4;
+        const startNum = i * 4;
         return (
           <Card key={i}>
             {priceIndexCategoryAllData.slice(startNum, lastNum).map((indexData, idx) => (

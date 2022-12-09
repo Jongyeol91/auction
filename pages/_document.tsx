@@ -40,7 +40,6 @@ export default class MyDocument extends Document {
           <link
             rel="stylesheet"
             as="style"
-            crossorigin
             href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css"
           />
         </Head>
