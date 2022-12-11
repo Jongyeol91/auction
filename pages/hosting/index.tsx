@@ -51,6 +51,8 @@ const Home: NextPage = () => {
 
   if (isLoading || !user) return;
 
+  const firstElementsNum = auctions?.pages[0].totalElements;
+
   return (
     <StyledTabTamplete hasBackButton hasLoginButton>
       <Content>
@@ -68,7 +70,7 @@ const Home: NextPage = () => {
             참가(경매/역경매)
           </StyledMenu>
         </SubMenuLayout>
-        {auctions?.pages.content ? (
+        {firstElementsNum > 0 ? (
           <AuctionCardList auctions={auctions} forbidden></AuctionCardList>
         ) : (
           <EmptyPage description="개설하거나 참가한 경매가 없습니다" />
