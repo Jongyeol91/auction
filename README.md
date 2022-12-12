@@ -14,7 +14,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] 비딩 고치기!! (내경매, 참여경매 안되게)
 - [ ] 이미지 파일 첨부
   - [x] 경매
-  - [ ] 회원가입
+  - [x] 회원가입
 - [x] 로그인 실패시 얼럿 나오면서 기존 화면 위로 밀리는 버그 수정
   - [x] 로그인시 신규 모달 적용
 - [x] 모바일 헤더 수정 (검색 버튼 대체, 로그인시 노출 하는 버튼 정하기)
@@ -27,15 +27,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### 요구사항
 
 - [x] 헤더 메뉴들을 아이콘으로 전환
-- [ ] 시세 최근 값을 메인 페이지에 노출, 클릭 후 시계열 데이터 볼 수 있도록 전환
-- [ ] 금속 옵션 유저가 생성할 수 있도록 처리
+- [x] 시세 최근 값을 메인 페이지에 노출, 클릭 후 시계열 데이터 볼 수 있도록 전환
+- [x] 금속 옵션 유저가 생성할 수 있도록 처리
 - [x] 경매 호스트 이름 비노출 처리
 - [ ] 알람 클릭시 드롭다운으로 해당 경매건 카드 노출
   - [x] collapse ui
-  - [ ] 알림에서 card api 가져오기 (백엔드 상의 필요)
+  - [x] 알림에서 card api 가져오기 (백엔드 상의 필요)
 - [x] 경매 박스 디자인 수정
 - [x] footer
-- [ ] 필터링 기능
+- [x] 필터링 기능
 
 ### 개선
 
@@ -45,5 +45,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### 배포
 
-- [ ] ec2에 yarn, node, pm2 설치
-- [ ] nginx reverse proxy 사용하기
+- [x] ec2에 yarn, node, pm2 설치
+- [x] nginx reverse proxy 사용하기
