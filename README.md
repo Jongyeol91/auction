@@ -12,7 +12,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### 버그
 
 - [x] 비딩 고치기!! (내경매, 참여경매 안되게)
-- [ ] 이미지 파일 첨부
+- [x] 이미지 파일 첨부
   - [x] 경매
   - [x] 회원가입
 - [x] 로그인 실패시 얼럿 나오면서 기존 화면 위로 밀리는 버그 수정
@@ -30,7 +30,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] 시세 최근 값을 메인 페이지에 노출, 클릭 후 시계열 데이터 볼 수 있도록 전환
 - [x] 금속 옵션 유저가 생성할 수 있도록 처리
 - [x] 경매 호스트 이름 비노출 처리
-- [ ] 알람 클릭시 드롭다운으로 해당 경매건 카드 노출
+- [x] 알람 클릭시 드롭다운으로 해당 경매건 카드 노출
   - [x] collapse ui
   - [x] 알림에서 card api 가져오기 (백엔드 상의 필요)
 - [x] 경매 박스 디자인 수정
@@ -41,7 +41,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [x] 모달, 다이얼로그 컴포넌트
 - [x] 비로그인 상태로 글쓰기 선택시, 로그인 페이지로 이동 여부 노출
-- [ ] 비딩 ui/ux (시간되면)
+- [x] 비딩 ui/ux (시간되면)
 
 ### 배포
 
