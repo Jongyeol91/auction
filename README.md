@@ -39,7 +39,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### 개선
 
-- [x] 모달, 다이얼로그 컴포넌트
 - [x] 비로그인 상태로 글쓰기 선택시, 로그인 페이지로 이동 여부 노출
 - [x] 비딩 ui/ux (시간되면)
 
