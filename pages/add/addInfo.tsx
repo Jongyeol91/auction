@@ -89,7 +89,6 @@ function Add() {
 
   const { mutate: mutateImage } = useMutation(createAuctiomImage, {
     onSuccess: async ({ imageUrl }: { imageUrl: string }) => {
-      console.log('s3 이미지 등록 완료: ', imageUrl);
     },
     onError: (e: any) => {
       Swal.fire('이미지 업로드 실패', e.response.data.message, 'error');

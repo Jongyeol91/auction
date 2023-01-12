@@ -38,8 +38,8 @@ const Home: NextPage = () => {
     fetchNextPage,
   } = useFetchInfiniteMyAuctions(selectedAuctionType, {
     getNextPageParam: (lastPage) => {
-      if (!lastPage.last) {
-        return lastPage.pageable.pageNumber + 1;
+      if (!lastPage?.last) {
+        return lastPage?.pageable.pageNumber + 1;
       }
     },
     enabled: !!user,

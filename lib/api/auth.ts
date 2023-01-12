@@ -79,7 +79,7 @@ export async function registerImage(image: File) {
 }
 
 export async function modifyUser(params: ModifyUserParam) {
-  const res = await defaultAxios.put(`/user/${params.id}`, params.data);
+  const res = await defaultAxios.put(`/user/profile`, params.data);
   const result = res.data;
 
   return { result };

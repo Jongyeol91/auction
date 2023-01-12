@@ -58,7 +58,6 @@ function SignUpForm({ mode }: Props) {
 
   const { mutate: mutateRegisterImage } = useMutation(registerImage, {
     onSuccess: async ({ imageUrl }: { imageUrl: string }) => {
-      console.log('s3 사업자등록증 업로드 완료: ', imageUrl);
     },
     onError: (e: any) => {
       Swal.fire('회원가입 실패', e.response.data.message, 'error');
@@ -67,22 +66,22 @@ function SignUpForm({ mode }: Props) {
 
   const { mutate: mutateRegister } = useRegister({
     onSuccess: () => {
-      Swal.fire('회원가입 성공!', '회원 가입을 환영합니다!', 'success');
+      Swal.fire('회원가입 성공', '회원 가입을 환영합니다.', 'success');
       router.replace('/');
     },
     onError: (e: any) => {
-      Swal.fire('가입 실패!', e.response.data.message, 'error');
+      Swal.fire('가입 실패', e.response.data.message, 'error');
     },
   });
 
   const { mutate: mutateModifyUser } = useModifyUser({
     onSuccess: () => {
-      Swal.fire('수정 성공!', '회원정보가 수정되었습니다.', 'success');
+      Swal.fire('수정 성공', '회원정보가 수정되었습니다.', 'success');
       getUser();
       router.replace('/');
     },
     onError: (e: any) => {
-      Swal.fire('수정 실패!', e.response.data.message, 'error');
+      Swal.fire('수정 실패', e.response.data.message, 'error');
     },
   });
 
@@ -132,16 +131,11 @@ function SignUpForm({ mode }: Props) {
         },
       });
     } else {
-      const personalUpdateCommand = {
-        name,
-      };
       const params = {
         data: {
-          business,
-          personalUpdateCommand,
-          accountUpdateCommand: account,
-          isEnabled: 'Y',
-          inDeleted: 'Y',
+          ...business,
+          name,
+          ...account,
         },
         id: user.id,
       };
@@ -212,7 +206,7 @@ function SignUpForm({ mode }: Props) {
               label="계정유형"
               options={[
                 { label: '개인사업자', value: 'PERSONAL' },
-                { label: '법인사업자', value: 'CORPORATION' },
+                { label: '법인사업자', value: 'CORPORATE' },
               ]}
               {...field}
               errorMessage={errors.businessType?.message?.toString()}

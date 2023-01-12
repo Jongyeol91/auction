@@ -29,7 +29,19 @@ const auctionTypeColorMap = {
   REVERSE: 'blue',
 };
 
-const timer = (endtime: string): React.ReactNode => {
+const timer = (endtime: string, auctionStatusType: string): React.ReactNode => {
+  if(auctionStatusType != 'ACTIVE') {
+    return (
+        <>
+          <Countdown
+              value={Date.now()}
+              valueStyle={{ fontSize: 12, color: 'red' }}
+              format="D일 HH시간 mm분 ss초"
+          ></Countdown>
+        </>
+    );
+  }
+
   const now = dayjs();
   const _endtime = dayjs(endtime);
 
@@ -56,7 +68,8 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
   const { id, auctionItem, auctionImageUrl, auctionType, endTime, description, auctionStatusType } =
     auctionContent;
 
-  const { metalName, metalOptionName, amount, price } = auctionItem;
+  const { amount, price } = auctionItem;
+  const metalName = auctionItem?.metal?.name;
 
   const [seletced, setSelected] = useState<boolean>(false);
 
@@ -97,6 +110,18 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
     return <Tag>{statusText}</Tag>;
   };
 
+  const inputPriceFormat = (str: string) => {
+    const comma = (str) => {
+      str = String(str);
+      return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, "$1,");
+    };
+    const uncomma = (str) => {
+      str = String(str);
+      return str.replace(/[^\d]+/g, "");
+    };
+    return comma(uncomma(str));
+  };
+
   return (
     <Block>
       {auctionImageUrl ? (
@@ -108,7 +133,7 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
             {statusTag()}
             <Tag color={auctionTypeColorMap[auctionType]}>{AUCTION_TYPE[auctionType]}</Tag>
           </TypeWrapper>
-          <>{timer(endTime)}</>
+          <>{timer(endTime, auctionStatusType)}</>
         </TitleWrapper>
       </FirstLine>
       <InfoWrapper>
@@ -122,7 +147,11 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
         </IconWrapper>
         <IconWrapper>
           <MoneyWon />
-          <span>{'톤 당 ' + price + '원'}</span>
+          <span>{'톤 당 ' + inputPriceFormat(price) + '원'}</span>
+        </IconWrapper>
+        <IconWrapper>
+          <MoneyWon />
+          <span>{'총 ' + inputPriceFormat((amount * price)) + '원'}</span>
         </IconWrapper>
 
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}

@@ -27,7 +27,7 @@ export async function getAuctions({
       metalId,
     },
   });
-  return res.data.auctions;
+  return res.data;
 }
 
 export async function getMyAuctions({ pageParam = 0, pageSize = 12, myAuctionType = 'hosting' }) {
@@ -37,7 +37,7 @@ export async function getMyAuctions({ pageParam = 0, pageSize = 12, myAuctionTyp
       page: pageParam,
     },
   });
-  return res.data.auctions;
+  return res.data;
 }
 
 export async function createAuction(auction: AuctionParam) {

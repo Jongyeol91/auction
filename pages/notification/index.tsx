@@ -38,7 +38,6 @@ function Notification() {
   const { openDialog } = useOpenDialog();
 
   const { data, isLoading } = useGetNotification({ enabled: !!user });
-  console.log(data);
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -83,17 +82,17 @@ function Notification() {
       <Content>
         <h2>알림</h2>
         <Collapse>
-          {data?.notificationResponses.content.map((notification: Notification, idx: number) => {
+          {data?.content.map((notification: Notification, idx: number) => {
             return (
               <StyledPanel header={notificationItem(notification)} key={idx}>
                 <CardWrapper>
-                  <AuctionCard auctionContent={notification.auctionResponse} />
+                  <AuctionCard auctionContent={notification?.auction} />
                 </CardWrapper>
               </StyledPanel>
             );
           })}
         </Collapse>
-        {data?.notificationResponses.content.length == 0 && (
+        {data?.content.length == 0 && (
           <EmptyPage description="알림이 아직 없습니다." />
         )}
       </Content>

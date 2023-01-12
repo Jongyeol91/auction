@@ -10,7 +10,6 @@ export const checkIsLoggedIn = async ({ redirectTo }: Props = {}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
 
   const applied = applyAuth();
-  console.log('applied', applied);
   if (!applied) {
     if (redirectTo) {
       Router.replace(redirectTo);
