@@ -123,10 +123,9 @@ function SignUpForm({ mode }: Props) {
       mutateRegisterImage(licenceImageFile, {
         onSuccess: ({ imageUrl }) => {
           mutateRegister({
-            business: { ...business, licenceImageUrl: imageUrl, test: 'test' },
+            business: { ...business, licenceImageUrl: imageUrl },
             personal,
             account,
-            isEnabled: 'Y',
           });
         },
       });
@@ -198,7 +197,7 @@ function SignUpForm({ mode }: Props) {
         <h2>회사 정보</h2>
         <Controller
           name="businessType"
-          defaultValue={'PERSONAL'}
+          defaultValue={isModifyMode ? user?.business?.businessType : ''}
           control={control}
           rules={{ required: '필수 입력' }}
           render={({ field }) => (

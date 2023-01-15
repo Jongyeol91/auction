@@ -65,7 +65,7 @@ const timer = (endtime: string, auctionStatusType: string): React.ReactNode => {
 };
 
 function AuctionCard({ auctionContent, forbidden }: Props) {
-  const { id, auctionItem, auctionImageUrl, auctionType, endTime, description, auctionStatusType } =
+  const { id, auctionItem, auctionImageUrl, auctionType, endTime, description, auctionStatusType, bidPrice } =
     auctionContent;
 
   const { amount, price } = auctionItem;
@@ -143,17 +143,22 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
         </IconWrapper>
         <IconWrapper>
           <Weight />
-          <span>{amount + '톤'}</span>
+          <span>{inputPriceFormat(amount) + '톤'}</span>
         </IconWrapper>
         <IconWrapper>
           <MoneyWon />
-          <span>{'톤 당 ' + inputPriceFormat(price) + '원'}</span>
+          <span>{'톤 당 ' + inputPriceFormat(price) + '원'} ({'총 ' + inputPriceFormat((amount * price)) + '원'})</span>
         </IconWrapper>
-        <IconWrapper>
-          <MoneyWon />
-          <span>{'총 ' + inputPriceFormat((amount * price)) + '원'}</span>
-        </IconWrapper>
-
+        {/*<IconWrapper>*/}
+        {/*  <MoneyWon />*/}
+        {/*  <span>{'총 ' + inputPriceFormat((amount * price)) + '원'}</span>*/}
+        {/*</IconWrapper>*/}
+        {bidPrice ? (
+          <IconWrapper>
+            <MoneyWon />
+            <span>{'입찰가 톤 당' + inputPriceFormat(bidPrice) + '원'} ({'총 ' + inputPriceFormat((amount * bidPrice)) + '원'})</span>
+          </IconWrapper>
+        ) : null}
         {/* <Tag>{dayjs(endTime).format('YY/MM/DD hh:mm 종료')}</Tag> */}
       </InfoWrapper>
       <DescriptionArea>{description}</DescriptionArea>

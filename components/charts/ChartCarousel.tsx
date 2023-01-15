@@ -27,7 +27,7 @@ function ChartCarousel() {
   };
 
   const onClickCard = (id) => {
-    router.push('/chart?id=' + id);
+    // router.push('/chart?id=' + id);
   };
 
   return (

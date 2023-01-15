@@ -47,6 +47,7 @@ export interface AuctionContent {
   hostUser: HostUser;
   bids: number;
   winningBid: number;
+  bidPrice: number;
   createdAt: string;
   updatedAt: string;
 }
