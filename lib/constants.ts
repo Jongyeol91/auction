@@ -46,7 +46,9 @@ export const AUCTION_TYPE = {
 export const ACTIVE = 'ACTIVE';
 
 export const AUCTION_STATUS_MAP = {
-  FAILED: '유찰',
-  COMPLETED: '낙찰',
+  // FAILED: '유찰',
+  // COMPLETED: '낙찰',
+  FAILED: '종료',
+  COMPLETED: '종료',
   ACTIVE: '진행중',
 };
