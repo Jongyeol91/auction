@@ -1,14 +1,10 @@
-import styled from 'styled-components';
-import Header from '../components/Header';
+import SignUpForm from '@/components/auth/SignUpForm';
+import BasicTemplete from '@/components/templates/BasicTemplate';
 
-export default function register() {
+export default function Register() {
   return (
-    <Page>
-      <Header title="회원가입" />
-    </Page>
+    <BasicTemplete hasBackButton>
+      <SignUpForm mode="register" />
+    </BasicTemplete>
   );
 }
-
-const Page = styled.div`
-  height: 100%;
-`;
