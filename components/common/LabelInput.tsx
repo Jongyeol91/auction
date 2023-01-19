@@ -10,7 +10,7 @@ interface Props extends InputProps {
 }
 
 const LabelInput = forwardRef<HTMLInputElement, Props>(
-  ({ label, errorMessage, ...rest }: Props, ref) => {
+  ({ label, errorMessage, defaultValue, ...rest }: Props, ref) => {
     const [focused, setFocused] = useState(false);
 
     const onFocus = () => {
@@ -27,7 +27,7 @@ const LabelInput = forwardRef<HTMLInputElement, Props>(
           <Label focused={focused}>{label}</Label>
           <ErrorMessage errorMessage={errorMessage} />
         </Block>
-        <Input {...rest} onFocus={onFocus} onBlur={onBlur} ref={ref} />
+        <Input defaultValue={defaultValue} {...rest} onFocus={onFocus} onBlur={onBlur} ref={ref} />
       </Wrapper>
     );
   },

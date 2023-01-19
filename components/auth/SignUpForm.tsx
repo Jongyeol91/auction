@@ -29,29 +29,39 @@ type User = {
   businessName: string;
 };
 
-function SignUpForm({ mode }: Props) {
+function SignUpForm() {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
+
   const isModifyMode = !!user;
-
-  const getUser = async () => {
-    const user = await checkIsLoggedIn();
-    setUser(user);
-  };
-
-  useEffect(() => {
-    getUser();
-    reset();
-  }, []);
 
   const {
     register: registerHookForm,
     handleSubmit,
     getValues,
-    reset,
     control,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({});
+
+  useEffect(() => {
+    reset({
+      email: user?.personal?.email,
+      name: user?.personal?.name,
+      businessType: user?.business?.businessType,
+      businessName: user?.business?.businessName,
+      representative: user?.business?.representative,
+      registrationNumber: user?.business?.registrationNumber,
+      bank: user?.account?.bank,
+      accountNumber: user?.account?.accountNumber,
+      accountHolder: user?.account?.accountHolder,
+    });
+  }, [user]);
+
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
 
   const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[isModifyMode ? 'modify' : 'register'];
@@ -157,21 +167,18 @@ function SignUpForm({ mode }: Props) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <h2>계정 정보</h2>
-
         <LabelInput
           label="이메일"
           type="email"
-          defaultValue={isModifyMode ? user?.personal.email : ''}
           readOnly={!!isModifyMode}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
-            required: '필수',
+            required: '필수 입력',
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
           })}
         />
         <LabelInput
           label="이름"
-          defaultValue={isModifyMode ? user?.personal.name : ''}
           errorMessage={errors?.name?.message?.toString()}
           {...registerHookForm('name', { required: '필수 입력' })}
         />
@@ -204,7 +211,6 @@ function SignUpForm({ mode }: Props) {
         <h2>회사 정보</h2>
         <Controller
           name="businessType"
-          defaultValue={'PERSONAL'}
           control={control}
           rules={{ required: '필수 입력' }}
           render={({ field }) => (
@@ -212,7 +218,7 @@ function SignUpForm({ mode }: Props) {
               label="계정유형"
               options={[
                 { label: '개인사업자', value: 'PERSONAL' },
-                { label: '법인사업자', value: 'CORPORATION' },
+                { label: '법인사업자', value: 'CORPORATE' },
               ]}
               {...field}
               errorMessage={errors.businessType?.message?.toString()}
@@ -221,19 +227,16 @@ function SignUpForm({ mode }: Props) {
         />
         <LabelInput
           label="회사명"
-          defaultValue={isModifyMode ? user?.business.businessName : ''}
           errorMessage={errors.businessName?.message?.toString()}
           {...registerHookForm('businessName', { required: '필수 입력' })}
         />
         <LabelInput
           label="대표자 명"
-          defaultValue={isModifyMode ? user?.business.representative : ''}
           errorMessage={errors.representative?.message?.toString()}
           {...registerHookForm('representative', { required: '필수 입력' })}
         />
         <LabelInput
           label="사업자등록번호"
-          defaultValue={isModifyMode ? user?.business.registrationNumber : ''}
           errorMessage={errors.registrationNumber?.message?.toString()}
           {...registerHookForm('registrationNumber', { required: '필수 입력' })}
         />
@@ -256,19 +259,16 @@ function SignUpForm({ mode }: Props) {
         <h2>계좌 정보</h2>
         <LabelInput
           label="은행명"
-          defaultValue={isModifyMode ? user?.account.bank : ''}
           errorMessage={errors.bank?.message?.toString()}
           {...registerHookForm('bank', { required: '필수 입력' })}
         />
         <LabelInput
           label="계좌번호"
-          defaultValue={isModifyMode ? user?.account.accountNumber : ''}
           errorMessage={errors.accountNumber?.message?.toString()}
           {...registerHookForm('accountNumber', { required: '필수 입력' })}
         />
         <LabelInput
           label="예금주"
-          defaultValue={isModifyMode ? user?.account.accountHolder : ''}
           errorMessage={errors.accountHolder?.message?.toString()}
           {...registerHookForm('accountHolder', { required: '필수 입력' })}
         />
