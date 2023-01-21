@@ -29,29 +29,38 @@ type User = {
   businessName: string;
 };
 
-function SignUpForm({ mode }: Props) {
+function SignUpForm() {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
   const isModifyMode = !!user;
-
-  const getUser = async () => {
-    const user = await checkIsLoggedIn();
-    setUser(user);
-  };
-
-  useEffect(() => {
-    getUser();
-    reset();
-  }, []);
 
   const {
     register: registerHookForm,
     handleSubmit,
     getValues,
-    reset,
     control,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({});
+
+  useEffect(() => {
+    reset({
+      email: user?.personal?.email,
+      name: user?.personal?.name,
+      businessType: user?.business?.businessType,
+      businessName: user?.business?.businessName,
+      representative: user?.business?.representative,
+      registrationNumber: user?.business?.registrationNumber,
+      bank: user?.account?.bank,
+      accountNumber: user?.account?.accountNumber,
+      accountHolder: user?.account?.accountHolder,
+    });
+  }, [user]);
+
+  const getUser = async () => {
+    const user = await checkIsLoggedIn();
+    setUser(user);
+  };
 
   const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[isModifyMode ? 'modify' : 'register'];
@@ -150,7 +159,6 @@ function SignUpForm({ mode }: Props) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <h2>계정 정보</h2>
-
         <LabelInput
           label="이메일"
           type="email"
@@ -158,7 +166,7 @@ function SignUpForm({ mode }: Props) {
           readOnly={!!isModifyMode}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
-            required: '필수',
+            required: '필수 입력',
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
           })}
         />
