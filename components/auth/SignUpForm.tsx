@@ -144,6 +144,8 @@ function SignUpForm() {
           ...business,
           name,
           ...account,
+          isEnabled: user.isEnabled,
+          isDeleted: user.isDeleted,
         },
         id: user.id,
       };

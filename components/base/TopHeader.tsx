@@ -22,6 +22,11 @@ function TopHeader() {
     if (!user) {
       getUser();
     }
+
+    // 로그인 안되었을시 홈 화면 보여주지 않고 홈 화면 보여주고 싶을 경우
+    // if (!user) {
+    //   router.push('/login');
+    // }
   }, []);
 
   const removeToken = () => {

@@ -12,8 +12,12 @@ interface Props {
 }
 
 function AddTemplate({ children, title, buttonText, handleSubmit, onSubmit }: Props) {
+  const checkKeyDown = (e) => {
+      if (e.code === 'Enter') e.preventDefault();
+  };
+
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => checkKeyDown(e)}>
       <Title>{title}</Title>
       <Content>{children}</Content>
       <Button styleType="primary">{buttonText}</Button>
