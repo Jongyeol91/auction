@@ -76,9 +76,11 @@ function AuctionCard({ auctionContent, forbidden }: Props) {
   const { mutate: mutateBid } = useMutation(bid, {
     onSuccess: () => {
       Swal.fire('입찰', '입찰 하였습니다.', 'success');
+      setSelected(!seletced);
     },
     onError: (e) => {
       Swal.fire('입찰 실패', e.response.data.message, 'error');
+      setSelected(!seletced);
     },
   });
 

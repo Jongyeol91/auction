@@ -96,6 +96,11 @@ function Add() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data: SecondFormSubmitData) => {
+    if(data.description?.length > 500) {
+      Swal.fire('길이 제한', '설명은 500자 이내까지 허용됩니다.', 'error');
+      return;
+    }
+
     const auctionItem = {
       amount: data.amount,
       price: data.price,

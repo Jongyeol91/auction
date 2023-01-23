@@ -29,6 +29,28 @@ export interface Auctions {
   empty: boolean;
 }
 
+export interface Notifications {
+  pages: any;
+  totalElements: number;
+  totalPages: number;
+  sort: Sort;
+  first: boolean;
+  last: boolean;
+  size: number;
+  number: number;
+  numberOfElements: number;
+  content: AuctionContent[];
+  pageable: {
+    sort: Sort;
+    offset: number;
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  empty: boolean;
+}
+
 export interface Sort {
   empty: boolean;
   sorted: boolean;
