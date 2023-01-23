@@ -9,7 +9,7 @@ import GlobalFooter from '../base/GlobalFooter';
 import useCheckMobile from '@/hooks/useCheckMobile';
 import HeaderBackButton from '../base/HeaderBackButton';
 import { useGoBack } from '@/hooks/useGoBack';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -30,7 +30,13 @@ function TabTamplete({ header, children, className, hasBackButton, hasLoginButto
         <>
           <MobileHeader
             headerLeft={hasBackButton ? <HeaderBackButton onClick={goBack} /> : undefined}
-            headerRight={
+            loginHeaderRight={
+              hasLoginButton ? <LoginOutlined onClick={() => router.push('/login')} /> : undefined
+            }
+            loginOutHeaderRight={
+              hasLoginButton ? <LogoutOutlined /> : undefined
+            }
+            registerHeaderRight={
               hasLoginButton ? <UserOutlined onClick={() => router.push('/register')} /> : undefined
             }
           />
