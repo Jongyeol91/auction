@@ -5,6 +5,7 @@ export async function getNotification({ pageParam = 0, pageSize = 10 }) {
     params: {
       size: pageSize,
       page: pageParam,
+      sort: 'createdAt,desc',
     },
   });
   return res.data;
