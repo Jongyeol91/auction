@@ -1,16 +1,23 @@
 import Input, { type Props as InputProps } from './Input';
 import styled, { css } from 'styled-components';
-import { forwardRef, useState } from 'react';
+import { forwardRef, Ref, useState } from 'react';
 import { colors } from '@/lib/colors';
 import ErrorMessage from './ErrorMessage';
+import { FieldValues, FieldPath } from 'react-hook-form';
 
-interface Props extends InputProps {
+interface Props<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends InputProps {
   label: string;
   errorMessage?: string | false;
 }
 
 const LabelInput = forwardRef<HTMLInputElement, Props>(
-  ({ label, errorMessage, defaultValue, ...rest }: Props, ref) => {
+  <TFieldValues extends FieldValues>(
+    { label, errorMessage, defaultValue, ...rest }: Props<TFieldValues>,
+    ref: Ref<HTMLInputElement> | undefined,
+  ) => {
     const [focused, setFocused] = useState(false);
 
     const onFocus = () => {
