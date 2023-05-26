@@ -1,5 +1,5 @@
 import TabTamplete from '@/components/templates/TabTemplate';
-import { useGetNotification } from '@/hooks/notification';
+import {useFetchInfiniteNotifications, useGetNotification} from '@/hooks/notification';
 import { media } from '@/lib/media';
 import { checkIsLoggedIn } from '@/lib/protectedRotue';
 import { userAtom } from '@/store';
@@ -13,6 +13,7 @@ import AuctionCard from '@/components/home/AuctionCard';
 import { useRouter } from 'next/router';
 import { useOpenDialog } from '@/hooks/useDialog';
 import EmptyPage from '@/components/common/Empty';
+import Button from "@/components/common/Button";
 
 const { Panel } = Collapse;
 
@@ -37,8 +38,19 @@ function Notification() {
   const router = useRouter();
   const { openDialog } = useOpenDialog();
 
-  const { data, isLoading } = useGetNotification({ enabled: !!user });
-  console.log(data);
+  const {
+    data: notifications,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  } = useFetchInfiniteNotifications({
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.last) {
+        return lastPage?.pageable.pageNumber + 1;
+      }
+    },
+    enabled: !!user,
+  });
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
@@ -76,25 +88,41 @@ function Notification() {
     );
   };
 
+  const notificationList = (pages) => {
+    return pages?.map((page) => {
+      return page?.content.map((notification: Notification) => {
+        return (
+            <StyledPanel header={notificationItem(notification)} key={notification.id}>
+              <CardWrapper>
+                <AuctionCard auctionContent={notification?.auction} />
+              </CardWrapper>
+            </StyledPanel>
+        );
+      });
+    });
+  };
+
   if (isLoading || !user) return;
+
+  const firstElementsNum = notifications?.pages[0].totalElements;
 
   return (
     <StyledTabTamplete hasBackButton>
       <Content>
         <h2>알림</h2>
         <Collapse>
-          {data?.notificationResponses.content.map((notification: Notification, idx: number) => {
-            return (
-              <Panel header={notificationItem(notification)} key={idx}>
-                <CardWrapper>
-                  <AuctionCard auctionContent={notification.auctionResponse} />
-                </CardWrapper>
-              </Panel>
-            );
-          })}
+          {firstElementsNum > 0 ? (
+              notificationList(notifications?.pages)
+          ) : (
+              <EmptyPage description="알림이 아직 없습니다." />
+          )}
         </Collapse>
-        {data?.notificationResponses.content.length == 0 && (
-          <EmptyPage description="알림이 아직 없습니다." />
+        {hasNextPage && (
+            <ButtonWrapper>
+              <Button size="medium" onClick={fetchNextPage}>
+                더보기
+              </Button>
+            </ButtonWrapper>
         )}
       </Content>
     </StyledTabTamplete>
@@ -122,9 +150,19 @@ const StyledTabTamplete = styled(TabTamplete)`
 `;
 
 const CardWrapper = styled.div`
-  width: 100%;
+  width: 350px;
   display: flex;
   justify-content: center;
+`;
+
+const StyledPanel = styled(Panel)`
+  justify-content: center;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 `;
 
 export default Notification;

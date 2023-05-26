@@ -29,36 +29,44 @@ type User = {
   businessName: string;
 };
 
-function SignUpForm({ mode }: Props) {
+function SignUpForm() {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
   const isModifyMode = !!user;
+
+  const {
+    register: registerHookForm,
+    handleSubmit,
+    getValues,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({});
+
+  useEffect(() => {
+    reset({
+      email: user?.personal?.email,
+      name: user?.personal?.name,
+      businessType: user?.business?.businessType,
+      businessName: user?.business?.businessName,
+      representative: user?.business?.representative,
+      registrationNumber: user?.business?.registrationNumber,
+      bank: user?.account?.bank,
+      accountNumber: user?.account?.accountNumber,
+      accountHolder: user?.account?.accountHolder,
+    });
+  }, [user]);
 
   const getUser = async () => {
     const user = await checkIsLoggedIn();
     setUser(user);
   };
 
-  useEffect(() => {
-    getUser();
-    reset();
-  }, []);
-
-  const {
-    register: registerHookForm,
-    handleSubmit,
-    getValues,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm();
-
   const { passwordPlaceholder, buttonText, question, actionLink, actionText } =
     AUTH_DESCRIPTIONS[isModifyMode ? 'modify' : 'register'];
 
   const { mutate: mutateRegisterImage } = useMutation(registerImage, {
     onSuccess: async ({ imageUrl }: { imageUrl: string }) => {
-      console.log('s3 사업자등록증 업로드 완료: ', imageUrl);
     },
     onError: (e: any) => {
       Swal.fire('회원가입 실패', e.response.data.message, 'error');
@@ -67,22 +75,22 @@ function SignUpForm({ mode }: Props) {
 
   const { mutate: mutateRegister } = useRegister({
     onSuccess: () => {
-      Swal.fire('회원가입 성공!', '회원 가입을 환영합니다!', 'success');
+      Swal.fire('회원가입 성공', '회원 가입을 환영합니다.', 'success');
       router.replace('/');
     },
     onError: (e: any) => {
-      Swal.fire('가입 실패!', e.response.data.message, 'error');
+      Swal.fire('가입 실패', e.response.data.message, 'error');
     },
   });
 
   const { mutate: mutateModifyUser } = useModifyUser({
     onSuccess: () => {
-      Swal.fire('수정 성공!', '회원정보가 수정되었습니다.', 'success');
+      Swal.fire('수정 성공', '회원정보가 수정되었습니다.', 'success');
       getUser();
       router.replace('/');
     },
     onError: (e: any) => {
-      Swal.fire('수정 실패!', e.response.data.message, 'error');
+      Swal.fire('수정 실패', e.response.data.message, 'error');
     },
   });
 
@@ -124,24 +132,20 @@ function SignUpForm({ mode }: Props) {
       mutateRegisterImage(licenceImageFile, {
         onSuccess: ({ imageUrl }) => {
           mutateRegister({
-            business: { ...business, licenceImageUrl: imageUrl, test: 'test' },
+            business: { ...business, licenceImageUrl: imageUrl },
             personal,
             account,
-            isEnabled: 'Y',
           });
         },
       });
     } else {
-      const personalUpdateCommand = {
-        name,
-      };
       const params = {
         data: {
-          business,
-          personalUpdateCommand,
-          accountUpdateCommand: account,
-          isEnabled: 'Y',
-          inDeleted: 'Y',
+          ...business,
+          name,
+          ...account,
+          isEnabled: user.isEnabled,
+          isDeleted: user.isDeleted,
         },
         id: user.id,
       };
@@ -157,7 +161,6 @@ function SignUpForm({ mode }: Props) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Wrapper>
         <h2>계정 정보</h2>
-
         <LabelInput
           label="이메일"
           type="email"
@@ -165,7 +168,7 @@ function SignUpForm({ mode }: Props) {
           readOnly={!!isModifyMode}
           errorMessage={errors?.email?.message?.toString()}
           {...registerHookForm('email', {
-            required: '필수',
+            required: '필수 입력',
             pattern: { value: email, message: '이메일 형식이 아닙니다.' },
           })}
         />
@@ -204,7 +207,7 @@ function SignUpForm({ mode }: Props) {
         <h2>회사 정보</h2>
         <Controller
           name="businessType"
-          defaultValue={'PERSONAL'}
+          defaultValue={isModifyMode ? user?.business?.businessType : ''}
           control={control}
           rules={{ required: '필수 입력' }}
           render={({ field }) => (
@@ -212,7 +215,7 @@ function SignUpForm({ mode }: Props) {
               label="계정유형"
               options={[
                 { label: '개인사업자', value: 'PERSONAL' },
-                { label: '법인사업자', value: 'CORPORATION' },
+                { label: '법인사업자', value: 'CORPORATE' },
               ]}
               {...field}
               errorMessage={errors.businessType?.message?.toString()}

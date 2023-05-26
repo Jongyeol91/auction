@@ -82,10 +82,10 @@ const Home: NextPage = () => {
             />
           </FilterWrapper>
         </AuctionMenuWrapper>
-        {auctions ? (
+        {auctions?.pages[0].totalElements > 0 ? (
           <AuctionCardList auctions={auctions}></AuctionCardList>
         ) : (
-          <EmptyPage description="아직 해당하는 경매가 없습니다." />
+          <EmptyPage description="조건에 부합하는 경매가 없습니다." />
         )}
         <ButtonWrapper>
           {hasNextPage && (

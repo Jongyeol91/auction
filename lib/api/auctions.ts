@@ -27,17 +27,18 @@ export async function getAuctions({
       metalId,
     },
   });
-  return res.data.auctions;
+  return res.data;
 }
 
-export async function getMyAuctions({ pageParam = 0, pageSize = 12, myAuctionType = 'hosting' }) {
+export async function getMyAuctions({ pageParam = 0, pageSize = 2, myAuctionType = 'hosting' }) {
   const res = await defaultAxios.get(`/auctions/${myAuctionType}`, {
     params: {
       size: pageSize,
       page: pageParam,
+      sort: 'createdAt,desc',
     },
   });
-  return res.data.auctions;
+  return res.data;
 }
 
 export async function createAuction(auction: AuctionParam) {

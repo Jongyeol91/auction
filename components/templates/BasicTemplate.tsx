@@ -4,7 +4,7 @@ import FullHeightPage from '../common/FullHeightPage';
 import HeaderBackButton from '../base/HeaderBackButton';
 import { useGoBack } from '@/hooks/useGoBack';
 import TopHeader from '../base/TopHeader';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -23,7 +23,13 @@ function BasicTemplete({ children, title, hasBackButton, hasLoginButton }: Props
       <MobileHeader
         title={title}
         headerLeft={hasBackButton ? <HeaderBackButton onClick={goBack} /> : undefined}
-        headerRight={
+        loginHeaderRight={
+            hasLoginButton ? <LoginOutlined onClick={() => router.push('/login')} /> : undefined
+        }
+        loginOutHeaderRight={
+            hasLoginButton ? <LogoutOutlined /> : undefined
+        }
+        registerHeaderRight={
           hasLoginButton ? <UserOutlined onClick={() => router.push('/register')} /> : undefined
         }
       />

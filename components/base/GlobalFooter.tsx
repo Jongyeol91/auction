@@ -17,23 +17,12 @@ function GlobalFooter() {
         </FirstRow>
         <SecondRowColumn1></SecondRowColumn1>
         <ConpanyInfo>
-          <p>
-            TrillionsLab Co., Ltd. | CEO: Thomas Kang | 개인정보책임관리자: 홍길동 | 사업자번호:
-            352-87-01712
-          </p>
-          <p>
-            통신판매업번호: 제 2017-서울강남-00000호 | 주소: 3F, Worldcup Buk-ro 6 Gil 82, Mapo-gu,
-            Seoul, South Korea
-          </p>
-          <p>
-            <>
-              고객센터:
-              <a href={`mailto:www.naver.com`}>CEO@trillionslab.com </a> | 마케팅:
-              <a href={`mailto:www.naver.com`}>CEO@trillionslab.com</a>
-            </>
-          </p>
-          <p>대표번호: 010 - xxxx - xxx | 운영시간: 오전 9시 ~ 오후 6시</p>
-          <p>COPYRIGHT © 2022 TrillionsLab Co., Ltd. ALL RIGHTS RESERVED.</p>
+          <p>TrillionsLab Co., Ltd. | CEO: Thomas Kang | 개인정보책임관리자: 강현웅</p>
+          <p>통신판매업번호: 2020-서울강남-02462</p>
+          <p>주소: 3F, Worldcup Buk-ro 6 Gil 82, Mapo-gu, Seoul, South Korea</p>
+          <p>대표번호: 010 - 3149 - 9242</p>
+          <p>운영시간: 오전 9시 ~ 오후 6시</p>
+          <p>COPYRIGHT © 2023 TrillionsLab Co., Ltd. ALL RIGHTS RESERVED.</p>
         </ConpanyInfo>
       </Wrapper>
     </Container>

@@ -89,7 +89,6 @@ function Add() {
 
   const { mutate: mutateImage } = useMutation(createAuctiomImage, {
     onSuccess: async ({ imageUrl }: { imageUrl: string }) => {
-      console.log('s3 이미지 등록 완료: ', imageUrl);
     },
     onError: (e: any) => {
       Swal.fire('이미지 업로드 실패', e.response.data.message, 'error');
@@ -97,6 +96,11 @@ function Add() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data: SecondFormSubmitData) => {
+    if(data.description?.length > 500) {
+      Swal.fire('길이 제한', '설명은 500자 이내까지 허용됩니다.', 'error');
+      return;
+    }
+
     const auctionItem = {
       amount: data.amount,
       price: data.price,

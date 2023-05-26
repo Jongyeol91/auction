@@ -16,8 +16,8 @@ const useFetchInfiniteAuctions = (auctionType: AuctionType, sort: string, metalI
     ({ pageParam = 0 }) => getAuctions({ pageParam, auctionType, sort, metalId }),
     {
       getNextPageParam: (lastPage) => {
-        if (!lastPage.last) {
-          return lastPage.pageable.pageNumber + 1;
+        if (!lastPage?.last) {
+          return lastPage?.pageable.pageNumber + 1;
         }
       },
     },
